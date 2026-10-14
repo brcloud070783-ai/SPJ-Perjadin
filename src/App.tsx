@@ -17,6 +17,8 @@ import { LandingPage } from './components/LandingPage';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { DeviceAccessGuideModal } from './components/DeviceAccessGuideModal';
 import { DeploymentGuideModal } from './components/DeploymentGuideModal';
+import { UnauthorizedDomainModal } from './components/UnauthorizedDomainModal';
+import { LiveSyncModal } from './components/LiveSyncModal';
 import { konversiTerbilang } from './utils/terbilang';
 
 const STORAGE_KEYS = {
@@ -47,6 +49,8 @@ export default function App() {
   const [isProjectManagerOpen, setIsProjectManagerOpen] = useState(false);
   const [isDeviceHelpOpen, setIsDeviceHelpOpen] = useState(false);
   const [isDeployGuideOpen, setIsDeployGuideOpen] = useState(false);
+  const [isUnauthorizedDomainOpen, setIsUnauthorizedDomainOpen] = useState(false);
+  const [isLiveSyncOpen, setIsLiveSyncOpen] = useState(false);
 
   // Initialize Projects Array
   const [projects, setProjects] = useState<ProjectSPJ[]>(() => {
@@ -398,6 +402,8 @@ export default function App() {
               setActiveTab('kuitansi');
               setIsKuitansiPreview(false);
             }}
+            onOpenUnauthorizedDomainHelp={() => setIsUnauthorizedDomainOpen(true)}
+            onOpenLiveSyncModal={() => setIsLiveSyncOpen(true)}
           />
         )}
 
@@ -531,6 +537,23 @@ export default function App() {
       <DeploymentGuideModal
         isOpen={isDeployGuideOpen}
         onClose={() => setIsDeployGuideOpen(false)}
+      />
+
+      {/* Unauthorized Domain Error Modal */}
+      <UnauthorizedDomainModal
+        isOpen={isUnauthorizedDomainOpen}
+        onClose={() => setIsUnauthorizedDomainOpen(false)}
+        onOpenLiveSync={() => setIsLiveSyncOpen(true)}
+      />
+
+      {/* Live Realtime Cloud Sync Modal */}
+      <LiveSyncModal
+        isOpen={isLiveSyncOpen}
+        onClose={() => setIsLiveSyncOpen(false)}
+        activeProject={activeProject}
+        onUpdateActiveProjectFromLive={(updated) => {
+          updateActiveProject(() => updated);
+        }}
       />
 
       {/* PWA Offline Banner */}

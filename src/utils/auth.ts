@@ -42,6 +42,9 @@ export const googleSignIn = async (): Promise<{ user: User; accessToken: string 
     return { user: result.user, accessToken: cachedAccessToken };
   } catch (error: any) {
     console.error('Sign in error:', error);
+    if (error?.code === 'auth/unauthorized-domain' || error?.message?.includes('unauthorized-domain')) {
+      throw new Error('UNAUTHORIZED_DOMAIN');
+    }
     throw error;
   } finally {
     isSigningIn = false;

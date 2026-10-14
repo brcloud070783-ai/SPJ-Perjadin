@@ -25,7 +25,8 @@ import {
   FileCheck2,
   Receipt,
   Camera,
-  CreditCard
+  CreditCard,
+  Zap
 } from 'lucide-react';
 import { ProjectSPJ } from '../types';
 import { googleSignIn, getAccessToken, logoutUser, initAuth } from '../utils/auth';
@@ -51,6 +52,8 @@ interface ProjectManagerViewProps {
   onUpdateProjectMeta?: (id: string, newNama: string, newNomorSPD: string) => void;
   onLoadProjectFromCloud?: (project: ProjectSPJ) => void;
   onGoToKuitansi?: () => void;
+  onOpenUnauthorizedDomainHelp?: () => void;
+  onOpenLiveSyncModal?: () => void;
 }
 
 export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
@@ -65,7 +68,9 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
   onUpdateStatus,
   onUpdateProjectMeta,
   onLoadProjectFromCloud,
-  onGoToKuitansi
+  onGoToKuitansi,
+  onOpenUnauthorizedDomainHelp,
+  onOpenLiveSyncModal
 }) => {
   const [activeTab, setActiveTab] = useState<'local' | 'drive'>('local');
   const [isCreating, setIsCreating] = useState(false);
@@ -141,7 +146,14 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
         fetchDriveList(result.accessToken);
       }
     } catch (err: any) {
-      showFeedback('error', err.message || 'Gagal masuk ke Google Drive.');
+      if (err.message === 'UNAUTHORIZED_DOMAIN' || err.message?.includes('unauthorized-domain')) {
+        showFeedback('error', 'Firebase: Error (auth/unauthorized-domain). Domain ini belum diizinkan di Firebase.');
+        if (onOpenUnauthorizedDomainHelp) {
+          onOpenUnauthorizedDomainHelp();
+        }
+      } else {
+        showFeedback('error', err.message || 'Gagal masuk ke Google Drive.');
+      }
     } finally {
       setIsLoggingIn(false);
     }
@@ -294,13 +306,26 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
             </div>
           </div>
 
-          <button
-            onClick={() => setIsCreating(true)}
-            className="px-4 py-2 rounded-2xl bg-gradient-to-r from-[#00C4CC] to-[#0096C7] hover:brightness-110 text-slate-950 font-black text-xs inline-flex items-center gap-1.5 shadow-lg active:scale-95 cursor-pointer"
-          >
-            <Plus className="w-4 h-4 stroke-[3]" />
-            <span>Buat SPJ Baru</span>
-          </button>
+          <div className="flex items-center gap-2">
+            {onOpenLiveSyncModal && (
+              <button
+                onClick={onOpenLiveSyncModal}
+                className="px-3.5 py-2 rounded-2xl bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 border border-amber-400/40 font-extrabold text-xs inline-flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer"
+                title="Update Langsung Otomatis di PC & HP"
+              >
+                <Zap className="w-4 h-4 text-amber-300 fill-amber-300 animate-pulse" />
+                <span>Live Sync PC & HP</span>
+              </button>
+            )}
+
+            <button
+              onClick={() => setIsCreating(true)}
+              className="px-4 py-2 rounded-2xl bg-gradient-to-r from-[#00C4CC] to-[#0096C7] hover:brightness-110 text-slate-950 font-black text-xs inline-flex items-center gap-1.5 shadow-lg active:scale-95 cursor-pointer"
+            >
+              <Plus className="w-4 h-4 stroke-[3]" />
+              <span>Buat SPJ Baru</span>
+            </button>
+          </div>
         </div>
 
         {/* Cloud Connection Badge inside Banner */}
