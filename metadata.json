@@ -1,0 +1,6 @@
+{
+  "name": "SiDinas - Kuitansi & Dokumentasi SPPD",
+  "description": "Aplikasi mobile web untuk kuitansi perjalanan dinas, upload foto dokumentasi kegiatan, dan bukti pembayaran riil.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

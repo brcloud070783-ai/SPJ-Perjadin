@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="canvaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00C4CC" />
+      <stop offset="100%" stop-color="#7D2AE8" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="110" fill="url(#canvaGrad)" />
+  <g filter="url(#shadow)">
+    <rect x="156" y="116" width="200" height="280" rx="20" fill="#FFFFFF" />
+    <path d="M 316 116 L 356 156 L 316 156 Z" fill="#DCEBFB" />
+    <path d="M 206 180 H 306 M 206 210 H 286 M 206 240 H 296" stroke="#7D2AE8" stroke-width="8" stroke-linecap="round" />
+    <rect x="206" y="275" width="100" height="70" rx="12" fill="#7D2AE8" />
+    <text x="256" y="322" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="36" fill="#FFFFFF" text-anchor="middle">SPD</text>
+  </g>
+  <path d="M 390 130 Q 400 130 400 120 Q 400 130 410 130 Q 400 130 400 140 Q 400 130 390 130 Z" fill="#FFFFFF" opacity="0.9" />
+  <path d="M 110 370 Q 120 370 120 360 Q 120 370 130 370 Q 120 370 120 380 Q 120 370 110 370 Z" fill="#FFFFFF" opacity="0.9" />
+</svg>

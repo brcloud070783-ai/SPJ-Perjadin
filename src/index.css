@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-tahoma {
+    font-family: Tahoma, 'Segoe UI', Arial, sans-serif;
+  }
+}
+
+/* Formal A4 Printing Styles */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide web application navigation and floating actions */
+  header, nav, .print\:hidden {
+    display: none !important;
+  }
+
+  .print-page-a4 {
+    border: 1.5px solid #000000 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 10mm !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Exact Tahoma 8.5pt styling container */
+.kuitansi-a4-document {
+  font-family: Tahoma, 'Segoe UI', Arial, sans-serif;
+  font-size: 8.5pt;
+  line-height: 1.45;
+  color: #000000;
+  box-sizing: border-box;
+}
+
+.kuitansi-a4-document * {
+  box-sizing: border-box;
+}
