@@ -145,12 +145,16 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
       }
     } catch (err: any) {
       if (err.message === 'UNAUTHORIZED_DOMAIN' || err.message?.includes('unauthorized-domain')) {
-        showFeedback('error', 'Firebase: Error (auth/unauthorized-domain). Domain ini belum diizinkan di Firebase.');
+        showFeedback('error', 'Domain belum terdaftar di Firebase. Anda dapat terus menggunakan Mode Lokal tanpa login!');
         if (onOpenUnauthorizedDomainHelp) {
           onOpenUnauthorizedDomainHelp();
         }
+      } else if (err.message === 'POPUP_BLOCKED') {
+        showFeedback('error', 'Pop-up browser diblokir di HP/Browser. Silakan izinkan pop-up Chrome/Safari atau gunakan Mode Lokal.');
+      } else if (err.message === 'POPUP_CLOSED') {
+        showFeedback('error', 'Jendela login Google ditutup sebelum selesai.');
       } else {
-        showFeedback('error', err.message || 'Gagal masuk ke Google Drive.');
+        showFeedback('error', err.message || 'Gagal masuk ke Google Drive. Anda tetap bisa menggunakan Mode Lokal.');
       }
     } finally {
       setIsLoggingIn(false);

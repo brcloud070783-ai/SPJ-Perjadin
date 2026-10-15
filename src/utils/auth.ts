@@ -34,16 +34,21 @@ export const googleSignIn = async (): Promise<{ user: User; accessToken: string 
     isSigningIn = true;
     const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
-    if (!credential?.accessToken) {
-      throw new Error('Gagal mengontentikasi token dari Google Drive.');
-    }
-
-    cachedAccessToken = credential.accessToken;
+    cachedAccessToken = credential?.accessToken || '';
     return { user: result.user, accessToken: cachedAccessToken };
   } catch (error: any) {
     console.error('Sign in error:', error);
     if (error?.code === 'auth/unauthorized-domain' || error?.message?.includes('unauthorized-domain')) {
       throw new Error('UNAUTHORIZED_DOMAIN');
+    }
+    if (error?.code === 'auth/popup-blocked' || error?.message?.includes('popup-blocked')) {
+      throw new Error('POPUP_BLOCKED');
+    }
+    if (error?.code === 'auth/popup-closed-by-user' || error?.message?.includes('popup-closed')) {
+      throw new Error('POPUP_CLOSED');
+    }
+    if (error?.code === 'auth/cancelled-popup-request') {
+      throw new Error('POPUP_CANCELLED');
     }
     throw error;
   } finally {
