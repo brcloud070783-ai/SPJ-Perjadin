@@ -15,6 +15,7 @@ import { ProjectManagerView } from './components/ProjectManagerView';
 import { DiscussionGuide } from './components/DiscussionGuide';
 import { LogoDinasPage } from './components/LogoDinasPage';
 import { LandingPage } from './components/LandingPage';
+import { SidebarMenu } from './components/SidebarMenu';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { DeviceAccessGuideModal } from './components/DeviceAccessGuideModal';
 import { DeploymentGuideModal } from './components/DeploymentGuideModal';
@@ -57,6 +58,7 @@ export default function App() {
   const [isUnauthorizedDomainOpen, setIsUnauthorizedDomainOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [isGoogleLoginOpen, setIsGoogleLoginOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Initialize Auth Listener
   useEffect(() => {
@@ -417,6 +419,25 @@ export default function App() {
         onOpenDeployGuide={() => setIsDeployGuideOpen(true)}
         user={user}
         onOpenGoogleLogin={() => setIsGoogleLoginOpen(true)}
+        onOpenSidebar={() => setIsSidebarOpen(true)}
+      />
+
+      <SidebarMenu
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        activeProject={activeProject}
+        onOpenProjectManager={() => setIsProjectManagerOpen(true)}
+        onOpenLogoDinas={() => setActiveTab('logo_dinas')}
+        onOpenDeviceHelp={() => setIsDeviceHelpOpen(true)}
+        onOpenDeployGuide={() => setIsDeployGuideOpen(true)}
+        onExportProject={() => handleExportProject(activeProject)}
+        onImportProject={handleImportProject}
+        onNavigateToTab={(tab) => {
+          setActiveTab(tab);
+          setIsKuitansiPreview(false);
+          setIsDokumentasiPreview(false);
+          setIsBuktiBayarPreview(false);
+        }}
       />
 
       {/* Main App Container */}

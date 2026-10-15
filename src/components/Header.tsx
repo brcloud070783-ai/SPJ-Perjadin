@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { Briefcase, RotateCcw, FileText, FolderOpen, Printer, Sparkles, ChevronDown, Rocket, LogIn, UserCheck, Building2 } from 'lucide-react';
+import { Menu, Briefcase, RotateCcw, FileText, FolderOpen, Printer, Sparkles, ChevronDown, Rocket, LogIn, UserCheck, Building2 } from 'lucide-react';
 import { TabType, KuitansiData, ProjectSPJ } from '../types';
 import { PWAInstallButton } from './PWAInstallButton';
 
@@ -19,6 +19,7 @@ interface HeaderProps {
   onOpenDeviceHelp?: () => void;
   onOpenDeployGuide?: () => void;
   onOpenGoogleLogin?: () => void;
+  onOpenSidebar?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -34,13 +35,24 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenLogoDinas,
   onOpenDeviceHelp,
   onOpenDeployGuide,
-  onOpenGoogleLogin
+  onOpenGoogleLogin,
+  onOpenSidebar
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-[#180A30] text-white border-b border-purple-900/50 px-3 sm:px-4 py-2 print:hidden shadow-md">
       <div className="max-w-4xl mx-auto flex items-center justify-between gap-2">
         {/* Brand & Active Project Selector */}
         <div className="flex items-center gap-2 overflow-hidden">
+          {onOpenSidebar && (
+            <button 
+              onClick={onOpenSidebar}
+              className="w-9 h-9 rounded-xl bg-purple-900/60 hover:bg-purple-800 text-purple-200 hover:text-white flex items-center justify-center transition-all cursor-pointer shrink-0"
+              title="Buka Menu Sidebar"
+            >
+              <Menu className="w-5 h-5 text-cyan-300" />
+            </button>
+          )}
+
           <button 
             onClick={onGoToLanding}
             className="flex items-center gap-2 text-left cursor-pointer group select-none shrink-0"

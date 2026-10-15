@@ -14,7 +14,9 @@ import {
   Loader2, 
   Share2, 
   Check, 
-  FileText 
+  FileText,
+  Minus,
+  Plus 
 } from 'lucide-react';
 
 interface DokumentasiPrintPreviewProps {
@@ -29,9 +31,27 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
   onBack
 }) => {
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState<'fit' | '100' | '125'>('fit');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftState, setScrollLeftState] = useState(0);
+
+  const a4WidthPx = 794;
+  const availableWidth = Math.max(300, (containerWidth || (typeof window !== 'undefined' ? window.innerWidth : 800)) - 24);
+  const fitScale = Math.min(1, Math.round((availableWidth / a4WidthPx) * 100) / 100);
+  const defaultFitPercent = Math.max(35, Math.round(fitScale * 100));
+
+  const [zoomPercent, setZoomPercent] = useState<number>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 794) {
+      return Math.max(35, Math.round((Math.max(300, window.innerWidth - 24) / 794) * 100));
+    }
+    return 100;
+  });
+
+  const initialTouchDistanceRef = useRef<number | null>(null);
+  const initialScaleRef = useRef<number>(100);
+  const lastTapRef = useRef<number>(0);
 
   useEffect(() => {
     const updateWidth = () => {
@@ -46,9 +66,66 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  const a4WidthPx = 794;
-  const availableWidth = Math.max(300, (containerWidth || (typeof window !== 'undefined' ? window.innerWidth : 800)) - 24);
-  const fitScale = Math.min(1, Math.round((availableWidth / a4WidthPx) * 100) / 100);
+  // Multi-touch Pinch to Zoom Handler
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      const t0 = e.touches[0];
+      const t1 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+      initialTouchDistanceRef.current = dist;
+      initialScaleRef.current = zoomPercent;
+    } else if (e.touches.length === 1) {
+      const now = Date.now();
+      if (now - lastTapRef.current < 300) {
+        if (zoomPercent < 90) {
+          setZoomPercent(100);
+        } else {
+          setZoomPercent(defaultFitPercent);
+        }
+      }
+      lastTapRef.current = now;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && initialTouchDistanceRef.current) {
+      const t0 = e.touches[0];
+      const t1 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+      const factor = dist / initialTouchDistanceRef.current;
+      const targetPercent = Math.min(250, Math.max(35, Math.round(initialScaleRef.current * factor)));
+      setZoomPercent(targetPercent);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    initialTouchDistanceRef.current = null;
+  };
+
+  // Mouse drag-to-scroll implementation for desktop
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeftState(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollContainerRef.current.scrollLeft = scrollLeftState - walk;
+  };
+
+  const handleZoomIn = () => setZoomPercent((prev) => Math.min(250, prev + 15));
+  const handleZoomOut = () => setZoomPercent((prev) => Math.max(35, prev - 15));
+  const handleFitScreen = () => setZoomPercent(defaultFitPercent);
+  const handleZoom100 = () => setZoomPercent(100);
 
   const handleDownloadPdf = async () => {
     try {
@@ -70,15 +147,7 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
     window.print();
   };
 
-  const getScaleStyle = () => {
-    if (zoomLevel === '100') {
-      return { transform: 'none', transformOrigin: 'top center' };
-    }
-    if (zoomLevel === '125') {
-      return { transform: 'scale(1.25)', transformOrigin: 'top center' };
-    }
-    return { transform: 'none' };
-  };
+  const currentScale = zoomPercent / 100;
 
   return (
     <div className="space-y-4 pb-24">
@@ -86,37 +155,52 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
       <div className="print:hidden bg-white/95 backdrop-blur-md p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-2.5 sticky top-14 z-30">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 active:scale-95 px-3 py-2 rounded-xl transition-all"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 active:scale-95 px-3 py-2 rounded-xl transition-all cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Kembali ke Upload Foto</span>
         </button>
 
-        {/* View Zoom Switcher */}
-        <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200/60 text-[11px] font-semibold text-slate-600">
+        {/* View Zoom Switcher with Pinch & Controls */}
+        <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200/60 text-[11px] font-semibold text-slate-700">
           <button
-            onClick={() => setZoomLevel('fit')}
-            className={`px-2.5 py-1 rounded-lg transition-all ${
-              zoomLevel === 'fit' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
+            onClick={handleZoomOut}
+            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-blue-600 transition-all cursor-pointer"
+            title="Perkecil Zoom"
+          >
+            <Minus className="w-3.5 h-3.5" />
+          </button>
+          
+          <span className="px-2 font-mono text-xs font-bold text-slate-800 min-w-[42px] text-center">
+            {zoomPercent}%
+          </span>
+
+          <button
+            onClick={handleZoomIn}
+            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-blue-600 transition-all cursor-pointer"
+            title="Perbesar Zoom"
+          >
+            <Plus className="w-3.5 h-3.5" />
+          </button>
+
+          <div className="w-[1px] h-4 bg-slate-300 mx-1" />
+
+          <button
+            onClick={handleFitScreen}
+            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+              zoomPercent === defaultFitPercent ? 'bg-white text-blue-600 shadow-xs font-bold' : 'hover:text-slate-900'
             }`}
           >
             Pas Layar
           </button>
+
           <button
-            onClick={() => setZoomLevel('100')}
-            className={`px-2.5 py-1 rounded-lg transition-all ${
-              zoomLevel === '100' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
+            onClick={handleZoom100}
+            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+              zoomPercent === 100 ? 'bg-white text-blue-600 shadow-xs font-bold' : 'hover:text-slate-900'
             }`}
           >
-            100% Asli
-          </button>
-          <button
-            onClick={() => setZoomLevel('125')}
-            className={`px-2 py-1 rounded-lg transition-all ${
-              zoomLevel === '125' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
-            }`}
-          >
-            +125%
+            100%
           </button>
         </div>
 
@@ -126,7 +210,7 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
           <button
             onClick={handleDownloadPdf}
             disabled={isGeneratingPdf}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 px-3.5 py-2 rounded-xl shadow-xs transition-all disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 px-3.5 py-2 rounded-xl shadow-xs transition-all disabled:opacity-50 cursor-pointer"
             title="Unduh berkas PDF siap cetak ukuran A4"
           >
             {isGeneratingPdf ? (
@@ -145,7 +229,7 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
           {/* Cetak A4 Button */}
           <button
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 active:scale-95 px-3 py-2 rounded-xl shadow-xs transition-all"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 active:scale-95 px-3 py-2 rounded-xl shadow-xs transition-all cursor-pointer"
             title="Buka dialog cetak browser"
           >
             <Printer className="w-3.5 h-3.5" />
@@ -167,31 +251,45 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
         </span>
       </div>
 
+      {/* Touch Pinch & Pan Floating Helper Badge */}
+      <div className="print:hidden flex items-center justify-between px-3.5 py-1.5 bg-purple-50/80 border border-purple-200/60 rounded-xl text-[11px] text-purple-800">
+        <div className="flex items-center gap-1.5">
+          <span className="text-sm">👌</span>
+          <span><strong>Tips Layar Sentuh:</strong> Gunakan 2 jari (cubit / renggangkan) untuk Zoom In & Out • Ketuk 2x untuk reset</span>
+        </div>
+        <div className="font-mono font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border border-purple-200 shrink-0 ml-2">
+          {zoomPercent}%
+        </div>
+      </div>
+
       {/* DOCUMENT PREVIEW CONTAINER */}
       <div 
         ref={scrollContainerRef}
-        className="w-full overflow-x-auto pb-6 touch-pan-x overscroll-x-contain"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeaveOrUp}
+        onMouseUp={handleMouseLeaveOrUp}
+        onMouseMove={handleMouseMove}
+        className={`w-full overflow-x-auto pb-6 touch-pan-x overscroll-x-contain ${
+          isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'
+        }`}
         style={{
           WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'thin'
+          scrollbarWidth: 'thin',
+          touchAction: 'pan-x pan-y'
         }}
       >
         <div className="w-max min-w-full flex justify-center py-1 px-1 sm:px-2">
           <div
-            style={
-              zoomLevel === 'fit' && fitScale < 0.98
-                ? {
-                    width: `${Math.round(a4WidthPx * fitScale)}px`,
-                    height: `${Math.round(1122 * fitScale)}px`,
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }
-                : {
-                    transform: zoomLevel === '125' ? 'scale(1.25)' : 'none',
-                    transformOrigin: 'top center'
-                  }
-            }
-            className="transition-transform duration-200 preview-scale-wrapper"
+            style={{
+              width: `${Math.round(a4WidthPx * currentScale)}px`,
+              height: `${Math.round(1122 * currentScale)}px`,
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+            className="transition-all duration-75 preview-scale-wrapper"
           >
             <div
               id="dokumentasi-a4-sheet"
@@ -205,7 +303,7 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
                 lineHeight: 1.4,
                 color: '#000000',
                 backgroundColor: '#ffffff',
-                transform: zoomLevel === 'fit' && fitScale < 0.98 ? `scale(${fitScale})` : undefined,
+                transform: `scale(${currentScale})`,
                 transformOrigin: 'top left'
               }}
             >

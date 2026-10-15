@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ProjectSPJ } from '../types';
 import { formatTanggalIndo, formatRupiah } from '../utils/terbilang';
 import { exportElementToPdf } from '../utils/pdfExport';
@@ -11,7 +11,9 @@ import {
   CheckCircle2, 
   Loader2, 
   FileCheck,
-  Folder
+  Folder,
+  Minus,
+  Plus
 } from 'lucide-react';
 
 interface PaketLengkapPrintPreviewProps {
@@ -26,6 +28,102 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [documentFilter, setDocumentFilter] = useState<'normal' | 'bw'>('bw');
   const [showSignatureBlock, setShowSignatureBlock] = useState(true);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftState, setScrollLeftState] = useState(0);
+
+  const a4WidthPx = 794;
+  const availableWidth = Math.max(300, (containerWidth || (typeof window !== 'undefined' ? window.innerWidth : 800)) - 24);
+  const fitScale = Math.min(1, Math.round((availableWidth / a4WidthPx) * 100) / 100);
+  const defaultFitPercent = Math.max(35, Math.round(fitScale * 100));
+
+  const [zoomPercent, setZoomPercent] = useState<number>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 794) {
+      return Math.max(35, Math.round((Math.max(300, window.innerWidth - 24) / 794) * 100));
+    }
+    return 100;
+  });
+
+  const initialTouchDistanceRef = useRef<number | null>(null);
+  const initialScaleRef = useRef<number>(100);
+  const lastTapRef = useRef<number>(0);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (scrollContainerRef.current) {
+        setContainerWidth(scrollContainerRef.current.clientWidth);
+      } else if (typeof window !== 'undefined') {
+        setContainerWidth(window.innerWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
+  // Multi-touch Pinch to Zoom Handler
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      const t0 = e.touches[0];
+      const t1 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+      initialTouchDistanceRef.current = dist;
+      initialScaleRef.current = zoomPercent;
+    } else if (e.touches.length === 1) {
+      const now = Date.now();
+      if (now - lastTapRef.current < 300) {
+        if (zoomPercent < 90) {
+          setZoomPercent(100);
+        } else {
+          setZoomPercent(defaultFitPercent);
+        }
+      }
+      lastTapRef.current = now;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && initialTouchDistanceRef.current) {
+      const t0 = e.touches[0];
+      const t1 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+      const factor = dist / initialTouchDistanceRef.current;
+      const targetPercent = Math.min(250, Math.max(35, Math.round(initialScaleRef.current * factor)));
+      setZoomPercent(targetPercent);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    initialTouchDistanceRef.current = null;
+  };
+
+  // Mouse drag-to-scroll implementation for desktop
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeftState(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollContainerRef.current.scrollLeft = scrollLeftState - walk;
+  };
+
+  const handleZoomIn = () => setZoomPercent((prev) => Math.min(250, prev + 15));
+  const handleZoomOut = () => setZoomPercent((prev) => Math.max(35, prev - 15));
+  const handleFitScreen = () => setZoomPercent(defaultFitPercent);
+  const handleZoom100 = () => setZoomPercent(100);
 
   const { kuitansi, dokumentasiList = [], buktiBayarList = [] } = project;
   const totalNominal = kuitansi.totalBiaya || 0;
@@ -50,6 +148,8 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
     window.print();
   };
 
+  const currentScale = zoomPercent / 100;
+
   return (
     <div className="space-y-4 pb-24">
       {/* Toolbar Header (Hidden in print) */}
@@ -61,6 +161,49 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Kembali</span>
         </button>
+
+        {/* View Zoom Switcher with Pinch & Controls */}
+        <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-[11px] font-semibold text-slate-700">
+          <button
+            onClick={handleZoomOut}
+            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-purple-700 transition-all cursor-pointer"
+            title="Perkecil Zoom"
+          >
+            <Minus className="w-3.5 h-3.5" />
+          </button>
+          
+          <span className="px-2 font-mono text-xs font-bold text-slate-800 min-w-[42px] text-center">
+            {zoomPercent}%
+          </span>
+
+          <button
+            onClick={handleZoomIn}
+            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-purple-700 transition-all cursor-pointer"
+            title="Perbesar Zoom"
+          >
+            <Plus className="w-3.5 h-3.5" />
+          </button>
+
+          <div className="w-[1px] h-4 bg-slate-300 mx-1" />
+
+          <button
+            onClick={handleFitScreen}
+            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+              zoomPercent === defaultFitPercent ? 'bg-white text-purple-700 shadow-xs font-bold' : 'hover:text-slate-900'
+            }`}
+          >
+            Pas Layar
+          </button>
+
+          <button
+            onClick={handleZoom100}
+            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+              zoomPercent === 100 ? 'bg-white text-purple-700 shadow-xs font-bold' : 'hover:text-slate-900'
+            }`}
+          >
+            100%
+          </button>
+        </div>
 
         <div className="flex items-center gap-2">
           <button
@@ -80,7 +223,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
             <span className="px-2 text-slate-500 text-[10px] hidden md:inline">Kontras Nota:</span>
             <button
               onClick={() => setDocumentFilter('normal')}
-              className={`px-2 py-1 rounded-lg transition-all ${
+              className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
                 documentFilter === 'normal' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-600'
               }`}
             >
@@ -88,7 +231,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
             </button>
             <button
               onClick={() => setDocumentFilter('bw')}
-              className={`px-2 py-1 rounded-lg transition-all ${
+              className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
                 documentFilter === 'bw' ? 'bg-slate-900 text-white shadow-xs' : 'text-slate-600'
               }`}
             >
@@ -146,15 +289,44 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
         </div>
       </div>
 
-      {/* PRINTABLE BUNDLE CONTAINER */}
+      {/* Touch Pinch & Pan Floating Helper Badge */}
+      <div className="print:hidden flex items-center justify-between px-3.5 py-1.5 bg-purple-50/80 border border-purple-200/60 rounded-xl text-[11px] text-purple-800">
+        <div className="flex items-center gap-1.5">
+          <span className="text-sm">👌</span>
+          <span><strong>Tips Layar Sentuh:</strong> Gunakan 2 jari (cubit / renggangkan) untuk Zoom In & Out • Ketuk 2x untuk reset</span>
+        </div>
+        <div className="font-mono font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border border-purple-200 shrink-0 ml-2">
+          {zoomPercent}%
+        </div>
+      </div>
+
+      {/* PRINTABLE BUNDLE CONTAINER WITH TOUCH PINCH ZOOM */}
       <div 
-        className="w-full overflow-x-auto pb-8 touch-pan-x overscroll-x-contain"
+        ref={scrollContainerRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeaveOrUp}
+        onMouseUp={handleMouseLeaveOrUp}
+        onMouseMove={handleMouseMove}
+        className={`w-full overflow-x-auto pb-8 touch-pan-x overscroll-x-contain ${
+          isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'
+        }`}
         style={{
           WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'thin'
+          scrollbarWidth: 'thin',
+          touchAction: 'pan-x pan-y'
         }}
       >
-        <div id="paket-lengkap-a4-bundle" className="w-max min-w-full space-y-8 flex flex-col items-center">
+        <div 
+          id="paket-lengkap-a4-bundle" 
+          className="w-max min-w-full space-y-8 flex flex-col items-center py-2"
+          style={{
+            transform: `scale(${currentScale})`,
+            transformOrigin: 'top center'
+          }}
+        >
         {/* SECTION 1: KUITANSI A4 */}
         <div
           className="bg-white print-page-a4 text-black shadow-xl border border-slate-800 print:border-black rounded-xs w-[210mm] min-h-[292mm] p-[12mm_15mm_15mm_15mm] text-[8.5pt]"
