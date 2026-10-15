@@ -1,5 +1,5 @@
-import React from 'react';
-import { Briefcase, RotateCcw, FileText, FolderOpen, Printer, Sparkles, ChevronDown, Rocket } from 'lucide-react';
+import { User } from 'firebase/auth';
+import { Briefcase, RotateCcw, FileText, FolderOpen, Printer, Sparkles, ChevronDown, Rocket, LogIn, UserCheck } from 'lucide-react';
 import { TabType, KuitansiData, ProjectSPJ } from '../types';
 import { PWAInstallButton } from './PWAInstallButton';
 
@@ -7,6 +7,7 @@ interface HeaderProps {
   activeTab: TabType;
   kuitansi: KuitansiData;
   activeProject?: ProjectSPJ;
+  user?: User | null;
   totalDokumentasi: number;
   totalBuktiBayar: number;
   onResetData: () => void;
@@ -16,19 +17,22 @@ interface HeaderProps {
   onOpenPaketLengkap: () => void;
   onOpenDeviceHelp?: () => void;
   onOpenDeployGuide?: () => void;
+  onOpenGoogleLogin?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   kuitansi,
   activeProject,
+  user,
   onResetData,
   onQuickPreview,
   onGoToLanding,
   onOpenProjectManager,
   onOpenPaketLengkap,
   onOpenDeviceHelp,
-  onOpenDeployGuide
+  onOpenDeployGuide,
+  onOpenGoogleLogin
 }) => {
   return (
     <header className="sticky top-0 z-40 bg-[#180A30] text-white border-b border-purple-900/50 px-3 sm:px-4 py-2 print:hidden shadow-md">
@@ -71,6 +75,32 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Actions Bar */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {onOpenGoogleLogin && (
+            user ? (
+              <button
+                onClick={onOpenGoogleLogin}
+                className="px-2.5 py-1.5 rounded-xl bg-purple-900/80 hover:bg-purple-800 border border-cyan-400/50 text-white text-xs font-bold inline-flex items-center gap-1.5 transition-all shadow-sm shrink-0 cursor-pointer"
+                title={`Login sebagai: ${user.email}`}
+              >
+                {user.photoURL ? (
+                  <img src={user.photoURL} alt="Avatar" className="w-4 h-4 rounded-full border border-cyan-300" />
+                ) : (
+                  <UserCheck className="w-3.5 h-3.5 text-cyan-300" />
+                )}
+                <span className="hidden lg:inline text-[11px] truncate max-w-[100px]">{user.displayName || user.email?.split('@')[0]}</span>
+              </button>
+            ) : (
+              <button
+                onClick={onOpenGoogleLogin}
+                className="px-2.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:brightness-110 active:scale-95 text-white text-xs font-black inline-flex items-center gap-1.5 transition-all shadow-sm shrink-0 cursor-pointer"
+                title="Masuk Akun Google"
+              >
+                <LogIn className="w-3.5 h-3.5 text-cyan-300" />
+                <span className="hidden sm:inline">Masuk Google</span>
+              </button>
+            )
+          )}
+
           {onOpenDeployGuide && (
             <button
               onClick={onOpenDeployGuide}

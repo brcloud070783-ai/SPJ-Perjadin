@@ -18,7 +18,9 @@ import { OfflineIndicator } from './components/OfflineIndicator';
 import { DeviceAccessGuideModal } from './components/DeviceAccessGuideModal';
 import { DeploymentGuideModal } from './components/DeploymentGuideModal';
 import { UnauthorizedDomainModal } from './components/UnauthorizedDomainModal';
-import { LiveSyncModal } from './components/LiveSyncModal';
+import { GoogleLoginModal } from './components/GoogleLoginModal';
+import { initAuth } from './utils/auth';
+import { User } from 'firebase/auth';
 import { konversiTerbilang } from './utils/terbilang';
 
 const STORAGE_KEYS = {
@@ -50,7 +52,21 @@ export default function App() {
   const [isDeviceHelpOpen, setIsDeviceHelpOpen] = useState(false);
   const [isDeployGuideOpen, setIsDeployGuideOpen] = useState(false);
   const [isUnauthorizedDomainOpen, setIsUnauthorizedDomainOpen] = useState(false);
-  const [isLiveSyncOpen, setIsLiveSyncOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [isGoogleLoginOpen, setIsGoogleLoginOpen] = useState(false);
+
+  // Initialize Auth Listener
+  useEffect(() => {
+    const unsubscribe = initAuth(
+      (u) => {
+        setUser(u);
+      },
+      () => {
+        setUser(null);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
 
   // Initialize Projects Array
   const [projects, setProjects] = useState<ProjectSPJ[]>(() => {
@@ -367,6 +383,8 @@ export default function App() {
         onOpenPaketLengkap={() => setActiveTab('paket_lengkap')}
         onOpenDeviceHelp={() => setIsDeviceHelpOpen(true)}
         onOpenDeployGuide={() => setIsDeployGuideOpen(true)}
+        user={user}
+        onOpenGoogleLogin={() => setIsGoogleLoginOpen(true)}
       />
 
       {/* Main App Container */}
@@ -403,7 +421,6 @@ export default function App() {
               setIsKuitansiPreview(false);
             }}
             onOpenUnauthorizedDomainHelp={() => setIsUnauthorizedDomainOpen(true)}
-            onOpenLiveSyncModal={() => setIsLiveSyncOpen(true)}
           />
         )}
 
@@ -543,17 +560,17 @@ export default function App() {
       <UnauthorizedDomainModal
         isOpen={isUnauthorizedDomainOpen}
         onClose={() => setIsUnauthorizedDomainOpen(false)}
-        onOpenLiveSync={() => setIsLiveSyncOpen(true)}
       />
 
-      {/* Live Realtime Cloud Sync Modal */}
-      <LiveSyncModal
-        isOpen={isLiveSyncOpen}
-        onClose={() => setIsLiveSyncOpen(false)}
-        activeProject={activeProject}
-        onUpdateActiveProjectFromLive={(updated) => {
-          updateActiveProject(() => updated);
+      {/* Google Login Direct Modal */}
+      <GoogleLoginModal
+        isOpen={isGoogleLoginOpen}
+        onClose={() => setIsGoogleLoginOpen(false)}
+        user={user}
+        onLoginSuccess={(u) => {
+          setUser(u);
         }}
+        onOpenUnauthorizedDomainHelp={() => setIsUnauthorizedDomainOpen(true)}
       />
 
       {/* PWA Offline Banner */}
