@@ -10,33 +10,44 @@ export async function exportElementToPdf(
     throw new Error(`Elemen dengan ID #${elementId} tidak ditemukan.`);
   }
 
-  // Create temporary container styling if needed to ensure high-definition rendering
-  const canvas = await html2canvas(element, {
-    scale: 2.5, // 2.5x resolution for razor-sharp Tahoma 8.5pt font
-    useCORS: true,
-    logging: false,
-    backgroundColor: '#ffffff'
-  });
+  // Save current inline styles that might affect rendering
+  const originalTransform = element.style.transform;
+  const originalTransformOrigin = element.style.transformOrigin;
 
-  const imgData = canvas.toDataURL('image/png', 1.0);
+  // Temporarily reset scaling transforms for 100% full-resolution capture
+  element.style.transform = 'none';
 
-  // A4 dimensions in mm: 210 x 297
-  const pdf = new jsPDF({
-    orientation: 'portrait',
-    unit: 'mm',
-    format: 'a4',
-    compress: true
-  });
+  try {
+    const canvas = await html2canvas(element, {
+      scale: 2.5, // 2.5x resolution for razor-sharp Tahoma 8.5pt font
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff',
+      windowWidth: 1200,
+      scrollX: 0,
+      scrollY: 0
+    });
 
-  const pageWidth = 210;
-  const pageHeight = 297;
-  const margin = 8; // 8mm margin
-  const printWidth = pageWidth - margin * 2; // 194mm
-  const printHeight = (canvas.height * printWidth) / canvas.width;
+    const imgData = canvas.toDataURL('image/png', 1.0);
 
-  // Center vertically if it fits on one page
-  const yPos = printHeight < pageHeight - margin * 2 ? margin : margin;
+    // A4 dimensions in mm: 210 x 297
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+      compress: true
+    });
 
-  pdf.addImage(imgData, 'PNG', margin, yPos, printWidth, printHeight, undefined, 'FAST');
-  pdf.save(fileName);
+    const pageWidth = 210;
+    const pageHeight = 297;
+    const printWidth = pageWidth;
+    const printHeight = (canvas.height * printWidth) / canvas.width;
+
+    pdf.addImage(imgData, 'PNG', 0, 0, printWidth, Math.min(pageHeight, printHeight), undefined, 'FAST');
+    pdf.save(fileName);
+  } finally {
+    // Restore transform state
+    element.style.transform = originalTransform;
+    element.style.transformOrigin = originalTransformOrigin;
+  }
 }

@@ -146,7 +146,14 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
       </div>
 
       {/* PRINTABLE BUNDLE CONTAINER */}
-      <div id="paket-lengkap-a4-bundle" className="space-y-8 flex flex-col items-center">
+      <div 
+        className="w-full overflow-x-auto pb-8 touch-pan-x overscroll-x-contain"
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'thin'
+        }}
+      >
+        <div id="paket-lengkap-a4-bundle" className="w-max min-w-full space-y-8 flex flex-col items-center">
         {/* SECTION 1: KUITANSI A4 */}
         <div
           className="bg-white print-page-a4 text-black shadow-xl border border-slate-800 print:border-black rounded-xs w-[210mm] min-h-[292mm] p-[12mm_15mm_15mm_15mm] text-[8.5pt]"
@@ -422,6 +429,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
               <span>Project SPJ: {project.namaProject}</span>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

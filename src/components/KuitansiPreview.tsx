@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { KuitansiData } from '../types';
 import { formatRupiah, formatTanggalIndo } from '../utils/terbilang';
 import { exportElementToPdf } from '../utils/pdfExport';
@@ -28,6 +28,51 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
   const [zoomLevel, setZoomLevel] = useState<'fit' | '100' | '125'>('fit');
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [showSignatureBlock, setShowSignatureBlock] = useState(true);
+
+  // References and state for responsive scaling and mouse/touch panning
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftState, setScrollLeftState] = useState(0);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (scrollContainerRef.current) {
+        setContainerWidth(scrollContainerRef.current.clientWidth);
+      } else if (typeof window !== 'undefined') {
+        setContainerWidth(window.innerWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
+  // Standard A4 width in px at 96 DPI: 210mm ≈ 794px
+  const a4WidthPx = 794;
+  const availableWidth = Math.max(300, (containerWidth || (typeof window !== 'undefined' ? window.innerWidth : 800)) - 24);
+  const fitScale = Math.min(1, Math.round((availableWidth / a4WidthPx) * 100) / 100);
+
+  // Mouse drag-to-scroll implementation for effortless panning on desktop
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollContainerRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeftState(scrollContainerRef.current.scrollLeft);
+  };
+
+  const handleMouseLeaveOrUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollContainerRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollContainerRef.current.scrollLeft = scrollLeftState - walk;
+  };
 
   const handleDownloadPdf = async () => {
     try {
@@ -64,24 +109,13 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
     }
   };
 
-  // Determine scaling style based on selected view mode
-  const getScaleStyle = () => {
-    if (zoomLevel === '100') {
-      return { transform: 'none', transformOrigin: 'top center' };
-    }
-    if (zoomLevel === '125') {
-      return { transform: 'scale(1.25)', transformOrigin: 'top center' };
-    }
-    return { transform: 'none' };
-  };
-
   return (
     <div className="space-y-4 pb-24">
       {/* Action Toolbar Header */}
       <div className="print:hidden bg-white/95 backdrop-blur-md p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-2.5 sticky top-14 z-30">
         <button
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 active:scale-95 px-3 py-2 rounded-xl transition-all"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 active:scale-95 px-3 py-2 rounded-xl transition-all cursor-pointer"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Edit Data</span>
@@ -91,25 +125,28 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
         <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200/60 text-[11px] font-semibold text-slate-600">
           <button
             onClick={() => setZoomLevel('fit')}
-            className={`px-2.5 py-1 rounded-lg transition-all ${
+            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
               zoomLevel === 'fit' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
             }`}
+            title="Skala otomatis menyesuaikan layar ponsel / monitor"
           >
-            Pas Layar
+            Pas Layar {fitScale < 0.98 && `(${Math.round(fitScale * 100)}%)`}
           </button>
           <button
             onClick={() => setZoomLevel('100')}
-            className={`px-2.5 py-1 rounded-lg transition-all ${
+            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
               zoomLevel === '100' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
             }`}
+            title="Ukuran 100% Asli A4 (dapat digeser kanan-kiri)"
           >
             100% Asli
           </button>
           <button
             onClick={() => setZoomLevel('125')}
-            className={`px-2 py-1 rounded-lg transition-all ${
+            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
               zoomLevel === '125' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
             }`}
+            title="Perbesar 125%"
           >
             +125%
           </button>
@@ -119,7 +156,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
         <div className="flex items-center gap-2">
           <button
             onClick={handleShareSummary}
-            className="inline-flex items-center gap-1 text-xs font-medium text-slate-700 hover:bg-slate-100 px-2.5 py-2 rounded-xl border border-slate-200 transition-colors"
+            className="inline-flex items-center gap-1 text-xs font-medium text-slate-700 hover:bg-slate-100 px-2.5 py-2 rounded-xl border border-slate-200 transition-colors cursor-pointer"
             title="Bagikan Ringkasan"
           >
             {copyFeedback ? (
@@ -134,7 +171,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
           <button
             onClick={handleDownloadPdf}
             disabled={isGeneratingPdf}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 px-3.5 py-2 rounded-xl shadow-xs transition-all disabled:opacity-50"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 active:scale-95 px-3.5 py-2 rounded-xl shadow-xs transition-all disabled:opacity-50 cursor-pointer"
             title="Unduh berkas PDF siap cetak ukuran A4"
           >
             {isGeneratingPdf ? (
@@ -153,7 +190,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
           {/* Cetak A4 Button */}
           <button
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 active:scale-95 px-3 py-2 rounded-xl shadow-xs transition-all"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 active:scale-95 px-3 py-2 rounded-xl shadow-xs transition-all cursor-pointer"
             title="Buka dialog cetak browser"
           >
             <Printer className="w-3.5 h-3.5" />
@@ -182,28 +219,72 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
         </span>
       </div>
 
-      {/* DOCUMENT PREVIEW CONTAINER */}
-      <div className="overflow-x-auto pb-6 flex justify-center">
-        <div
-          style={getScaleStyle()}
-          className="transition-transform duration-200"
-        >
-          <div
-            id="kuitansi-a4-sheet"
-            className="kuitansi-a4-document bg-white print-page-a4 text-black shadow-xl border border-slate-800 print:border-black rounded-xs"
-            style={{
-              width: '210mm',
-              minHeight: '292mm',
-              padding: '12mm 15mm 15mm 15mm',
-              fontFamily: 'Tahoma, Segoe UI, Arial, sans-serif',
-              fontSize: '8.5pt',
-              lineHeight: 1.4,
-              color: '#000000',
-              backgroundColor: '#ffffff'
-            }}
+      {/* Interactive Navigation Hint for 100% or 125% zoom */}
+      {zoomLevel !== 'fit' && (
+        <div className="print:hidden flex items-center justify-between px-3.5 py-2 bg-blue-50/90 border border-blue-200/80 rounded-xl text-xs text-blue-800 shadow-xs">
+          <div className="flex items-center gap-2">
+            <span className="text-base leading-none">↔️</span>
+            <span>Mode Asli A4 (100%): Geser layar / swipe kanan-kiri untuk meninjau seluruh lembar</span>
+          </div>
+          <button
+            onClick={() => setZoomLevel('fit')}
+            className="text-xs font-bold text-blue-700 underline hover:text-blue-900 cursor-pointer ml-2 shrink-0"
           >
-            {/* Inner Document Border (Exact match to outer framing in user image) */}
-            <div className="border border-black p-4 sm:p-5 min-h-[265mm] flex flex-col justify-between">
+            Kembali ke Pas Layar
+          </button>
+        </div>
+      )}
+
+      {/* DOCUMENT PREVIEW CONTAINER - UNCLIPPED & SMOOTH HORIZONTAL SCROLLING */}
+      <div 
+        ref={scrollContainerRef}
+        onMouseDown={handleMouseDown}
+        onMouseLeave={handleMouseLeaveOrUp}
+        onMouseUp={handleMouseLeaveOrUp}
+        onMouseMove={handleMouseMove}
+        className={`w-full overflow-x-auto pb-6 touch-pan-x overscroll-x-contain ${
+          isDragging ? 'cursor-grabbing select-none' : 'cursor-grab'
+        }`}
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'thin'
+        }}
+      >
+        <div className="w-max min-w-full flex justify-center py-1 px-1 sm:px-2">
+          <div
+            style={
+              zoomLevel === 'fit' && fitScale < 0.98
+                ? {
+                    width: `${Math.round(a4WidthPx * fitScale)}px`,
+                    height: `${Math.round(1122 * fitScale)}px`,
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }
+                : {
+                    transform: zoomLevel === '125' ? 'scale(1.25)' : 'none',
+                    transformOrigin: 'top center'
+                  }
+            }
+            className="transition-transform duration-200 preview-scale-wrapper"
+          >
+            <div
+              id="kuitansi-a4-sheet"
+              className="kuitansi-a4-document bg-white print-page-a4 text-black shadow-xl border border-slate-800 print:border-black rounded-xs"
+              style={{
+                width: '210mm',
+                minHeight: '292mm',
+                padding: '12mm 15mm 15mm 15mm',
+                fontFamily: "'Tahoma', 'Segoe UI', Arial, sans-serif",
+                fontSize: '8.5pt',
+                lineHeight: 1.42,
+                color: '#000000',
+                backgroundColor: '#ffffff',
+                transform: zoomLevel === 'fit' && fitScale < 0.98 ? `scale(${fitScale})` : undefined,
+                transformOrigin: 'top left'
+              }}
+            >
+              {/* Inner Document Border (Exact match to outer framing in user image) */}
+              <div className="border border-black p-4 sm:p-5 min-h-[265mm] flex flex-col justify-between">
               <div>
                 {/* KOP SURAT */}
                 <div className="relative pb-2">
@@ -370,7 +451,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
 
               {/* LEMBAR PENGESAHAN & TANDA TANGAN 3 PEJABAT */}
               {showSignatureBlock ? (
-                <div className="pt-[10px] mt-[23px] pb-[137px] text-[8.5pt] leading-tight">
+                <div className="pt-[10px] mt-[23px] pb-[137px] print:pb-0 print:mt-3 text-[8.5pt] leading-tight">
                   {/* Baris 1: Tempat, Tanggal & Yang Menerima (Kanan Atas) */}
                   <div className="flex justify-end mb-4">
                     <div className="w-[230px] text-left pl-[66px] ml-0 space-y-0.5">
@@ -455,6 +536,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
               )}
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

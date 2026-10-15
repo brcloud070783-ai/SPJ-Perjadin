@@ -1,23 +1,57 @@
+@import url('https://fonts.cdnfonts.com/css/tahoma');
 @import "tailwindcss";
 
 @layer utilities {
   .font-tahoma {
-    font-family: Tahoma, 'Segoe UI', Arial, sans-serif;
+    font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif;
   }
 }
 
-/* Formal A4 Printing Styles */
+/* Exact Tahoma 8.5pt styling container & accurate font rendering */
+.kuitansi-a4-document {
+  font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif !important;
+  font-size: 8.5pt;
+  line-height: 1.42;
+  color: #000000;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: geometricPrecision;
+  letter-spacing: -0.01em;
+}
+
+.kuitansi-a4-document * {
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+/* Formal A4 Printing Styles - Exact Fit, No Cut-Off */
 @media print {
   @page {
-    size: A4 portrait;
-    margin: 8mm;
+    size: 210mm 297mm;
+    margin: 0;
   }
 
-  body {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
     background: #ffffff !important;
     color: #000000 !important;
+    width: 210mm !important;
+    height: 297mm !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
+    overflow: visible !important;
+  }
+
+  /* Reset layout constraints so document is never pushed or clipped */
+  #root, main {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+    width: 210mm !important;
+    overflow: visible !important;
+    border: none !important;
   }
 
   /* Hide web application navigation and floating actions */
@@ -26,24 +60,24 @@
   }
 
   .print-page-a4 {
-    border: 1.5px solid #000000 !important;
+    border: none !important;
     box-shadow: none !important;
-    margin: 0 !important;
-    padding: 10mm !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 12mm 15mm !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: 297mm !important;
+    height: auto !important;
+    box-sizing: border-box !important;
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
   }
-}
 
-/* Exact Tahoma 8.5pt styling container */
-.kuitansi-a4-document {
-  font-family: Tahoma, 'Segoe UI', Arial, sans-serif;
-  font-size: 8.5pt;
-  line-height: 1.45;
-  color: #000000;
-  box-sizing: border-box;
-}
-
-.kuitansi-a4-document * {
-  box-sizing: border-box;
+  /* Reset any screen scaling transform during native browser print */
+  .preview-scale-wrapper {
+    transform: none !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
 }

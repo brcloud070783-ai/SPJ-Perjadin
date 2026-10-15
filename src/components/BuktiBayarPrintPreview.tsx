@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { KuitansiData, BuktiBayar } from '../types';
 import { formatRupiah, formatTanggalIndo } from '../utils/terbilang';
 import { exportElementToPdf } from '../utils/pdfExport';
@@ -28,6 +28,25 @@ export const BuktiBayarPrintPreview: React.FC<BuktiBayarPrintPreviewProps> = ({
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [zoomLevel, setZoomLevel] = useState<'fit' | '100' | '125'>('fit');
   const [documentFilter, setDocumentFilter] = useState<'normal' | 'bw'>('bw');
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const updateWidth = () => {
+      if (scrollContainerRef.current) {
+        setContainerWidth(scrollContainerRef.current.clientWidth);
+      } else if (typeof window !== 'undefined') {
+        setContainerWidth(window.innerWidth);
+      }
+    };
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, []);
+
+  const a4WidthPx = 794;
+  const availableWidth = Math.max(300, (containerWidth || (typeof window !== 'undefined' ? window.innerWidth : 800)) - 24);
+  const fitScale = Math.min(1, Math.round((availableWidth / a4WidthPx) * 100) / 100);
 
   const totalNominal = list.reduce((sum, item) => sum + item.nominal, 0);
 
@@ -171,25 +190,47 @@ export const BuktiBayarPrintPreview: React.FC<BuktiBayarPrintPreviewProps> = ({
       </div>
 
       {/* DOCUMENT PREVIEW CONTAINER */}
-      <div className="overflow-x-auto pb-6 flex justify-center">
-        <div
-          style={getScaleStyle()}
-          className="transition-transform duration-200"
-        >
+      <div 
+        ref={scrollContainerRef}
+        className="w-full overflow-x-auto pb-6 touch-pan-x overscroll-x-contain"
+        style={{
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'thin'
+        }}
+      >
+        <div className="w-max min-w-full flex justify-center py-1 px-1 sm:px-2">
           <div
-            id="bukti-bayar-a4-sheet"
-            className="kuitansi-a4-document bg-white print-page-a4 text-black shadow-xl border border-slate-800 print:border-black rounded-xs"
-            style={{
-              width: '210mm',
-              minHeight: '292mm',
-              padding: '12mm 15mm 15mm 15mm',
-              fontFamily: 'Tahoma, Segoe UI, Arial, sans-serif',
-              fontSize: '8.5pt',
-              lineHeight: 1.4,
-              color: '#000000',
-              backgroundColor: '#ffffff'
-            }}
+            style={
+              zoomLevel === 'fit' && fitScale < 0.98
+                ? {
+                    width: `${Math.round(a4WidthPx * fitScale)}px`,
+                    height: `${Math.round(1122 * fitScale)}px`,
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }
+                : {
+                    transform: zoomLevel === '125' ? 'scale(1.25)' : 'none',
+                    transformOrigin: 'top center'
+                  }
+            }
+            className="transition-transform duration-200 preview-scale-wrapper"
           >
+            <div
+              id="bukti-bayar-a4-sheet"
+              className="kuitansi-a4-document bg-white print-page-a4 text-black shadow-xl border border-slate-800 print:border-black rounded-xs"
+              style={{
+                width: '210mm',
+                minHeight: '292mm',
+                padding: '12mm 15mm 15mm 15mm',
+                fontFamily: "'Tahoma', 'Segoe UI', Arial, sans-serif",
+                fontSize: '8.5pt',
+                lineHeight: 1.4,
+                color: '#000000',
+                backgroundColor: '#ffffff',
+                transform: zoomLevel === 'fit' && fitScale < 0.98 ? `scale(${fitScale})` : undefined,
+                transformOrigin: 'top left'
+              }}
+            >
             {/* Inner Document Border (Same outer framing as official receipt) */}
             <div className="border border-black p-4 sm:p-5 min-h-[265mm] flex flex-col justify-between">
               <div>
@@ -264,6 +305,7 @@ export const BuktiBayarPrintPreview: React.FC<BuktiBayarPrintPreviewProps> = ({
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

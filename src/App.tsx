@@ -147,13 +147,17 @@ export default function App() {
   const dokumentasiList = activeProject.dokumentasiList || [];
   const buktiBayarList = activeProject.buktiBayarList || [];
 
-  // Persist Projects Array and Active Project ID
+  // Persist Projects Array (Debounced 400ms to eliminate typing lag from large base64 strings)
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects));
-    } catch (e) {
-      console.warn('LocalStorage save error:', e);
-    }
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects));
+      } catch (e) {
+        console.warn('LocalStorage save error:', e);
+      }
+    }, 400);
+
+    return () => clearTimeout(timer);
   }, [projects]);
 
   useEffect(() => {
