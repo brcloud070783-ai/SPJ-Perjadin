@@ -1,4 +1,4 @@
-export type TabType = 'landing' | 'berkas' | 'kuitansi' | 'dokumentasi' | 'bukti_bayar' | 'paket_lengkap' | 'diskusi';
+export type TabType = 'landing' | 'berkas' | 'kuitansi' | 'dokumentasi' | 'bukti_bayar' | 'paket_lengkap' | 'diskusi' | 'logo_dinas';
 
 export interface RincianBiaya {
   id: string;

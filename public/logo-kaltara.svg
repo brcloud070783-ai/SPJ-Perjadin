@@ -1,0 +1,148 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 600" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient for Shield -->
+    <linearGradient id="kaltaraSky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#0284c7"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <linearGradient id="shieldGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047"/>
+      <stop offset="50%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+    <linearGradient id="mountainGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="50%" stop-color="#16a34a"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+    <linearGradient id="seaBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e3a8a"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Shield Border -->
+  <path d="M 120 30 
+           Q 150 25 180 30 
+           C 220 28 250 28 250 28 
+           C 250 28 280 28 320 30 
+           Q 350 25 380 30
+           C 420 35 425 240 425 320
+           C 425 430 330 520 250 565
+           C 170 520 75 430 75 320
+           C 75 240 80 35 120 30 Z" 
+        fill="url(#shieldGold)" stroke="#a16207" stroke-width="4"/>
+
+  <!-- Inner Shield Area -->
+  <path d="M 125 38 
+           Q 150 33 180 38 
+           C 220 36 250 36 250 36 
+           C 250 36 280 36 320 38 
+           Q 350 33 375 38
+           C 412 43 417 235 417 315
+           C 417 420 325 508 250 552
+           C 175 508 83 420 83 315
+           C 83 235 88 43 125 38 Z" 
+        fill="url(#kaltaraSky)" stroke="#ffffff" stroke-width="3"/>
+
+  <!-- Top Ribbon - White with KALIMANTAN UTARA -->
+  <path d="M 95 130 C 165 85 335 85 405 130 L 390 170 C 325 128 175 128 110 170 Z" fill="#ffffff" stroke="#090d16" stroke-width="2.5"/>
+  <!-- Ribbon Tails Left & Right -->
+  <path d="M 95 130 L 72 146 L 100 163 L 110 170 Z" fill="#f8fafc" stroke="#090d16" stroke-width="2"/>
+  <path d="M 405 130 L 428 146 L 400 163 L 390 170 Z" fill="#f8fafc" stroke="#090d16" stroke-width="2"/>
+  <text x="250" y="147" font-family="'Arial Black', Arial, sans-serif" font-size="22" font-weight="900" fill="#000000" text-anchor="middle" letter-spacing="1">KALIMANTAN UTARA</text>
+
+  <!-- Golden Star at Top Center -->
+  <polygon points="250,42 257,61 278,61 261,73 268,93 250,81 232,93 239,73 222,61 243,61" fill="#facc15" stroke="#854d0e" stroke-width="1.5"/>
+
+  <!-- Burung Enggang (Left Bird) -->
+  <g transform="translate(150, 160) scale(0.65)">
+    <path d="M 10 30 Q 30 10 60 20 C 70 25 80 40 70 50 Q 50 60 30 50 Z" fill="#000000"/>
+    <path d="M 30 20 Q 75 -10 90 25 Q 70 45 40 30 Z" fill="#f97316" stroke="#c2410c" stroke-width="1"/>
+    <path d="M 60 10 Q 80 -15 95 15 Z" fill="#dc2626"/>
+    <circle cx="35" cy="32" r="4" fill="#ffffff"/>
+    <circle cx="36" cy="32" r="2" fill="#000000"/>
+  </g>
+  <!-- Burung Enggang (Right Bird) -->
+  <g transform="translate(350, 160) scale(-0.65, 0.65)">
+    <path d="M 10 30 Q 30 10 60 20 C 70 25 80 40 70 50 Q 50 60 30 50 Z" fill="#000000"/>
+    <path d="M 30 20 Q 75 -10 90 25 Q 70 45 40 30 Z" fill="#f97316" stroke="#c2410c" stroke-width="1"/>
+    <path d="M 60 10 Q 80 -15 95 15 Z" fill="#dc2626"/>
+    <circle cx="35" cy="32" r="4" fill="#ffffff"/>
+    <circle cx="36" cy="32" r="2" fill="#000000"/>
+  </g>
+
+  <!-- Green Mountain (Gunung Yuvai Semaring) -->
+  <polygon points="250,175 120,360 380,360" fill="url(#mountainGreen)" stroke="#14532d" stroke-width="2"/>
+  <polygon points="250,175 200,360 300,360" fill="#16a34a"/>
+
+  <!-- Red and White Flags Flanking Center -->
+  <!-- Left Flag -->
+  <path d="M 160 215 L 205 215 L 205 285 L 160 285 Z" fill="#dc2626"/>
+  <path d="M 160 285 L 205 285 L 205 355 L 160 355 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <!-- Right Flag -->
+  <path d="M 295 215 L 340 215 L 340 285 L 295 285 Z" fill="#dc2626"/>
+  <path d="M 295 285 L 340 285 L 340 355 L 295 355 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+
+  <!-- Center Dayak Shield (Talawang) -->
+  <g transform="translate(250, 270)">
+    <path d="M 0 -80 L 28 -50 L 28 50 L 0 80 L -28 50 L -28 -50 Z" fill="#0f172a" stroke="#facc15" stroke-width="3"/>
+    <path d="M 0 -70 L 18 -40 L 0 0 L 18 40 L 0 70 L -18 40 L 0 0 L -18 -40 Z" fill="#d97706"/>
+    <circle cx="0" cy="0" r="8" fill="#ffffff"/>
+    <circle cx="0" cy="0" r="4" fill="#dc2626"/>
+
+    <!-- Crossed Spear & Mandau -->
+    <line x1="-45" y1="-55" x2="45" y2="55" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+    <line x1="45" y1="-55" x2="-45" y2="55" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round"/>
+    <polygon points="-45,-55 -58,-68 -40,-68" fill="#facc15"/>
+    <polygon points="45,-55 58,-68 40,-68" fill="#facc15"/>
+  </g>
+
+  <!-- Lower Sea / Waves Section -->
+  <path d="M 85 360 C 150 340 350 340 415 360 L 417 480 C 325 550 175 550 83 480 Z" fill="url(#seaBlue)"/>
+
+  <!-- White Wavy Stripes on Sea -->
+  <path d="M 88 380 Q 170 365 250 380 T 412 380" stroke="#ffffff" stroke-width="4" fill="none"/>
+  <path d="M 92 400 Q 170 385 250 400 T 408 400" stroke="#ffffff" stroke-width="4" fill="none"/>
+  <path d="M 98 420 Q 170 405 250 420 T 402 420" stroke="#ffffff" stroke-width="4" fill="none"/>
+  <path d="M 108 440 Q 170 425 250 440 T 392 440" stroke="#ffffff" stroke-width="4" fill="none"/>
+  <path d="M 120 460 Q 170 445 250 460 T 380 460" stroke="#ffffff" stroke-width="4" fill="none"/>
+
+  <!-- Traditional Wooden Boat (Perahu Kayu / Padaw) -->
+  <path d="M 185 380 Q 250 355 315 380 Q 295 435 250 440 Q 205 435 185 380 Z" fill="#b45309" stroke="#78350f" stroke-width="3"/>
+  <path d="M 190 385 Q 250 368 310 385" stroke="#fef08a" stroke-width="2.5" fill="none"/>
+
+  <!-- Rice (Padi) on Left Side -->
+  <g transform="translate(105, 230)">
+    <path d="M 30 180 Q -10 100 20 0" stroke="#ca8a04" stroke-width="4" fill="none"/>
+    <circle cx="10" cy="20" r="6" fill="#facc15"/>
+    <circle cx="0" cy="40" r="6" fill="#facc15"/>
+    <circle cx="-5" cy="60" r="6.5" fill="#facc15"/>
+    <circle cx="-8" cy="80" r="7" fill="#facc15"/>
+    <circle cx="-5" cy="100" r="7" fill="#facc15"/>
+    <circle cx="2" cy="120" r="7" fill="#facc15"/>
+    <circle cx="12" cy="140" r="7.5" fill="#facc15"/>
+    <circle cx="22" cy="160" r="8" fill="#facc15"/>
+  </g>
+
+  <!-- Cotton (Kapas) on Right Side -->
+  <g transform="translate(395, 230) scale(-1, 1)">
+    <path d="M 30 180 Q -10 100 20 0" stroke="#15803d" stroke-width="4" fill="none"/>
+    <g transform="translate(10,20)"><circle r="7" fill="#ffffff" stroke="#15803d" stroke-width="2"/></g>
+    <g transform="translate(0,40)"><circle r="7.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/></g>
+    <g transform="translate(-5,60)"><circle r="8" fill="#ffffff" stroke="#15803d" stroke-width="2"/></g>
+    <g transform="translate(-8,80)"><circle r="8.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/></g>
+    <g transform="translate(-5,100)"><circle r="8.5" fill="#ffffff" stroke="#15803d" stroke-width="2"/></g>
+    <g transform="translate(2,120)"><circle r="9" fill="#ffffff" stroke="#15803d" stroke-width="2"/></g>
+    <g transform="translate(12,140)"><circle r="9" fill="#ffffff" stroke="#15803d" stroke-width="2"/></g>
+  </g>
+
+  <!-- Bottom Ribbon - Yellow/Gold with BENUANTA -->
+  <path d="M 135 480 Q 250 455 365 480 L 355 528 Q 250 502 145 528 Z" fill="#facc15" stroke="#a16207" stroke-width="3"/>
+  <!-- Ribbon Fold Left & Right -->
+  <path d="M 135 480 L 110 500 L 145 528 Z" fill="#d97706" stroke="#92400e" stroke-width="2"/>
+  <path d="M 365 480 L 390 500 L 355 528 Z" fill="#d97706" stroke="#92400e" stroke-width="2"/>
+  
+  <text x="250" y="505" font-family="'Arial Black', Arial, sans-serif" font-size="28" font-weight="900" fill="#000000" text-anchor="middle" letter-spacing="3">BENUANTA</text>
+</svg>

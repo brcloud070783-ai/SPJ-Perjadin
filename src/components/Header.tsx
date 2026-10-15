@@ -1,5 +1,5 @@
 import { User } from 'firebase/auth';
-import { Briefcase, RotateCcw, FileText, FolderOpen, Printer, Sparkles, ChevronDown, Rocket, LogIn, UserCheck } from 'lucide-react';
+import { Briefcase, RotateCcw, FileText, FolderOpen, Printer, Sparkles, ChevronDown, Rocket, LogIn, UserCheck, Building2 } from 'lucide-react';
 import { TabType, KuitansiData, ProjectSPJ } from '../types';
 import { PWAInstallButton } from './PWAInstallButton';
 
@@ -15,6 +15,7 @@ interface HeaderProps {
   onGoToLanding?: () => void;
   onOpenProjectManager: () => void;
   onOpenPaketLengkap: () => void;
+  onOpenLogoDinas?: () => void;
   onOpenDeviceHelp?: () => void;
   onOpenDeployGuide?: () => void;
   onOpenGoogleLogin?: () => void;
@@ -30,6 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
   onGoToLanding,
   onOpenProjectManager,
   onOpenPaketLengkap,
+  onOpenLogoDinas,
   onOpenDeviceHelp,
   onOpenDeployGuide,
   onOpenGoogleLogin
@@ -121,6 +123,22 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
               <span className="hidden sm:inline">Akses HP / 403</span>
               <span className="sm:hidden">403?</span>
+            </button>
+          )}
+
+          {/* Logo Dinas Dedicated Page Link */}
+          {onOpenLogoDinas && (
+            <button
+              onClick={onOpenLogoDinas}
+              className={`text-xs font-bold px-2.5 py-1.5 rounded-xl inline-flex items-center gap-1.5 transition-all cursor-pointer ${
+                activeTab === 'logo_dinas'
+                  ? 'bg-purple-600 text-white shadow-sm ring-1 ring-cyan-300'
+                  : 'bg-purple-900/60 hover:bg-purple-800 text-purple-200 hover:text-white border border-purple-700/60'
+              }`}
+              title="Upload & Kelola Logo Dinas Instansi"
+            >
+              <Building2 className="w-3.5 h-3.5 text-cyan-300" />
+              <span className="hidden sm:inline">Logo Dinas</span>
             </button>
           )}
 

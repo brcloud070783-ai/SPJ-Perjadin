@@ -13,6 +13,7 @@ import { PaketLengkapPrintPreview } from './components/PaketLengkapPrintPreview'
 import { ProjectManagerModal } from './components/ProjectManagerModal';
 import { ProjectManagerView } from './components/ProjectManagerView';
 import { DiscussionGuide } from './components/DiscussionGuide';
+import { LogoDinasPage } from './components/LogoDinasPage';
 import { LandingPage } from './components/LandingPage';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { DeviceAccessGuideModal } from './components/DeviceAccessGuideModal';
@@ -22,6 +23,8 @@ import { GoogleLoginModal } from './components/GoogleLoginModal';
 import { initAuth } from './utils/auth';
 import { User } from 'firebase/auth';
 import { konversiTerbilang } from './utils/terbilang';
+
+import { LOGO_KALTARA_SVG } from './utils/logoKaltara';
 
 const STORAGE_KEYS = {
   PROJECTS: 'sidinas_projects_v2',
@@ -74,7 +77,22 @@ export default function App() {
       const savedProjects = localStorage.getItem(STORAGE_KEYS.PROJECTS);
       if (savedProjects) {
         const parsed: ProjectSPJ[] = JSON.parse(savedProjects);
-        if (parsed.length > 0) return parsed;
+        if (parsed.length > 0) {
+          // Sanitize logoUrl to ensure official Kaltara logo is used if old inline SVG is present
+          return parsed.map((p) => {
+            const logo = p.kuitansi?.logoUrl;
+            if (!logo || logo.startsWith('data:image/svg+xml') || logo.includes('kaltaraSky') || logo.includes('svg')) {
+              return {
+                ...p,
+                kuitansi: {
+                  ...p.kuitansi,
+                  logoUrl: LOGO_KALTARA_SVG
+                }
+              };
+            }
+            return p;
+          });
+        }
       }
 
       // Check legacy single-project data for seamless migration
@@ -364,6 +382,19 @@ export default function App() {
     }
   };
 
+  const handleUpdateAllProjectsLogo = (logoUrl: string) => {
+    setProjects(prevProjects =>
+      prevProjects.map(p => ({
+        ...p,
+        kuitansi: {
+          ...p.kuitansi,
+          logoUrl
+        },
+        updatedTime: Date.now()
+      }))
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F9FD] text-slate-800 font-sans selection:bg-[#7D2AE8] selection:text-white">
       {/* Top Header with Project Badge */}
@@ -381,6 +412,7 @@ export default function App() {
         }}
         onOpenProjectManager={() => setIsProjectManagerOpen(true)}
         onOpenPaketLengkap={() => setActiveTab('paket_lengkap')}
+        onOpenLogoDinas={() => setActiveTab('logo_dinas')}
         onOpenDeviceHelp={() => setIsDeviceHelpOpen(true)}
         onOpenDeployGuide={() => setIsDeployGuideOpen(true)}
         user={user}
@@ -437,6 +469,7 @@ export default function App() {
                 onChange={setKuitansi}
                 onPreview={() => setIsKuitansiPreview(true)}
                 buktiBayarList={buktiBayarList}
+                onOpenLogoDinas={() => setActiveTab('logo_dinas')}
               />
             )}
           </div>
@@ -485,6 +518,19 @@ export default function App() {
           <PaketLengkapPrintPreview
             project={activeProject}
             onBack={() => setActiveTab('kuitansi')}
+          />
+        )}
+
+        {activeTab === 'logo_dinas' && (
+          <LogoDinasPage
+            kuitansi={kuitansi}
+            activeProject={activeProject}
+            onUpdateKuitansi={setKuitansi}
+            onUpdateAllProjectsLogo={handleUpdateAllProjectsLogo}
+            onNavigateToTab={(tab) => {
+              setActiveTab(tab);
+              setIsKuitansiPreview(false);
+            }}
           />
         )}
 

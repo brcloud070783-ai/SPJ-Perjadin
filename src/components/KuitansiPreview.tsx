@@ -27,6 +27,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const [zoomLevel, setZoomLevel] = useState<'fit' | '100' | '125'>('fit');
   const [copyFeedback, setCopyFeedback] = useState(false);
+  const [showSignatureBlock, setShowSignatureBlock] = useState(true);
 
   const handleDownloadPdf = async () => {
     try {
@@ -71,7 +72,6 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
     if (zoomLevel === '125') {
       return { transform: 'scale(1.25)', transformOrigin: 'top center' };
     }
-    // 'fit' mode uses CSS container queries or responsive width max-w-full
     return { transform: 'none' };
   };
 
@@ -164,9 +164,18 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
 
       {/* Secondary Controls Bar */}
       <div className="print:hidden bg-slate-50 border border-slate-200/80 px-3.5 py-2 rounded-xl flex items-center justify-between text-xs text-slate-600">
-        <span className="text-[11px] font-bold text-slate-700">
-          Format Tanpa Pengesahan & TTD
-        </span>
+        <button
+          type="button"
+          onClick={() => setShowSignatureBlock(!showSignatureBlock)}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
+            showSignatureBlock
+              ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100'
+              : 'bg-white text-slate-600 border-slate-300 hover:bg-slate-100'
+          }`}
+        >
+          <CheckCircle2 className={`w-3.5 h-3.5 ${showSignatureBlock ? 'text-blue-600' : 'text-slate-400'}`} />
+          <span>Kolom TTD 3 Pejabat: {showSignatureBlock ? 'Tampil' : 'Sembunyi'}</span>
+        </button>
 
         <span className="text-[11px] font-medium text-slate-500">
           Format: <span className="font-bold text-slate-800">Tahoma 8,5pt • A4 Portrait</span>
@@ -202,8 +211,8 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
                     {/* Logo Daerah Kalimantan Utara */}
                     <div className="w-[64px] h-[78px] shrink-0 flex items-center justify-center">
                       <img
-                        src={data.logoUrl || '/logo-kaltara.svg'}
-                        alt="Logo Provinsi"
+                        src={(!data.logoUrl || data.logoUrl.startsWith('data:image/svg+xml') || data.logoUrl.includes('kaltaraSky')) ? '/logo-kaltara.svg' : data.logoUrl}
+                        alt="Logo Provinsi Kalimantan Utara"
                         className="max-w-full max-h-full object-contain"
                       />
                     </div>
@@ -278,7 +287,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
                   <div className="flex items-center">
                     <div className="w-[125px] shrink-0">Sebesar</div>
                     <div className="w-[12px] shrink-0">:</div>
-                    <div className="flex-1 font-bold text-[9.5pt]">
+                    <div className="flex-1 font-normal text-[8.5pt]">
                       {formatRupiah(data.totalBiaya).replace(/\s+/g, '')}
                     </div>
                   </div>
@@ -306,7 +315,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
                     <div className="flex items-start">
                       <div className="w-[85px] shrink-0">A.n</div>
                       <div className="w-[12px] shrink-0">:</div>
-                      <div className="flex-1 font-medium">{data.namaPelaksana}</div>
+                      <div className="flex-1 font-normal">{data.namaPelaksana}</div>
                     </div>
 
                     <div className="flex items-start">
@@ -344,11 +353,11 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
                         return (
                           <div key={item.id} className="grid grid-cols-12 gap-1 items-baseline">
                             <div className="col-span-1 w-4 text-left">{idx + 1}</div>
-                            <div className="col-span-6 pr-2 leading-tight">{item.uraian}</div>
-                            <div className="col-span-3 text-left font-mono text-[8pt]">
+                            <div className="col-span-6 pr-2 leading-tight -ml-[20px]">{item.uraian}</div>
+                            <div className="col-span-3 text-left font-mono text-[8.5pt] ml-[28px]">
                               {formulaText}
                             </div>
-                            <div className="col-span-2 text-right font-mono font-medium text-[8pt]">
+                            <div className="col-span-2 text-right font-mono font-normal text-[8.5pt]">
                               {formatRupiah(item.total).replace(/\s+/g, '')}
                             </div>
                           </div>
@@ -359,16 +368,91 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
                 </div>
               </div>
 
-              {/* CATATAN DOKUMEN & TANGGAL (Tanpa TTD & Pengesahan) */}
-              <div className="pt-6 mt-8 border-t border-dashed border-black/40 text-[8pt] flex justify-between items-center text-slate-800">
-                <div>
-                  <span className="font-bold">Kuitansi Perjalanan Dinas</span>
-                  <span className="text-slate-600 block text-[7.5pt]">Dokumen dicetak tanpa lembar pengesahan dan TTD fisik</span>
+              {/* LEMBAR PENGESAHAN & TANDA TANGAN 3 PEJABAT */}
+              {showSignatureBlock ? (
+                <div className="pt-[10px] mt-[23px] pb-[137px] text-[8.5pt] leading-tight">
+                  {/* Baris 1: Tempat, Tanggal & Yang Menerima (Kanan Atas) */}
+                  <div className="flex justify-end mb-4">
+                    <div className="w-[230px] text-left pl-[66px] ml-0 space-y-0.5">
+                      <div>{data.kotaAsal || 'Tanjung Selor'}, {formatTanggalIndo(data.tanggalKuitansi)}</div>
+                      <div className="font-normal">Yang Menerima,</div>
+
+                      {/* Area TTD Pelaksana */}
+                      <div className="h-14 flex items-center justify-center my-0.5">
+                        {data.ttdPelaksana ? (
+                          <img src={data.ttdPelaksana} alt="TTD Pelaksana" className="max-h-14 max-w-full object-contain" />
+                        ) : (
+                          <div className="h-12"></div>
+                        )}
+                      </div>
+
+                      <div className="font-normal underline text-[8.5pt]">
+                        {data.namaPelaksana || '..............................................'}
+                      </div>
+                      <div className="text-[8.5pt] font-mono">
+                        NIP. {data.nipPelaksana || '....................................'}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Baris 2: 2 Kolom Sejajar (Menyetujui & Lunas Dibayar) */}
+                  <div className="grid grid-cols-2 gap-4 text-left pt-1">
+                    {/* Menyetujui PPK / PA */}
+                    <div className="space-y-0.5">
+                      <div className="font-normal">Menyetujui :</div>
+                      <div className="font-normal text-[8.5pt]">{data.jabatanPenyetuju || 'Pejabat Pembuat Komitmen'}</div>
+
+                      {/* Area TTD PPK */}
+                      <div className="h-14 flex items-center justify-center my-0.5">
+                        {data.ttdPPK ? (
+                          <img src={data.ttdPPK} alt="TTD Penyetuju" className="max-h-14 max-w-full object-contain" />
+                        ) : (
+                          <div className="h-12"></div>
+                        )}
+                      </div>
+
+                      <div className="font-normal underline text-[8.5pt]">
+                        {data.namaPPK || '..............................................'}
+                      </div>
+                      <div className="text-[8.5pt] font-mono">
+                        NIP. {data.nipPPK || '....................................'}
+                      </div>
+                    </div>
+
+                    {/* Bendahara Pengeluaran */}
+                    <div className="space-y-0.5 ml-[145px]">
+                      <div className="font-normal text-[8.5pt] mt-[17px] -mb-[2px] ml-0">{data.jabatanBendahara || 'Bendahara Pengeluaran'}</div>
+
+                      {/* Area TTD Bendahara */}
+                      <div className="h-14 flex items-center justify-center my-0.5">
+                        {data.ttdBendahara ? (
+                          <img src={data.ttdBendahara} alt="TTD Bendahara" className="max-h-14 max-w-full object-contain" />
+                        ) : (
+                          <div className="h-12"></div>
+                        )}
+                      </div>
+
+                      <div className="font-normal underline text-[8.5pt]">
+                        {data.namaBendahara || '..............................................'}
+                      </div>
+                      <div className="text-[8.5pt] font-mono">
+                        NIP. {data.nipBendahara || '....................................'}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-right font-medium">
-                  {data.kotaAsal}, {formatTanggalIndo(data.tanggalKuitansi)}
+              ) : (
+                /* CATATAN DOKUMEN & TANGGAL (Tanpa TTD & Pengesahan) */
+                <div className="pt-6 mt-8 border-t border-dashed border-black/40 text-[8pt] flex justify-between items-center text-slate-800">
+                  <div>
+                    <span className="font-normal">Kuitansi Perjalanan Dinas</span>
+                    <span className="text-slate-600 block text-[7.5pt]">Dokumen dicetak tanpa lembar pengesahan dan TTD fisik</span>
+                  </div>
+                  <div className="text-right font-normal">
+                    {data.kotaAsal}, {formatTanggalIndo(data.tanggalKuitansi)}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

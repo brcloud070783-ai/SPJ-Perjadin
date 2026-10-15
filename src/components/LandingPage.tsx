@@ -20,7 +20,8 @@ import {
   Bell,
   ShieldCheck,
   FileCheck,
-  Zap
+  Zap,
+  Building2
 } from 'lucide-react';
 import { TabType, KuitansiData, FotoDokumentasi, BuktiBayar } from '../types';
 import { PWAInstallButton } from './PWAInstallButton';
@@ -89,6 +90,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       gradient: 'from-[#00C853] to-[#00E676]',
       shadow: 'shadow-emerald-500/20',
       badgeColor: 'bg-emerald-100 text-emerald-800'
+    },
+    {
+      id: 'logo_dinas' as TabType,
+      title: 'Logo Dinas',
+      tag: 'Upload & Kop Surat',
+      icon: Building2,
+      gradient: 'from-[#2563EB] to-[#7D2AE8]',
+      shadow: 'shadow-blue-500/20',
+      badgeColor: 'bg-blue-100 text-blue-800'
     },
     {
       id: 'paket_lengkap' as TabType,
