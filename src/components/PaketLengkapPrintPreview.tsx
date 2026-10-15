@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ProjectSPJ } from '../types';
 import { formatTanggalIndo, formatRupiah } from '../utils/terbilang';
 import { exportElementToPdf } from '../utils/pdfExport';
+import { LOGO_KALTARA_SVG, LOGO_KALTARA_FALLBACK_DATA_URI } from '../utils/logoKaltara';
 import { 
   Printer, 
   ArrowLeft, 
@@ -164,9 +165,12 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
               {/* Header Kop Surat */}
               <div className="flex items-center gap-3 pb-3 mb-3 border-b-2 border-black">
                 <img
-                  src={(!kuitansi.logoUrl || kuitansi.logoUrl.startsWith('data:image/svg+xml') || kuitansi.logoUrl.includes('kaltaraSky')) ? '/logo-kaltara.svg' : kuitansi.logoUrl}
+                  src={kuitansi.logoUrl || LOGO_KALTARA_SVG}
                   alt="Logo Kop"
                   className="w-14 h-16 object-contain shrink-0"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src = LOGO_KALTARA_FALLBACK_DATA_URI;
+                  }}
                 />
                 <div className="text-center flex-1">
                   <h3 className="text-[10pt] font-extrabold uppercase tracking-wide">{kuitansi.instansiInduk}</h3>

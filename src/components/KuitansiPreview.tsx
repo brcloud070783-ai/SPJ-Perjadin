@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { KuitansiData } from '../types';
 import { formatRupiah, formatTanggalIndo } from '../utils/terbilang';
 import { exportElementToPdf } from '../utils/pdfExport';
+import { LOGO_KALTARA_SVG, LOGO_KALTARA_FALLBACK_DATA_URI } from '../utils/logoKaltara';
 import { 
   Printer, 
   ArrowLeft, 
@@ -15,7 +16,9 @@ import {
   Eye, 
   Share2, 
   Check, 
-  Sparkles 
+  Sparkles,
+  Minus,
+  Plus
 } from 'lucide-react';
 
 interface KuitansiPreviewProps {
@@ -25,16 +28,35 @@ interface KuitansiPreviewProps {
 
 export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }) => {
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState<'fit' | '100' | '125'>('fit');
   const [copyFeedback, setCopyFeedback] = useState(false);
   const [showSignatureBlock, setShowSignatureBlock] = useState(true);
 
-  // References and state for responsive scaling and mouse/touch panning
+  // References and state for responsive scaling, pinch-to-zoom, and mouse/touch panning
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeftState, setScrollLeftState] = useState(0);
+
+  // Standard A4 width in px at 96 DPI: 210mm ≈ 794px
+  const a4WidthPx = 794;
+  const availableWidth = Math.max(300, (containerWidth || (typeof window !== 'undefined' ? window.innerWidth : 800)) - 24);
+  const fitScale = Math.min(1, Math.round((availableWidth / a4WidthPx) * 100) / 100);
+  const defaultFitPercent = Math.max(35, Math.round(fitScale * 100));
+
+  // Dynamic zoom state: allows pinch-to-zoom with fingers
+  const [zoomPercent, setZoomPercent] = useState<number>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 794) {
+      return Math.max(35, Math.round((Math.max(300, window.innerWidth - 24) / 794) * 100));
+    }
+    return 100;
+  });
+  const [isPinching, setIsPinching] = useState(false);
+
+  // Refs for tracking two-finger touch gestures
+  const initialTouchDistanceRef = useRef<number | null>(null);
+  const initialScaleRef = useRef<number>(100);
+  const lastTapRef = useRef<number>(0);
 
   useEffect(() => {
     const updateWidth = () => {
@@ -49,10 +71,44 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
     return () => window.removeEventListener('resize', updateWidth);
   }, []);
 
-  // Standard A4 width in px at 96 DPI: 210mm ≈ 794px
-  const a4WidthPx = 794;
-  const availableWidth = Math.max(300, (containerWidth || (typeof window !== 'undefined' ? window.innerWidth : 800)) - 24);
-  const fitScale = Math.min(1, Math.round((availableWidth / a4WidthPx) * 100) / 100);
+  // Multi-touch Pinch to Zoom Handler
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      const t0 = e.touches[0];
+      const t1 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+      initialTouchDistanceRef.current = dist;
+      initialScaleRef.current = zoomPercent;
+      setIsPinching(true);
+    } else if (e.touches.length === 1) {
+      // Double tap to toggle zoom between fit and 100%
+      const now = Date.now();
+      if (now - lastTapRef.current < 300) {
+        if (zoomPercent < 90) {
+          setZoomPercent(100);
+        } else {
+          setZoomPercent(defaultFitPercent);
+        }
+      }
+      lastTapRef.current = now;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2 && initialTouchDistanceRef.current) {
+      const t0 = e.touches[0];
+      const t1 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
+      const factor = dist / initialTouchDistanceRef.current;
+      const targetPercent = Math.min(250, Math.max(35, Math.round(initialScaleRef.current * factor)));
+      setZoomPercent(targetPercent);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    initialTouchDistanceRef.current = null;
+    setIsPinching(false);
+  };
 
   // Mouse drag-to-scroll implementation for effortless panning on desktop
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -72,6 +128,22 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
     const x = e.pageX - scrollContainerRef.current.offsetLeft;
     const walk = (x - startX) * 1.5;
     scrollContainerRef.current.scrollLeft = scrollLeftState - walk;
+  };
+
+  const handleZoomIn = () => {
+    setZoomPercent((prev) => Math.min(250, prev + 15));
+  };
+
+  const handleZoomOut = () => {
+    setZoomPercent((prev) => Math.max(35, prev - 15));
+  };
+
+  const handleFitScreen = () => {
+    setZoomPercent(defaultFitPercent);
+  };
+
+  const handleZoom100 = () => {
+    setZoomPercent(100);
   };
 
   const handleDownloadPdf = async () => {
@@ -109,6 +181,8 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
     }
   };
 
+  const currentScale = zoomPercent / 100;
+
   return (
     <div className="space-y-4 pb-24">
       {/* Action Toolbar Header */}
@@ -121,34 +195,48 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
           <span>Edit Data</span>
         </button>
 
-        {/* View Zoom Switcher */}
-        <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200/60 text-[11px] font-semibold text-slate-600">
+        {/* View Zoom Switcher with Pinch, Buttons & Percentage */}
+        <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200/60 text-[11px] font-semibold text-slate-700">
           <button
-            onClick={() => setZoomLevel('fit')}
-            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-              zoomLevel === 'fit' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
-            }`}
-            title="Skala otomatis menyesuaikan layar ponsel / monitor"
+            onClick={handleZoomOut}
+            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-blue-600 transition-all cursor-pointer"
+            title="Perkecil Zoom"
           >
-            Pas Layar {fitScale < 0.98 && `(${Math.round(fitScale * 100)}%)`}
+            <Minus className="w-3.5 h-3.5" />
           </button>
+          
+          <span className="px-2 font-mono text-xs font-bold text-slate-800 min-w-[42px] text-center">
+            {zoomPercent}%
+          </span>
+
           <button
-            onClick={() => setZoomLevel('100')}
-            className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
-              zoomLevel === '100' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
-            }`}
-            title="Ukuran 100% Asli A4 (dapat digeser kanan-kiri)"
+            onClick={handleZoomIn}
+            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-blue-600 transition-all cursor-pointer"
+            title="Perbesar Zoom"
           >
-            100% Asli
+            <Plus className="w-3.5 h-3.5" />
           </button>
+
+          <div className="w-[1px] h-4 bg-slate-300 mx-1" />
+
           <button
-            onClick={() => setZoomLevel('125')}
+            onClick={handleFitScreen}
             className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
-              zoomLevel === '125' ? 'bg-white text-blue-600 shadow-xs' : 'hover:text-slate-900'
+              zoomPercent === defaultFitPercent ? 'bg-white text-blue-600 shadow-xs font-bold' : 'hover:text-slate-900'
             }`}
-            title="Perbesar 125%"
+            title="Pas Layar"
           >
-            +125%
+            Pas Layar
+          </button>
+
+          <button
+            onClick={handleZoom100}
+            className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
+              zoomPercent === 100 ? 'bg-white text-blue-600 shadow-xs font-bold' : 'hover:text-slate-900'
+            }`}
+            title="Ukuran 100% Asli"
+          >
+            100%
           </button>
         </div>
 
@@ -219,25 +307,23 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
         </span>
       </div>
 
-      {/* Interactive Navigation Hint for 100% or 125% zoom */}
-      {zoomLevel !== 'fit' && (
-        <div className="print:hidden flex items-center justify-between px-3.5 py-2 bg-blue-50/90 border border-blue-200/80 rounded-xl text-xs text-blue-800 shadow-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-base leading-none">↔️</span>
-            <span>Mode Asli A4 (100%): Geser layar / swipe kanan-kiri untuk meninjau seluruh lembar</span>
-          </div>
-          <button
-            onClick={() => setZoomLevel('fit')}
-            className="text-xs font-bold text-blue-700 underline hover:text-blue-900 cursor-pointer ml-2 shrink-0"
-          >
-            Kembali ke Pas Layar
-          </button>
+      {/* Touch Pinch & Pan Floating Helper Badge */}
+      <div className="print:hidden flex items-center justify-between px-3.5 py-1.5 bg-purple-50/80 border border-purple-200/60 rounded-xl text-[11px] text-purple-800">
+        <div className="flex items-center gap-1.5">
+          <span className="text-sm">👌</span>
+          <span><strong>Tips Layar Sentuh:</strong> Gunakan 2 jari (cubit / renggangkan) untuk Zoom In & Out • Ketuk 2x untuk reset</span>
         </div>
-      )}
+        <div className="font-mono font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border border-purple-200 shrink-0 ml-2">
+          {zoomPercent}%
+        </div>
+      </div>
 
-      {/* DOCUMENT PREVIEW CONTAINER - UNCLIPPED & SMOOTH HORIZONTAL SCROLLING */}
+      {/* DOCUMENT PREVIEW CONTAINER - UNCLIPPED & PINCH-TO-ZOOM TOUCH SURFACE */}
       <div 
         ref={scrollContainerRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onMouseDown={handleMouseDown}
         onMouseLeave={handleMouseLeaveOrUp}
         onMouseUp={handleMouseLeaveOrUp}
@@ -247,25 +333,19 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
         }`}
         style={{
           WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'thin'
+          scrollbarWidth: 'thin',
+          touchAction: 'pan-x pan-y'
         }}
       >
         <div className="w-max min-w-full flex justify-center py-1 px-1 sm:px-2">
           <div
-            style={
-              zoomLevel === 'fit' && fitScale < 0.98
-                ? {
-                    width: `${Math.round(a4WidthPx * fitScale)}px`,
-                    height: `${Math.round(1122 * fitScale)}px`,
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }
-                : {
-                    transform: zoomLevel === '125' ? 'scale(1.25)' : 'none',
-                    transformOrigin: 'top center'
-                  }
-            }
-            className="transition-transform duration-200 preview-scale-wrapper"
+            style={{
+              width: `${Math.round(a4WidthPx * currentScale)}px`,
+              height: `${Math.round(1122 * currentScale)}px`,
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+            className="transition-all duration-75 preview-scale-wrapper"
           >
             <div
               id="kuitansi-a4-sheet"
@@ -279,7 +359,7 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
                 lineHeight: 1.42,
                 color: '#000000',
                 backgroundColor: '#ffffff',
-                transform: zoomLevel === 'fit' && fitScale < 0.98 ? `scale(${fitScale})` : undefined,
+                transform: `scale(${currentScale})`,
                 transformOrigin: 'top left'
               }}
             >
@@ -292,9 +372,12 @@ export const KuitansiPreview: React.FC<KuitansiPreviewProps> = ({ data, onBack }
                     {/* Logo Daerah Kalimantan Utara */}
                     <div className="w-[64px] h-[78px] shrink-0 flex items-center justify-center">
                       <img
-                        src={(!data.logoUrl || data.logoUrl.startsWith('data:image/svg+xml') || data.logoUrl.includes('kaltaraSky')) ? '/logo-kaltara.svg' : data.logoUrl}
-                        alt="Logo Provinsi Kalimantan Utara"
+                        src={data.logoUrl || LOGO_KALTARA_SVG}
+                        alt="Logo Resmi Instansi"
                         className="max-w-full max-h-full object-contain"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).src = LOGO_KALTARA_FALLBACK_DATA_URI;
+                        }}
                       />
                     </div>
 

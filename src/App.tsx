@@ -78,10 +78,10 @@ export default function App() {
       if (savedProjects) {
         const parsed: ProjectSPJ[] = JSON.parse(savedProjects);
         if (parsed.length > 0) {
-          // Sanitize logoUrl to ensure official Kaltara logo is used if old inline SVG is present
+          // Ensure each project has a valid logoUrl
           return parsed.map((p) => {
             const logo = p.kuitansi?.logoUrl;
-            if (!logo || logo.startsWith('data:image/svg+xml') || logo.includes('kaltaraSky') || logo.includes('svg')) {
+            if (!logo) {
               return {
                 ...p,
                 kuitansi: {
@@ -147,17 +147,13 @@ export default function App() {
   const dokumentasiList = activeProject.dokumentasiList || [];
   const buktiBayarList = activeProject.buktiBayarList || [];
 
-  // Persist Projects Array (Debounced 400ms to eliminate typing lag from large base64 strings)
+  // Persist Projects Array and Active Project ID
   useEffect(() => {
-    const timer = setTimeout(() => {
-      try {
-        localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects));
-      } catch (e) {
-        console.warn('LocalStorage save error:', e);
-      }
-    }, 400);
-
-    return () => clearTimeout(timer);
+    try {
+      localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects));
+    } catch (e) {
+      console.warn('LocalStorage save error:', e);
+    }
   }, [projects]);
 
   useEffect(() => {
