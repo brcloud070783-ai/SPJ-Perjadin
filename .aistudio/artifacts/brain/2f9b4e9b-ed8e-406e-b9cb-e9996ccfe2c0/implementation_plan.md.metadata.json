@@ -1,6 +1,6 @@
 {
-  "summary": "Rencana implementasi desain Tab Bar modern, Halaman Utama minimalis dengan tombol aksi utama 'Buat SPJ Baru', serta Alur Wizard bertahap (Kuitansi -> Foto GPS -> Nota Bukti Bayar -> Cetak Paket).",
-  "updatedAt": "2026-10-16T10:51:13.466858894Z",
+  "summary": "Rencana perbaikan tata letak Halaman Beranda: Menghapus 3 kartu menu tengah yang menduplikasi bilah navigasi bawah, dan menggantikannya dengan 1 tombol menu tunggal yang fokus di tengah ('Buat SPJ').",
+  "updatedAt": "2026-10-16T12:37:45.286432566Z",
   "requestFeedback": true,
   "userFacing": true
 }
