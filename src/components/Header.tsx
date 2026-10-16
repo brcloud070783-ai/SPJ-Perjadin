@@ -7,7 +7,7 @@ import {
   Printer, 
   ChevronDown, 
   User as UserIcon,
-  CheckCircle2
+  Sparkles
 } from 'lucide-react';
 import { TabType, KuitansiData, ProjectSPJ } from '../types';
 
@@ -40,88 +40,73 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenSidebar
 }) => {
   return (
-    <header className="sticky top-0 z-40 bg-[#140828] text-white border-b border-purple-900/40 px-3 sm:px-4 py-2 print:hidden shadow-sm backdrop-blur-md">
-      <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
+    /* PARCELLY-STYLE CLEAN HEADER (LIGHT CANVAS WITH SOFT LAVENDER TINT) */
+    <header className="sticky top-0 z-40 bg-[#FAF9FF]/95 backdrop-blur-md border-b border-purple-100/60 px-3 sm:px-4 py-2.5 print:hidden">
+      <div className="max-w-md mx-auto flex items-center justify-between gap-3">
         
-        {/* LEFT: Menu Sidebar, Brand, & Active Project Switcher */}
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+        {/* LEFT: Clean Squircle Menu Button */}
+        <div className="flex items-center gap-2">
           {onOpenSidebar && (
             <button 
               onClick={onOpenSidebar}
-              className="w-8 h-8 rounded-xl bg-purple-900/40 hover:bg-purple-800/80 text-purple-200 hover:text-white flex items-center justify-center transition-all cursor-pointer shrink-0 border border-purple-800/50"
+              className="w-9 h-9 rounded-2xl bg-white hover:bg-purple-50 text-slate-700 hover:text-[#6547ED] flex items-center justify-center transition-all cursor-pointer border border-purple-100/80 shadow-2xs"
               title="Menu Lengkap & Pengaturan"
             >
-              <Menu className="w-4 h-4 text-cyan-300" />
+              <Menu className="w-4 h-4 stroke-[2.2]" />
             </button>
           )}
 
-          {/* Brand */}
-          <button 
-            onClick={onGoToLanding}
-            className="flex items-center gap-2 cursor-pointer group select-none shrink-0"
-            title="Ke Beranda SiDinas"
-          >
-            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#00C4CC] to-[#7D2AE8] text-white flex items-center justify-center shadow-xs">
-              <Briefcase className="w-3.5 h-3.5" />
-            </div>
-            <span className="text-xs font-black tracking-tight text-white hidden xs:inline">
-              SiDinas
-            </span>
-          </button>
-
-          {/* Project Selector (Clean Pill) */}
+          {/* Project Quick Pill */}
           <button
             onClick={onOpenProjectManager}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-purple-900/30 hover:bg-purple-900/60 border border-purple-700/50 text-xs text-purple-100 transition-all cursor-pointer min-w-0 max-w-[150px] sm:max-w-[260px] md:max-w-[340px]"
-            title={`Ganti / Kelola SPJ: ${activeProject?.namaProject || 'SPJ Perjalanan Dinas'}`}
+            className="hidden xs:flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-white hover:bg-purple-50/60 border border-purple-100/70 text-slate-700 transition-all cursor-pointer max-w-[130px] sm:max-w-[170px]"
+            title={`Ganti SPJ: ${activeProject?.namaProject || 'SPJ Perjalanan Dinas'}`}
           >
-            <FolderOpen className="w-3.5 h-3.5 text-cyan-300 shrink-0" />
-            <span className="font-bold truncate text-[11px] text-slate-100">
+            <FolderOpen className="w-3 h-3 text-[#6547ED] shrink-0" />
+            <span className="font-semibold truncate text-[11px] text-slate-800">
               {activeProject?.namaProject || 'Berkas SPJ'}
             </span>
-            <ChevronDown className="w-3 h-3 text-purple-300 shrink-0 ml-0.5 opacity-70" />
+            <ChevronDown className="w-2.5 h-2.5 text-slate-400 shrink-0" />
           </button>
         </div>
 
-        {/* RIGHT: Primary Action (Cetak / Paket SPJ) & Account */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Main Action: Cetak Paket SPJ Lengkap */}
+        {/* CENTER: Wordmark with Editorial Elegance (like "Parcelly") */}
+        <button 
+          onClick={onGoToLanding}
+          className="text-center cursor-pointer select-none"
+          title="Ke Beranda SiDinas"
+        >
+          <h1 className="font-serif text-lg font-black text-slate-900 tracking-tight leading-none hover:text-[#6547ED] transition-colors">
+            SiDinas
+          </h1>
+        </button>
+
+        {/* RIGHT: Paket SPJ Action + Avatar/Initials Badge */}
+        <div className="flex items-center gap-1.5 shrink-0">
           <button
             onClick={onOpenPaketLengkap}
-            className="px-3 py-1.5 rounded-xl bg-[#00C4CC] hover:bg-[#00B4D8] active:scale-95 text-slate-950 text-xs font-black inline-flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
-            title="Pratinjau & Cetak 1-Kesatuan Paket SPJ (Kuitansi + Dokumentasi + Nota)"
+            className="px-2.5 py-1 rounded-full bg-purple-50 hover:bg-[#6547ED] text-[#6547ED] hover:text-white border border-purple-200/80 text-[11px] font-bold inline-flex items-center gap-1 transition-all shadow-2xs cursor-pointer active:scale-95"
+            title="Pratinjau & Cetak Paket Lengkap SPJ"
           >
-            <Printer className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span className="text-[11px]">Paket SPJ</span>
+            <Printer className="w-3 h-3" />
+            <span className="hidden sm:inline">Paket SPJ</span>
           </button>
 
-          {/* Account Profile / Login */}
+          {/* Circular Initials / Avatar Pill (like "RA" in Parcelly) */}
           {onOpenGoogleLogin && (
             <button
               onClick={onOpenGoogleLogin}
-              className="p-1 rounded-full hover:ring-2 hover:ring-cyan-300/40 transition-all cursor-pointer relative"
+              className="w-8 h-8 rounded-full bg-[#6547ED]/15 text-[#6547ED] hover:ring-2 hover:ring-[#6547ED]/40 flex items-center justify-center font-bold text-xs transition-all cursor-pointer overflow-hidden border border-purple-200"
               title={user ? `Akun: ${user.displayName || user.email}` : 'Masuk Akun Google'}
             >
-              {user ? (
-                <div className="relative">
-                  {user.photoURL ? (
-                    <img 
-                      src={user.photoURL} 
-                      alt="Avatar" 
-                      className="w-7 h-7 rounded-full border border-cyan-300 object-cover" 
-                    />
-                  ) : (
-                    <div className="w-7 h-7 rounded-full bg-purple-700 text-white flex items-center justify-center font-bold text-xs border border-cyan-400">
-                      {user.displayName?.charAt(0) || user.email?.charAt(0) || 'U'}
-                    </div>
-                  )}
-                  <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-400 rounded-full ring-1 ring-[#140828]" />
-                </div>
+              {user?.photoURL ? (
+                <img 
+                  src={user.photoURL} 
+                  alt="Avatar" 
+                  className="w-full h-full object-cover" 
+                />
               ) : (
-                <div className="px-2.5 py-1.5 rounded-xl bg-purple-900/40 hover:bg-purple-800/60 border border-purple-700/50 text-purple-200 hover:text-white flex items-center gap-1.5 text-xs font-semibold">
-                  <UserIcon className="w-3.5 h-3.5 text-cyan-300" />
-                  <span className="text-[11px] hidden sm:inline">Masuk</span>
-                </div>
+                <span>{user?.displayName?.slice(0, 2).toUpperCase() || 'SD'}</span>
               )}
             </button>
           )}

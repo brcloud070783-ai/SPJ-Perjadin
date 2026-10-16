@@ -4,150 +4,304 @@ import {
   Receipt, 
   Camera, 
   CreditCard, 
-  ArrowRight, 
-  CheckCircle2, 
-  FileText, 
-  Sparkles,
+  ArrowUpRight, 
+  ChevronRight, 
+  Calendar, 
+  Check, 
+  MapPin, 
+  Printer, 
   FolderOpen,
-  Printer
+  ArrowRight,
+  Sparkles,
+  SlidersHorizontal,
+  Clock,
+  Car
 } from 'lucide-react';
-import { TabType, KuitansiData, FotoDokumentasi, BuktiBayar } from '../types';
+import { TabType, KuitansiData, FotoDokumentasi, BuktiBayar, ProjectSPJ } from '../types';
+import { formatTanggalIndo } from '../utils/terbilang';
 
 interface LandingPageProps {
   onStartApp: (tab?: TabType) => void;
   kuitansi?: KuitansiData;
   dokumentasiList?: FotoDokumentasi[];
   buktiBayarList?: BuktiBayar[];
+  activeProject?: ProjectSPJ;
+  projects?: ProjectSPJ[];
+  onOpenProjectManager?: () => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ 
   onStartApp,
   kuitansi,
   dokumentasiList = [],
-  buktiBayarList = []
+  buktiBayarList = [],
+  activeProject,
+  projects = [],
+  onOpenProjectManager
 }) => {
   const totalBiaya = kuitansi?.rincianBiaya?.reduce((acc, curr) => acc + (curr.total || 0), 0) || 0;
+  
+  // Format dates for the Parcelly-style timeline
+  const tglBerangkat = kuitansi?.tanggalBerangkat 
+    ? new Date(kuitansi.tanggalBerangkat).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+    : '12 Okt 2026';
+    
+  const tglKembali = kuitansi?.tanggalKembali 
+    ? new Date(kuitansi.tanggalKembali).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+    : '15 Okt 2026';
+
+  const nomorSPD = activeProject?.nomorSPD || kuitansi?.nomorSPPD || '090/123/SPD/2026';
+  const kotaAsal = kuitansi?.kotaAsal || 'Tanjung Selor';
+  const kotaTujuan = kuitansi?.kotaTujuan || 'Tarakan';
+
+  // Calculate step progress based on data
+  const hasKuitansi = Boolean(kuitansi?.namaPelaksana);
+  const hasFoto = dokumentasiList.length > 0;
+  const hasNota = buktiBayarList.length > 0;
 
   return (
-    <div className="max-w-xl mx-auto px-2 py-4 flex flex-col justify-center min-h-[calc(100vh-140px)] animate-fade-in space-y-6">
+    <div className="max-w-md mx-auto px-1 py-1 space-y-4 animate-fade-in pb-24 text-slate-800">
       
-      {/* GREETING & INTRO */}
-      <div className="text-center space-y-1.5">
-        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100/80 text-[#7D2AE8] text-xs font-bold">
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>SiDinas • Standar Permenkeu RI</span>
-        </div>
-        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-          Penyusunan SPJ Digital
-        </h1>
-        <p className="text-xs sm:text-sm text-slate-500 font-medium max-w-md mx-auto">
-          Susun dokumen pertanggungjawaban dinas secara runtut, rapi, dan langsung siap cetak format A4 resmi.
-        </p>
-      </div>
+      {/* 1. PARCELLY-STYLE HERO DELIVERY/SPJ TRACKER CARD */}
+      <div className="bg-gradient-to-br from-[#7357FF] via-[#6547ED] to-[#5133E6] text-white rounded-[32px] p-5 sm:p-6 shadow-xl shadow-purple-900/15 relative overflow-hidden">
+        {/* Subtle decorative concentric orbital lines */}
+        <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full border border-white/10 pointer-events-none" />
+        <div className="absolute -top-6 -right-6 w-36 h-36 rounded-full border border-white/10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-24 h-24 rounded-full border border-white/15 pointer-events-none" />
 
-      {/* HERO PRIMARY ACTION CARD: "BUAT SPJ BARU" */}
-      <div className="relative group">
-        <div className="absolute -inset-1 bg-gradient-to-r from-[#7D2AE8] via-[#00C4CC] to-[#FF3366] rounded-3xl blur-md opacity-25 group-hover:opacity-40 transition duration-300 pointer-events-none" />
-
-        <div className="relative bg-white rounded-3xl border border-purple-100 shadow-xl p-6 sm:p-8 text-center space-y-6">
+        <div className="relative z-10 space-y-4">
           
-          {/* Main Icon Button */}
-          <button
-            onClick={() => onStartApp('kuitansi')}
-            className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-3xl bg-gradient-to-tr from-[#180A30] via-[#3B1578] to-[#7D2AE8] text-white flex items-center justify-center shadow-lg shadow-purple-900/30 group-hover:scale-105 active:scale-95 transition-all cursor-pointer relative"
-            title="Klik untuk Mulai Buat SPJ Baru"
-          >
-            <Plus className="w-10 h-10 sm:w-12 sm:h-12 stroke-[2.5] text-cyan-300" />
-            <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-[#00C4CC] text-slate-950 flex items-center justify-center font-black shadow-md border-2 border-white">
-              <Receipt className="w-4 h-4" />
+          {/* Header Row: Status tag + Circle action button */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-medium text-purple-200/90 tracking-wide">
+                SPJ Aktif · Dalam Proses
+              </span>
             </div>
-          </button>
 
-          {/* Heading & Call To Action */}
-          <div className="space-y-2">
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Buat SPJ Baru
+            <button
+              onClick={() => onStartApp('kuitansi')}
+              className="w-8 h-8 rounded-full bg-white text-[#6547ED] flex items-center justify-center font-black shadow-md hover:scale-105 active:scale-95 transition-transform cursor-pointer"
+              title="Buka & Edit SPJ Ini"
+            >
+              <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
+            </button>
+          </div>
+
+          {/* Main Identifier: Nomor SPD */}
+          <div>
+            <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-none font-mono">
+              {nomorSPD}
             </h2>
-            <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto leading-relaxed">
-              Mulai proses pengisian kuitansi dinas, otomatis berlanjut ke stempel foto GPS, dan lampiran bukti bayar.
+            <p className="text-xs text-purple-100 font-medium mt-1 truncate">
+              {kuitansi?.namaPelaksana ? `Pelaksana: ${kuitansi.namaPelaksana}` : 'Kuitansi Perjalanan Dinas'}
             </p>
           </div>
 
-          {/* 3 Sequential Steps Visual Indicator */}
-          <div className="pt-2 border-t border-slate-100">
-            <div className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 mb-3">
-              Alur Pengerjaan Bertahap (3 Langkah)
+          {/* Date Range & Stepper Progress (Parcelly signature layout) */}
+          <div className="space-y-2 pt-2 border-t border-white/15">
+            <div className="flex justify-between items-center text-[10px] text-purple-200 font-mono">
+              <span>{tglBerangkat}</span>
+              <span>Selesai: {tglKembali}</span>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 text-left">
-              <div className="p-2.5 rounded-xl bg-purple-50/70 border border-purple-100">
-                <div className="flex items-center gap-1.5 text-[#7D2AE8] mb-1">
-                  <span className="w-4 h-4 rounded-full bg-[#7D2AE8] text-white text-[9px] font-extrabold flex items-center justify-center">1</span>
-                  <Receipt className="w-3.5 h-3.5" />
+            {/* Stepper Line with Checkmark Nodes */}
+            <div className="flex items-center justify-between relative px-1">
+              {/* Connecting line */}
+              <div className="absolute inset-x-3 top-1/2 -translate-y-1/2 h-0.5 bg-white/20 -z-0" />
+
+              {/* Step 1: Kuitansi */}
+              <div className="relative z-10 flex flex-col items-center">
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                  hasKuitansi ? 'bg-white text-[#6547ED]' : 'bg-white/30 text-white'
+                }`}>
+                  <Check className="w-3 h-3 stroke-[3]" />
                 </div>
-                <div className="text-[11px] font-bold text-slate-900">Kuitansi</div>
-                <div className="text-[9px] text-slate-500">SPD & Rincian</div>
+                <span className="text-[8px] text-purple-200 mt-1 font-semibold">Kuitansi</span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-rose-50/70 border border-rose-100">
-                <div className="flex items-center gap-1.5 text-rose-600 mb-1">
-                  <span className="w-4 h-4 rounded-full bg-rose-600 text-white text-[9px] font-extrabold flex items-center justify-center">2</span>
-                  <Camera className="w-3.5 h-3.5" />
+              {/* Step 2: Foto GPS */}
+              <div className="relative z-10 flex flex-col items-center">
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                  hasFoto ? 'bg-white text-[#6547ED]' : 'bg-white/30 text-white'
+                }`}>
+                  {hasFoto ? <Check className="w-3 h-3 stroke-[3]" /> : '2'}
                 </div>
-                <div className="text-[11px] font-bold text-slate-900">Foto GPS</div>
-                <div className="text-[9px] text-slate-500">Stempel Lokasi</div>
+                <span className="text-[8px] text-purple-200 mt-1 font-semibold">Foto GPS</span>
               </div>
 
-              <div className="p-2.5 rounded-xl bg-amber-50/70 border border-amber-100">
-                <div className="flex items-center gap-1.5 text-amber-600 mb-1">
-                  <span className="w-4 h-4 rounded-full bg-amber-600 text-white text-[9px] font-extrabold flex items-center justify-center">3</span>
-                  <CreditCard className="w-3.5 h-3.5" />
+              {/* Step 3: Nota Bayar */}
+              <div className="relative z-10 flex flex-col items-center">
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                  hasNota ? 'bg-white text-[#6547ED]' : 'bg-white/30 text-white'
+                }`}>
+                  {hasNota ? <Check className="w-3 h-3 stroke-[3]" /> : '3'}
                 </div>
-                <div className="text-[11px] font-bold text-slate-900">Nota Fisik</div>
-                <div className="text-[9px] text-slate-500">Tiket & Hotel</div>
+                <span className="text-[8px] text-purple-200 mt-1 font-semibold">Nota Fisik</span>
+              </div>
+
+              {/* Step 4: Paket Cetak A4 */}
+              <div className="relative z-10 flex flex-col items-center">
+                <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
+                  hasKuitansi && hasFoto ? 'bg-[#00E5FF] text-slate-950 shadow-xs' : 'bg-white/30 text-white'
+                }`}>
+                  <Printer className="w-2.5 h-2.5" />
+                </div>
+                <span className="text-[8px] text-purple-200 mt-1 font-semibold">Cetak</span>
               </div>
             </div>
           </div>
 
-          {/* Primary Action Button */}
-          <button
-            onClick={() => onStartApp('kuitansi')}
-            className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-[#7D2AE8] to-[#5914B8] hover:brightness-110 active:scale-98 text-white font-extrabold text-sm shadow-md shadow-purple-900/20 flex items-center justify-center gap-2 cursor-pointer transition-all"
-          >
-            <span>Mulai Pengerjaan Sekarang</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
         </div>
       </div>
 
-      {/* QUIET ACTIVE DRAFT SUMMARY */}
-      {kuitansi && (
-        <div className="bg-white/80 backdrop-blur-xs rounded-2xl border border-slate-200/80 p-3.5 flex items-center justify-between text-xs shadow-2xs">
-          <div className="flex items-center gap-3 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-purple-50 text-[#7D2AE8] flex items-center justify-center shrink-0">
-              <FolderOpen className="w-4 h-4" />
+      {/* 2. 3 QUICK ACTION SQUIRCLE CARDS (like "Send parcel", "Rates", "Scan QR") */}
+      <div className="grid grid-cols-3 gap-3">
+        {/* Card 1: Buat Kuitansi / SPJ */}
+        <button
+          onClick={() => onStartApp('kuitansi')}
+          className="bg-white rounded-[24px] p-3.5 sm:p-4 text-center border border-purple-100/70 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group active:scale-95"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-purple-50 group-hover:bg-[#6547ED] text-[#6547ED] group-hover:text-white flex items-center justify-center transition-colors shadow-2xs">
+            <Receipt className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <div className="text-xs font-bold text-slate-900 leading-tight">Buat SPJ</div>
+            <div className="text-[10px] text-slate-400 font-medium mt-0.5">Kuitansi A4</div>
+          </div>
+        </button>
+
+        {/* Card 2: Foto GPS Kegiatan */}
+        <button
+          onClick={() => onStartApp('dokumentasi')}
+          className="bg-white rounded-[24px] p-3.5 sm:p-4 text-center border border-purple-100/70 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group active:scale-95"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-purple-50 group-hover:bg-[#6547ED] text-[#6547ED] group-hover:text-white flex items-center justify-center transition-colors shadow-2xs">
+            <Camera className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <div className="text-xs font-bold text-slate-900 leading-tight">Foto GPS</div>
+            <div className="text-[10px] text-slate-400 font-medium mt-0.5">{dokumentasiList.length} Stempel</div>
+          </div>
+        </button>
+
+        {/* Card 3: Nota & Bukti Bayar */}
+        <button
+          onClick={() => onStartApp('bukti_bayar')}
+          className="bg-white rounded-[24px] p-3.5 sm:p-4 text-center border border-purple-100/70 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col items-center justify-center gap-2 group active:scale-95"
+        >
+          <div className="w-12 h-12 rounded-2xl bg-purple-50 group-hover:bg-[#6547ED] text-[#6547ED] group-hover:text-white flex items-center justify-center transition-colors shadow-2xs">
+            <CreditCard className="w-5 h-5 stroke-[2.2]" />
+          </div>
+          <div>
+            <div className="text-xs font-bold text-slate-900 leading-tight">Nota SPJ</div>
+            <div className="text-[10px] text-slate-400 font-medium mt-0.5">{buktiBayarList.length} Terlampir</div>
+          </div>
+        </button>
+      </div>
+
+      {/* 3. "ACTIVE SHIPMENTS" SECTION -> "BERKAS SPJ BERJALAN" */}
+      <div className="space-y-2.5 pt-1">
+        <div className="flex items-center justify-between px-1">
+          <h3 className="text-sm font-extrabold text-slate-900 tracking-tight">
+            Berkas SPJ Berjalan
+          </h3>
+          <button
+            onClick={() => onOpenProjectManager ? onOpenProjectManager() : onStartApp('berkas')}
+            className="text-xs font-bold text-[#6547ED] hover:text-[#5133E6] transition-colors cursor-pointer"
+          >
+            Lihat Semua
+          </button>
+        </div>
+
+        {/* Parcelly Shipment Cards Row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          
+          {/* Card 1: Active Project */}
+          <div 
+            onClick={() => onStartApp('kuitansi')}
+            className="bg-white rounded-[26px] p-4 border border-purple-100/70 shadow-xs hover:shadow-sm transition-all cursor-pointer space-y-3 group"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-purple-50 text-[#6547ED] border border-purple-100">
+                {kotaAsal.slice(0, 3).toUpperCase()} → {kotaTujuan.slice(0, 3).toUpperCase()}
+              </span>
+              <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                Draf Aktif
+              </span>
             </div>
-            <div className="min-w-0">
-              <div className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">
-                Berkas Aktif Saat Ini
-              </div>
-              <div className="font-extrabold text-slate-900 truncate">
-                {kuitansi.namaPelaksana ? `SPJ - ${kuitansi.namaPelaksana}` : 'Kuitansi Perjalanan Dinas'}
-              </div>
-              <div className="text-[10px] text-slate-500 font-medium">
-                Total: <span className="text-[#7D2AE8] font-bold">Rp {totalBiaya.toLocaleString('id-ID')}</span> · {dokumentasiList.length} Foto · {buktiBayarList.length} Nota
-              </div>
+
+            <div>
+              <h4 className="text-xs font-bold text-slate-900 group-hover:text-[#6547ED] transition-colors line-clamp-1">
+                {kotaAsal} → {kotaTujuan}
+              </h4>
+              <p className="text-[11px] text-slate-500 font-mono mt-0.5 truncate">
+                {activeProject?.namaProject || 'SPJ Perjalanan Dinas'}
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-[11px]">
+              <span className="text-slate-500 font-medium">
+                Total Biaya:
+              </span>
+              <span className="font-extrabold text-[#6547ED]">
+                Rp {totalBiaya.toLocaleString('id-ID')}
+              </span>
             </div>
           </div>
 
-          <button
-            onClick={() => onStartApp('kuitansi')}
-            className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#7D2AE8] font-bold text-xs shrink-0 cursor-pointer transition-colors"
+          {/* Card 2: Panduan & SBM */}
+          <div 
+            onClick={() => onStartApp('diskusi')}
+            className="bg-white rounded-[26px] p-4 border border-purple-100/70 shadow-xs hover:shadow-sm transition-all cursor-pointer space-y-3 group"
           >
-            Buka
-          </button>
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100">
+                Permenkeu
+              </span>
+              <span className="text-[10px] font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-100">
+                Standar SBM
+              </span>
+            </div>
+
+            <div>
+              <h4 className="text-xs font-bold text-slate-900 group-hover:text-[#6547ED] transition-colors line-clamp-1">
+                Tarif SBM 2026 & Audit
+              </h4>
+              <p className="text-[11px] text-slate-500 mt-0.5 line-clamp-1">
+                Uang harian & penginapan resmi Kaltara
+              </p>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-[11px]">
+              <span className="text-slate-500 font-medium">
+                Status Standar:
+              </span>
+              <span className="font-extrabold text-blue-700">
+                Sesuai Aturan
+              </span>
+            </div>
+          </div>
+
         </div>
-      )}
+      </div>
+
+      {/* 4. PARCELLY-STYLE BOTTOM PRIMARY ACTION BUTTON (like the right phone's "Delivery confirmed") */}
+      <div className="pt-2">
+        <button
+          onClick={() => onStartApp('kuitansi')}
+          className="w-full py-3.5 px-6 rounded-[22px] bg-[#6547ED] hover:bg-[#5739E0] active:scale-98 text-white font-bold text-xs shadow-md shadow-purple-900/15 flex items-center justify-between cursor-pointer transition-all group"
+        >
+          <span className="text-left">
+            <span className="block text-[10px] text-purple-200 font-normal">Langkah 1 dari 3</span>
+            <span className="text-xs font-extrabold text-white">Mulai Susun Kuitansi Dinas</span>
+          </span>
+
+          <div className="w-8 h-8 rounded-full bg-white/15 text-white flex items-center justify-center group-hover:translate-x-1 transition-transform">
+            <ArrowRight className="w-4 h-4" />
+          </div>
+        </button>
+      </div>
 
     </div>
   );

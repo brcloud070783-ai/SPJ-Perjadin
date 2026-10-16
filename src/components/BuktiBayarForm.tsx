@@ -466,9 +466,9 @@ export const BuktiBayarForm: React.FC<BuktiBayarFormProps> = ({
             <button
               type="button"
               onClick={onCompleteWizard}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:brightness-110 active:scale-95 text-white text-xs font-black rounded-xl shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#6547ED] hover:bg-[#5537E6] active:scale-95 text-white text-xs font-bold rounded-2xl shadow-sm shadow-purple-900/10 transition-all cursor-pointer"
             >
-              <CheckCircle2 className="w-4 h-4 text-cyan-200" />
+              <CheckCircle2 className="w-4 h-4 text-white" />
               <span>Selesai & Buka Paket Cetak SPJ</span>
               <ArrowRight className="w-4 h-4" />
             </button>

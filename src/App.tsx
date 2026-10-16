@@ -398,7 +398,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FD] text-slate-800 font-sans selection:bg-[#7D2AE8] selection:text-white">
+    <div className="min-h-screen bg-[#FAF9FF] text-slate-800 font-sans selection:bg-[#6547ED] selection:text-white">
       {/* Top Header with Project Badge */}
       <Header
         activeTab={activeTab}
@@ -456,6 +456,9 @@ export default function App() {
             kuitansi={kuitansi}
             dokumentasiList={dokumentasiList}
             buktiBayarList={buktiBayarList}
+            activeProject={activeProject}
+            projects={projects}
+            onOpenProjectManager={() => setIsProjectManagerOpen(true)}
           />
         )}
 
