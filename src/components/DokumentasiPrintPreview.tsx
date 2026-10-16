@@ -362,7 +362,7 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
                           <img
                             src={item.fotoUrl}
                             alt={item.judul}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-contain bg-slate-950"
                           />
                           {/* Stempel Waktu & GPS di Foto */}
                           <div className="absolute bottom-0 inset-x-0 bg-black/80 text-white p-1.5 text-[7pt] font-mono leading-tight">

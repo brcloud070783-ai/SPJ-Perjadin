@@ -169,36 +169,33 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           {/* Center Body: Gambar Simbol Khusus + Teks Utama + Tombol Aksi */}
           <div className="flex items-center justify-between gap-3 w-full">
             
-            {/* GAMBAR SIMBOL KHUSUS SPJ (Vector Symbol Lockup) */}
-            <div className="relative shrink-0">
+            {/* GAMBAR SIMBOL KHUSUS SPJ (100% UTUH & TANPA CLIPPING) */}
+            <div className="relative shrink-0 p-1">
               {/* Symbolic squircle container with purple gradient and soft shadow */}
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-tr from-[#5133E6] via-[#6547ED] to-[#7B5CFF] text-white flex items-center justify-center shadow-md shadow-purple-900/20 group-hover:scale-105 transition-transform relative overflow-hidden">
-                
-                {/* Visual Stamp Line / Watermark inside the symbol */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none" />
-
-                {/* Layered Document & Stamp Vector Symbol */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#5133E6] via-[#6547ED] to-[#7B5CFF] text-white flex items-center justify-center shadow-md shadow-purple-900/25 group-hover:scale-105 transition-transform">
+                {/* Layered Document & Stamp Vector Symbol with ample internal margin */}
                 <svg 
-                  className="w-7 h-7 text-white drop-shadow-xs" 
-                  viewBox="0 0 24 24" 
+                  className="w-8 h-8 text-white drop-shadow-xs" 
+                  viewBox="0 0 32 32" 
                   fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2.2" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  {/* Base document sheet */}
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  {/* Stamp check lines */}
-                  <line x1="9" y1="13" x2="15" y2="13" />
-                  <line x1="9" y1="17" x2="13" y2="17" />
+                  {/* Subtle document sheet background */}
+                  <rect x="5" y="4" width="16" height="22" rx="3" fill="white" fillOpacity="0.25" stroke="white" strokeWidth="1.6" />
+                  {/* Primary document sheet with folded corner */}
+                  <path d="M9 7H19L24 12V25C24 26.1046 23.1046 27 22 27H9C7.89543 27 7 26.1046 7 25V9C7 7.89543 7.89543 7 9 7Z" fill="white" />
+                  {/* Folded paper corner */}
+                  <path d="M19 7V11C19 11.5523 19.4477 12 20 12H24L19 7Z" fill="#DDD6FE" />
+                  {/* Official text & verification lines in brand violet */}
+                  <rect x="10" y="14" width="9" height="1.8" rx="0.9" fill="#6547ED" />
+                  <rect x="10" y="17.5" width="7" height="1.8" rx="0.9" fill="#6547ED" />
+                  <rect x="10" y="21" width="5" height="1.8" rx="0.9" fill="#6547ED" />
                 </svg>
+              </div>
 
-                {/* Miniature Plus badge on bottom right of the symbol */}
-                <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#00E5FF] text-slate-950 flex items-center justify-center font-black shadow-xs border-2 border-white">
-                  <Plus className="w-3 h-3 stroke-[3]" />
-                </div>
+              {/* Plus badge on outer wrapper (NEVER clipped or cut off) */}
+              <div className="absolute bottom-0 right-0 w-5.5 h-5.5 rounded-full bg-[#00E5FF] text-slate-950 flex items-center justify-center font-black shadow-md border-2 border-white z-20">
+                <Plus className="w-3.5 h-3.5 stroke-[3]" />
               </div>
             </div>
 
@@ -209,7 +206,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   Buat SPJ Baru
                 </h3>
               </div>
-              <p className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5 line-clamp-2">
+              <p className="text-[11px] text-slate-500 font-medium leading-relaxed mt-0.5">
                 Kuitansi SPD otomatis, stempel Foto GPS, & bukti nota fisik siap cetak.
               </p>
             </div>
