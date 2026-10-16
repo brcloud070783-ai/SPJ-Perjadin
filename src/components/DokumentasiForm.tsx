@@ -20,7 +20,9 @@ import {
   Layers,
   Search,
   Printer,
-  Zap
+  Zap,
+  ArrowLeft,
+  ArrowRight
 } from 'lucide-react';
 import { formatTanggalIndo } from '../utils/terbilang';
 
@@ -29,13 +31,17 @@ interface DokumentasiFormProps {
   onAdd: (item: FotoDokumentasi) => void;
   onDelete: (id: string) => void;
   onOpenPrintPreview?: () => void;
+  onPrevStep?: () => void;
+  onNextStep?: () => void;
 }
 
 export const DokumentasiForm: React.FC<DokumentasiFormProps> = ({
   list,
   onAdd,
   onDelete,
-  onOpenPrintPreview
+  onOpenPrintPreview,
+  onPrevStep,
+  onNextStep
 }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedPreview, setSelectedPreview] = useState<FotoDokumentasi | null>(null);
@@ -373,6 +379,44 @@ export const DokumentasiForm: React.FC<DokumentasiFormProps> = ({
           ))}
         </div>
       )}
+
+      {/* WIZARD STEP NAVIGATION FOOTER */}
+      <div className="pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-2.5 pb-20">
+        {onPrevStep && (
+          <button
+            type="button"
+            onClick={onPrevStep}
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl shadow-2xs transition-all cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Kembali ke Kuitansi (Tahap 1)</span>
+          </button>
+        )}
+
+        <div className="flex flex-wrap items-center gap-2 ml-auto">
+          {onOpenPrintPreview && (
+            <button
+              type="button"
+              onClick={onOpenPrintPreview}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-2xs transition-all cursor-pointer"
+            >
+              <Printer className="w-4 h-4 text-cyan-300" />
+              <span>Cetak Foto A4</span>
+            </button>
+          )}
+
+          {onNextStep && (
+            <button
+              type="button"
+              onClick={onNextStep}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:brightness-110 active:scale-95 text-white text-xs font-black rounded-xl shadow-md transition-all cursor-pointer"
+            >
+              <span>Lanjut: Nota & Bukti Bayar (Tahap 3)</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* Modal: Ambil / Upload Foto Baru */}
       {showAddModal && (

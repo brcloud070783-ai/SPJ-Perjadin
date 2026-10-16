@@ -1,6 +1,6 @@
 {
-  "summary": "Implementation plan for adding 2x3 Grid Cards with Icons and Subtitles as the primary quick access menu at the top center of the home page.",
-  "updatedAt": "2026-10-15T14:40:48.071704428Z",
+  "summary": "Rencana implementasi desain Tab Bar modern, Halaman Utama minimalis dengan tombol aksi utama 'Buat SPJ Baru', serta Alur Wizard bertahap (Kuitansi -> Foto GPS -> Nota Bukti Bayar -> Cetak Paket).",
+  "updatedAt": "2026-10-16T10:51:13.466858894Z",
   "requestFeedback": true,
   "userFacing": true
 }

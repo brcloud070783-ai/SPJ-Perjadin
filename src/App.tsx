@@ -426,6 +426,9 @@ export default function App() {
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         activeProject={activeProject}
+        user={user}
+        onResetData={handleResetData}
+        onOpenGoogleLogin={() => setIsGoogleLoginOpen(true)}
         onOpenProjectManager={() => setIsProjectManagerOpen(true)}
         onOpenLogoDinas={() => setActiveTab('logo_dinas')}
         onOpenDeviceHelp={() => setIsDeviceHelpOpen(true)}
@@ -489,6 +492,10 @@ export default function App() {
                 data={kuitansi}
                 onChange={setKuitansi}
                 onPreview={() => setIsKuitansiPreview(true)}
+                onNextStep={() => {
+                  setActiveTab('dokumentasi');
+                  setIsDokumentasiPreview(false);
+                }}
                 buktiBayarList={buktiBayarList}
                 onOpenLogoDinas={() => setActiveTab('logo_dinas')}
               />
@@ -510,6 +517,14 @@ export default function App() {
                 onAdd={handleAddDokumentasi}
                 onDelete={handleDeleteDokumentasi}
                 onOpenPrintPreview={() => setIsDokumentasiPreview(true)}
+                onPrevStep={() => {
+                  setActiveTab('kuitansi');
+                  setIsKuitansiPreview(false);
+                }}
+                onNextStep={() => {
+                  setActiveTab('bukti_bayar');
+                  setIsBuktiBayarPreview(false);
+                }}
               />
             )}
           </div>
@@ -530,6 +545,13 @@ export default function App() {
                 onDelete={handleDeleteBuktiBayar}
                 onSyncToKuitansi={handleSyncBuktiToKuitansi}
                 onOpenPrintPreview={() => setIsBuktiBayarPreview(true)}
+                onPrevStep={() => {
+                  setActiveTab('dokumentasi');
+                  setIsDokumentasiPreview(false);
+                }}
+                onCompleteWizard={() => {
+                  setActiveTab('paket_lengkap');
+                }}
               />
             )}
           </div>

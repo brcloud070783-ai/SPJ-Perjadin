@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Menu, 
   X, 
@@ -9,16 +9,22 @@ import {
   Upload, 
   BookOpen, 
   Smartphone, 
-  ShieldCheck,
-  ChevronRight,
-  Sparkles
+  ShieldCheck, 
+  ChevronRight, 
+  Sparkles,
+  RotateCcw,
+  LogIn,
+  UserCheck,
+  User as UserIcon
 } from 'lucide-react';
+import { User } from 'firebase/auth';
 import { KuitansiData, ProjectSPJ, TabType } from '../types';
 
 interface SidebarMenuProps {
   isOpen: boolean;
   onClose: () => void;
   activeProject?: ProjectSPJ;
+  user?: User | null;
   onOpenProjectManager: () => void;
   onOpenLogoDinas: () => void;
   onOpenDeviceHelp: () => void;
@@ -26,19 +32,24 @@ interface SidebarMenuProps {
   onExportProject: () => void;
   onImportProject: (file: File) => void;
   onNavigateToTab: (tab: TabType) => void;
+  onResetData?: () => void;
+  onOpenGoogleLogin?: () => void;
 }
 
 export const SidebarMenu: React.FC<SidebarMenuProps> = ({
   isOpen,
   onClose,
   activeProject,
+  user,
   onOpenProjectManager,
   onOpenLogoDinas,
   onOpenDeviceHelp,
   onOpenDeployGuide,
   onExportProject,
   onImportProject,
-  onNavigateToTab
+  onNavigateToTab,
+  onResetData,
+  onOpenGoogleLogin
 }) => {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -62,7 +73,7 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
               SD
             </div>
             <div>
-              <h2 className="text-sm font-extrabold text-white">Menu Utama & Pengaturan</h2>
+              <h2 className="text-sm font-extrabold text-white">Menu & Pengaturan</h2>
               <p className="text-[10px] text-purple-300 font-mono truncate max-w-[160px]">
                 {activeProject?.namaProject || 'SPJ Perjalanan Dinas'}
               </p>
@@ -77,8 +88,39 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
         </div>
 
         {/* Scrollable Links */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-6 text-xs font-sans">
+        <div className="flex-1 overflow-y-auto p-4 space-y-5 text-xs font-sans">
           
+          {/* USER ACCOUNT CARD */}
+          {onOpenGoogleLogin && (
+            <div className="p-3 rounded-2xl bg-purple-900/40 border border-purple-800/60">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  {user?.photoURL ? (
+                    <img src={user.photoURL} alt="Avatar" className="w-8 h-8 rounded-full border border-cyan-300" />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-purple-800 flex items-center justify-center text-cyan-300">
+                      <UserIcon className="w-4 h-4" />
+                    </div>
+                  )}
+                  <div>
+                    <span className="text-[10px] text-purple-300 block font-medium">
+                      {user ? 'Terhubung Google' : 'Akun Pengguna'}
+                    </span>
+                    <span className="font-bold text-white text-xs truncate max-w-[130px] block">
+                      {user ? (user.displayName || user.email?.split('@')[0]) : 'Tamu (Offline)'}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => { onClose(); onOpenGoogleLogin(); }}
+                  className="px-2.5 py-1 rounded-lg bg-[#00C4CC]/20 hover:bg-[#00C4CC]/30 text-cyan-200 border border-cyan-400/30 text-[10px] font-bold cursor-pointer transition-all"
+                >
+                  {user ? 'Kelola' : 'Masuk'}
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* SECTION 1: MANAJEMEN BERKAS */}
           <div className="space-y-1.5">
             <div className="text-[10px] font-extrabold text-purple-400 uppercase tracking-widest px-2">
@@ -197,6 +239,29 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
               <ChevronRight className="w-3.5 h-3.5 text-purple-400" />
             </button>
           </div>
+
+          {/* SECTION 5: PEMELIHARAAN DATA */}
+          {onResetData && (
+            <div className="space-y-1.5 pt-1">
+              <div className="text-[10px] font-extrabold text-purple-400 uppercase tracking-widest px-2">
+                Pemeliharaan Data
+              </div>
+              <button
+                onClick={() => {
+                  if (window.confirm('Muat ulang data contoh resmi SPJ? Tindakan ini akan mengembalikan data SPJ yang sedang aktif ke format contoh default.')) {
+                    onResetData();
+                    onClose();
+                  }
+                }}
+                className="w-full flex items-center justify-between p-2.5 rounded-xl bg-rose-950/30 hover:bg-rose-900/50 border border-rose-900/50 text-rose-300 hover:text-rose-100 transition-all cursor-pointer group"
+              >
+                <div className="flex items-center gap-2.5">
+                  <RotateCcw className="w-4 h-4 text-rose-400 group-hover:rotate-180 transition-transform" />
+                  <span className="font-bold">Reset ke Data Contoh</span>
+                </div>
+              </button>
+            </div>
+          )}
 
         </div>
 

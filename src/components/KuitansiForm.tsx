@@ -35,6 +35,7 @@ interface KuitansiFormProps {
   data: KuitansiData;
   onChange: (updated: KuitansiData) => void;
   onPreview: () => void;
+  onNextStep?: () => void;
   buktiBayarList?: BuktiBayar[];
   onOpenLogoDinas?: () => void;
 }
@@ -45,6 +46,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
   data,
   onChange,
   onPreview,
+  onNextStep,
   buktiBayarList = [],
   onOpenLogoDinas
 }) => {
@@ -1121,23 +1123,35 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
             />
           </div>
 
-          <div className="pt-3 border-t border-slate-100 flex justify-between">
+          <div className="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2.5">
             <button
               type="button"
               onClick={() => setActiveStep('rincian')}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-xl transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Kembali</span>
             </button>
-            <button
-              type="button"
-              onClick={onPreview}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer active:scale-95"
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Selesai & Buka Kuitansi A4</span>
-            </button>
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={onPreview}
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-xs transition-all cursor-pointer"
+              >
+                <CheckCircle2 className="w-4 h-4 text-cyan-300" />
+                <span>Pratinjau Kuitansi A4</span>
+              </button>
+              {onNextStep && (
+                <button
+                  type="button"
+                  onClick={onNextStep}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#7D2AE8] to-[#5914B8] hover:brightness-110 active:scale-95 text-white text-xs font-black rounded-xl shadow-md shadow-purple-900/20 transition-all cursor-pointer"
+                >
+                  <span>Lanjut: Foto GPS Kegiatan (Tahap 2)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}

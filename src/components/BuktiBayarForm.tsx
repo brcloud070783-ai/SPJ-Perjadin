@@ -19,6 +19,7 @@ import {
   Sparkles,
   Search,
   ArrowRight,
+  ArrowLeft,
   Printer,
   Zap,
   Filter
@@ -30,6 +31,8 @@ interface BuktiBayarFormProps {
   onDelete: (id: string) => void;
   onSyncToKuitansi?: () => void;
   onOpenPrintPreview?: () => void;
+  onPrevStep?: () => void;
+  onCompleteWizard?: () => void;
 }
 
 export const BuktiBayarForm: React.FC<BuktiBayarFormProps> = ({
@@ -37,7 +40,9 @@ export const BuktiBayarForm: React.FC<BuktiBayarFormProps> = ({
   onAdd,
   onDelete,
   onSyncToKuitansi,
-  onOpenPrintPreview
+  onOpenPrintPreview,
+  onPrevStep,
+  onCompleteWizard
 }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedPreview, setSelectedPreview] = useState<BuktiBayar | null>(null);
@@ -431,6 +436,45 @@ export const BuktiBayarForm: React.FC<BuktiBayarFormProps> = ({
           ))}
         </div>
       )}
+
+      {/* WIZARD STEP 3 COMPLETION FOOTER */}
+      <div className="pt-4 border-t border-slate-200/80 flex flex-wrap items-center justify-between gap-2.5 pb-20">
+        {onPrevStep && (
+          <button
+            type="button"
+            onClick={onPrevStep}
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-bold rounded-xl shadow-2xs transition-all cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Kembali ke Foto GPS (Tahap 2)</span>
+          </button>
+        )}
+
+        <div className="flex flex-wrap items-center gap-2 ml-auto">
+          {onOpenPrintPreview && (
+            <button
+              type="button"
+              onClick={onOpenPrintPreview}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold rounded-xl shadow-2xs transition-all cursor-pointer"
+            >
+              <Printer className="w-4 h-4 text-cyan-300" />
+              <span>Cetak Nota A4</span>
+            </button>
+          )}
+
+          {onCompleteWizard && (
+            <button
+              type="button"
+              onClick={onCompleteWizard}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:brightness-110 active:scale-95 text-white text-xs font-black rounded-xl shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
+            >
+              <CheckCircle2 className="w-4 h-4 text-cyan-200" />
+              <span>Selesai & Buka Paket Cetak SPJ</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
+        </div>
+      </div>
 
       {/* Modal Upload Bukti */}
       {showAddModal && (
