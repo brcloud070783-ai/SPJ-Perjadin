@@ -95,11 +95,11 @@ export const UnauthorizedDomainModal: React.FC<UnauthorizedDomainModalProps> = (
           {/* Solution 2: Custom Firebase Project */}
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 space-y-2">
             <div className="flex items-center gap-2 text-slate-900 dark:text-white font-extrabold text-xs">
-              <Server className="w-4 h-4 text-purple-600" />
+              <Server className="w-4 h-4 text-[#0000B3]" />
               <span>Solusi 2 (Jika Wajib Ingin Menggunakan Firebase Console Pribadi):</span>
             </div>
             <ol className="list-decimal list-inside text-[11px] space-y-1.5 pl-1 font-medium text-slate-600 dark:text-slate-300">
-              <li>Buat Project baru secara gratis di <a href="https://console.firebase.google.com" target="_blank" rel="noreferrer" className="text-purple-600 underline font-bold">console.firebase.google.com <ExternalLink className="w-3 h-3 inline" /></a>.</li>
+              <li>Buat Project baru secara gratis di <a href="https://console.firebase.google.com" target="_blank" rel="noreferrer" className="text-[#0000B3] underline font-bold">console.firebase.google.com <ExternalLink className="w-3 h-3 inline" /></a>.</li>
               <li>Aktifkan <strong>Authentication &gt; Google Sign-In</strong>.</li>
               <li>Tambahkan domain Anda (<code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded font-mono font-bold text-slate-900 dark:text-white">{currentDomain}</code>) ke menu <strong>Authorized Domains</strong>.</li>
               <li>Salin konfigurasi Firebase Web App Anda dan minta kami menggantinya di aplikasi.</li>

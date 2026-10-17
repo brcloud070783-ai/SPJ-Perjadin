@@ -252,12 +252,12 @@ export const DokumentasiPrintPreview: React.FC<DokumentasiPrintPreviewProps> = (
       </div>
 
       {/* Touch Pinch & Pan Floating Helper Badge */}
-      <div className="print:hidden flex items-center justify-between px-3.5 py-1.5 bg-purple-50/80 border border-purple-200/60 rounded-xl text-[11px] text-purple-800">
+      <div className="print:hidden flex items-center justify-between px-3.5 py-1.5 bg-blue-50/80 border border-blue-200/60 rounded-xl text-[11px] text-blue-900">
         <div className="flex items-center gap-1.5">
           <span className="text-sm">👌</span>
           <span><strong>Tips Layar Sentuh:</strong> Gunakan 2 jari (cubit / renggangkan) untuk Zoom In & Out • Ketuk 2x untuk reset</span>
         </div>
-        <div className="font-mono font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border border-purple-200 shrink-0 ml-2">
+        <div className="font-mono font-bold text-[#0000B3] bg-white px-2 py-0.5 rounded-md border border-blue-200 shrink-0 ml-2">
           {zoomPercent}%
         </div>
       </div>

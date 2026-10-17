@@ -38,12 +38,12 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl max-w-2xl w-full my-auto shadow-2xl border border-purple-100 overflow-hidden animate-scale-up">
+      <div className="bg-white rounded-3xl max-w-2xl w-full my-auto shadow-2xl border border-blue-100 overflow-hidden animate-scale-up">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#180A30] via-[#2D0D5B] to-[#7D2AE8] text-white p-5 relative">
+        <div className="bg-gradient-to-r from-[#0A1128] via-[#00008F] to-[#0000B3] text-white p-5 relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-purple-200 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-colors cursor-pointer"
+            className="absolute top-4 right-4 text-blue-200 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-colors cursor-pointer"
             title="Tutup"
           >
             <X className="w-5 h-5" />
@@ -57,7 +57,7 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
           <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
             Cara Deploy SiDinas ke Hosting Publik Gratis
           </h2>
-          <p className="text-xs text-purple-200 mt-1">
+          <p className="text-xs text-blue-200 mt-1">
             Publikasikan aplikasi ini agar 100% bisa dibuka oleh siapapun di HP/Laptop tanpa login Google.
           </p>
         </div>
@@ -68,7 +68,7 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
             onClick={() => setActivePlatform('vercel')}
             className={`px-4 py-2.5 rounded-t-xl font-black text-xs transition-all flex items-center gap-2 border-b-2 cursor-pointer whitespace-nowrap ${
               activePlatform === 'vercel'
-                ? 'border-[#7D2AE8] bg-white text-[#7D2AE8] shadow-xs'
+                ? 'border-[#0000B3] bg-white text-[#0000B3] shadow-xs'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -80,7 +80,7 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
             onClick={() => setActivePlatform('netlify')}
             className={`px-4 py-2.5 rounded-t-xl font-black text-xs transition-all flex items-center gap-2 border-b-2 cursor-pointer whitespace-nowrap ${
               activePlatform === 'netlify'
-                ? 'border-[#7D2AE8] bg-white text-[#7D2AE8] shadow-xs'
+                ? 'border-[#0000B3] bg-white text-[#0000B3] shadow-xs'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
@@ -92,11 +92,11 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
             onClick={() => setActivePlatform('github')}
             className={`px-4 py-2.5 rounded-t-xl font-black text-xs transition-all flex items-center gap-2 border-b-2 cursor-pointer whitespace-nowrap ${
               activePlatform === 'github'
-                ? 'border-[#7D2AE8] bg-white text-[#7D2AE8] shadow-xs'
+                ? 'border-[#0000B3] bg-white text-[#0000B3] shadow-xs'
                 : 'border-transparent text-slate-600 hover:text-slate-900'
             }`}
           >
-            <Globe className="w-3.5 h-3.5 text-purple-600" />
+            <Globe className="w-3.5 h-3.5 text-[#0000B3]" />
             3. GitHub Pages / Render
           </button>
         </div>
@@ -117,23 +117,23 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
           {/* Vercel Guide */}
           {activePlatform === 'vercel' && (
             <div className="space-y-4 animate-fade-in">
-              <div className="flex items-center justify-between bg-purple-50 p-3 rounded-2xl border border-purple-100">
+              <div className="flex items-center justify-between bg-blue-50 p-3 rounded-2xl border border-blue-100">
                 <div>
-                  <span className="font-black text-purple-950 text-xs">Vercel.com (Gratis 100%)</span>
+                  <span className="font-black text-blue-950 text-xs">Vercel.com (Gratis 100%)</span>
                   <p className="text-[11px] text-purple-800">Deployment otomatis hanya butuh 1-2 menit via GitHub atau Vercel CLI.</p>
                 </div>
                 <a
                   href="https://vercel.com/new"
                   target="_blank"
                   rel="noreferrer"
-                  className="px-3 py-1.5 rounded-xl bg-[#7D2AE8] hover:bg-purple-800 text-white font-extrabold text-xs inline-flex items-center gap-1 cursor-pointer shrink-0"
+                  className="px-3 py-1.5 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white font-extrabold text-xs inline-flex items-center gap-1 cursor-pointer shrink-0"
                 >
                   Buka Vercel <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
 
               <div className="space-y-2.5">
-                <h4 className="font-black text-slate-900 text-xs uppercase tracking-wider text-purple-950">
+                <h4 className="font-black text-slate-900 text-xs uppercase tracking-wider text-blue-950">
                   Langkah-Langkah Deploy Vercel:
                 </h4>
 
@@ -198,7 +198,7 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
               </div>
 
               <div className="space-y-2.5">
-                <h4 className="font-black text-slate-900 text-xs uppercase tracking-wider text-purple-950">
+                <h4 className="font-black text-slate-900 text-xs uppercase tracking-wider text-blue-950">
                   2 Cara Deploy Netlify:
                 </h4>
 
@@ -231,20 +231,20 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
           {/* GitHub Pages / Cloudflare Guide */}
           {(activePlatform === 'github' || activePlatform === 'cloudflare') && (
             <div className="space-y-4 animate-fade-in">
-              <div className="p-3.5 rounded-xl bg-purple-50 border border-purple-200 space-y-2">
-                <h4 className="font-black text-purple-950 text-xs flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-purple-700" />
+              <div className="p-3.5 rounded-xl bg-blue-50 border border-blue-200 space-y-2">
+                <h4 className="font-black text-blue-950 text-xs flex items-center gap-2">
+                  <Globe className="w-4 h-4 text-[#0000B3]" />
                   Alternative Hosting Publik Gratis Lainnya:
                 </h4>
                 <ul className="list-disc list-inside text-[11px] text-slate-700 space-y-2 font-medium">
                   <li>
-                    <strong>Cloudflare Pages:</strong> Kunjungi <code className="bg-purple-100 font-mono text-purple-950 px-1 rounded">pages.cloudflare.com</code> &gt; Hubungkan GitHub &gt; Build Command: <code className="bg-purple-100 font-mono text-purple-950 px-1 rounded">npm run build</code> &gt; Output: <code className="bg-purple-100 font-mono text-purple-950 px-1 rounded">dist</code>.
+                    <strong>Cloudflare Pages:</strong> Kunjungi <code className="bg-blue-100 font-mono text-blue-950 px-1 rounded">pages.cloudflare.com</code> &gt; Hubungkan GitHub &gt; Build Command: <code className="bg-blue-100 font-mono text-blue-950 px-1 rounded">npm run build</code> &gt; Output: <code className="bg-blue-100 font-mono text-blue-950 px-1 rounded">dist</code>.
                   </li>
                   <li>
-                    <strong>GitHub Pages:</strong> Tambahkan gh-pages atau gunakan GitHub Actions untuk meng-compile folder <code className="bg-purple-100 font-mono text-purple-950 px-1 rounded">dist</code> secara gratis di server GitHub.
+                    <strong>GitHub Pages:</strong> Tambahkan gh-pages atau gunakan GitHub Actions untuk meng-compile folder <code className="bg-blue-100 font-mono text-blue-950 px-1 rounded">dist</code> secara gratis di server GitHub.
                   </li>
                   <li>
-                    <strong>Render.com:</strong> Kunjungi <code className="bg-purple-100 font-mono text-purple-950 px-1 rounded">render.com</code> &gt; Buat "Static Site" &gt; Hubungkan repo GitHub.
+                    <strong>Render.com:</strong> Kunjungi <code className="bg-blue-100 font-mono text-blue-950 px-1 rounded">render.com</code> &gt; Buat "Static Site" &gt; Hubungkan repo GitHub.
                   </li>
                 </ul>
               </div>
@@ -277,11 +277,11 @@ export const DeploymentGuideModal: React.FC<DeploymentGuideModalProps> = ({
         {/* Footer */}
         <div className="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
           <p className="text-[10px] text-slate-500 font-medium">
-            ✓ Konfigurasi <code className="font-mono text-purple-700 font-bold">vercel.json</code> & <code className="font-mono text-purple-700 font-bold">netlify.toml</code> sudah siap di project.
+            ✓ Konfigurasi <code className="font-mono text-[#0000B3] font-bold">vercel.json</code> & <code className="font-mono text-[#0000B3] font-bold">netlify.toml</code> sudah siap di project.
           </p>
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-[#7D2AE8] hover:bg-purple-800 text-white font-extrabold text-xs shadow-md cursor-pointer"
+            className="px-5 py-2 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white font-extrabold text-xs shadow-md cursor-pointer"
           >
             Tutup
           </button>

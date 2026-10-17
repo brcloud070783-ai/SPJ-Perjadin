@@ -1,6 +1,6 @@
 import React from 'react';
 import { TabType } from '../types';
-import { Home } from 'lucide-react';
+import { Home, FileSpreadsheet, Camera, Receipt, Printer, Briefcase } from 'lucide-react';
 
 interface BottomNavProps {
   activeTab: TabType;
@@ -12,28 +12,77 @@ interface BottomNavProps {
 
 export const BottomNav: React.FC<BottomNavProps> = ({
   activeTab,
-  onChangeTab
+  onChangeTab,
+  countDokumentasi = 0,
+  countBuktiBayar = 0
 }) => {
-  // Sesuai permintaan pengguna: di halaman beranda tidak perlu ada bilah menu yang menumpuk
-  if (activeTab === 'landing') {
-    return null;
-  }
-
   return (
-    <nav className="fixed bottom-3 inset-x-0 z-40 max-w-xs mx-auto px-3 pointer-events-none print:hidden animate-fade-in">
-      <div className="pointer-events-auto flex justify-center">
-        {/* HANYA 1 TOMBOL BERANDA UNTUK KEMBALI CEPAT DARI DALAM BERKAS */}
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 md:hidden print:hidden px-2 py-1 shadow-lg">
+      <div className="flex items-center justify-around max-w-lg mx-auto">
         <button
           onClick={() => onChangeTab('landing')}
-          className="px-4 py-2 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-[#6547ED] border border-purple-100/90 shadow-lg shadow-purple-950/10 backdrop-blur-xl text-xs font-bold inline-flex items-center gap-2 cursor-pointer transition-all active:scale-95 group"
-          title="Kembali ke Beranda"
+          className={`flex flex-col items-center justify-center py-1 px-2 text-[10px] transition-colors cursor-pointer ${
+            activeTab === 'landing' ? 'text-[#0000B3] font-bold' : 'text-slate-500 hover:text-slate-800'
+          }`}
         >
-          <div className="w-6 h-6 rounded-full bg-[#6547ED] text-white flex items-center justify-center shadow-xs">
-            <Home className="w-3.5 h-3.5" />
+          <Home className="w-5 h-5 mb-0.5" />
+          <span>Beranda</span>
+        </button>
+
+        <button
+          onClick={() => onChangeTab('kuitansi')}
+          className={`flex flex-col items-center justify-center py-1 px-2 text-[10px] transition-colors cursor-pointer ${
+            activeTab === 'kuitansi' ? 'text-[#0000B3] font-bold' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <FileSpreadsheet className="w-5 h-5 mb-0.5" />
+          <span>Kuitansi</span>
+        </button>
+
+        <button
+          onClick={() => onChangeTab('dokumentasi')}
+          className={`relative flex flex-col items-center justify-center py-1 px-2 text-[10px] transition-colors cursor-pointer ${
+            activeTab === 'dokumentasi' ? 'text-[#0000B3] font-bold' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <div className="relative">
+            <Camera className="w-5 h-5 mb-0.5" />
+            {countDokumentasi > 0 && (
+              <span className="absolute -top-1 -right-2 bg-[#0000B3] text-white text-[8px] font-bold px-1 rounded-full leading-tight">
+                {countDokumentasi}
+              </span>
+            )}
           </div>
-          <span>Kembali ke Beranda</span>
+          <span>Foto</span>
+        </button>
+
+        <button
+          onClick={() => onChangeTab('bukti_bayar')}
+          className={`relative flex flex-col items-center justify-center py-1 px-2 text-[10px] transition-colors cursor-pointer ${
+            activeTab === 'bukti_bayar' ? 'text-[#0000B3] font-bold' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <div className="relative">
+            <Receipt className="w-5 h-5 mb-0.5" />
+            {countBuktiBayar > 0 && (
+              <span className="absolute -top-1 -right-2 bg-amber-600 text-white text-[8px] font-bold px-1 rounded-full leading-tight">
+                {countBuktiBayar}
+              </span>
+            )}
+          </div>
+          <span>Bukti Riil</span>
+        </button>
+
+        <button
+          onClick={() => onChangeTab('paket_lengkap')}
+          className={`flex flex-col items-center justify-center py-1 px-2 text-[10px] transition-colors cursor-pointer ${
+            activeTab === 'paket_lengkap' ? 'text-[#0000B3] font-bold' : 'text-slate-500 hover:text-slate-800'
+          }`}
+        >
+          <Printer className="w-5 h-5 mb-0.5" />
+          <span>Cetak</span>
         </button>
       </div>
-    </nav>
+    </div>
   );
 };

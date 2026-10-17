@@ -71,7 +71,7 @@ export const DiscussionGuide: React.FC<DiscussionGuideProps> = ({
         <h2 className="text-xl font-black text-white">
           Panduan Ringkas Berkas SPPD
         </h2>
-        <p className="text-xs text-purple-200/90 font-medium">
+        <p className="text-xs text-blue-200/90 font-medium">
           Tandai kelengkapan berkas Anda sebelum dicetak dan diserahkan ke verifikator keuangan.
         </p>
 
@@ -83,7 +83,7 @@ export const DiscussionGuide: React.FC<DiscussionGuideProps> = ({
           </div>
           <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-[#00C4CC] to-[#7D2AE8] transition-all duration-300"
+              className="h-full bg-gradient-to-r from-[#00B4D8] to-[#0000B3] transition-all duration-300"
               style={{ width: `${(completedCount / checklist.length) * 100}%` }}
             />
           </div>
@@ -125,7 +125,7 @@ export const DiscussionGuide: React.FC<DiscussionGuideProps> = ({
 
               <button
                 onClick={item.action}
-                className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-[#7D2AE8] hover:text-white text-[#7D2AE8] font-bold text-xs transition-colors shrink-0 flex items-center gap-1 cursor-pointer"
+                className="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-[#0000B3] hover:text-white text-[#0000B3] font-bold text-xs transition-colors shrink-0 flex items-center gap-1 cursor-pointer"
               >
                 <span>{item.actionLabel}</span>
                 <ArrowRight className="w-3.5 h-3.5" />

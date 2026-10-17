@@ -81,7 +81,7 @@ export const GoogleLoginModal: React.FC<GoogleLoginModalProps> = ({
         <div className="bg-gradient-to-r from-[#180A30] via-[#2A1252] to-[#7D2AE8] p-5 sm:p-6 text-white relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-purple-200 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all cursor-pointer"
+            className="absolute top-4 right-4 text-blue-200 hover:text-white bg-white/10 hover:bg-white/20 p-2 rounded-full transition-all cursor-pointer"
             title="Tutup"
           >
             <X className="w-5 h-5" />
@@ -97,7 +97,7 @@ export const GoogleLoginModal: React.FC<GoogleLoginModalProps> = ({
               SiDinas
             </span>
           </h2>
-          <p className="text-xs text-purple-200/90 mt-1">
+          <p className="text-xs text-blue-200/90 mt-1">
             Login opsional untuk sinkronisasi Google Drive. Aplikasi tetap bisa dipakai 100% tanpa login!
           </p>
         </div>
@@ -163,8 +163,8 @@ export const GoogleLoginModal: React.FC<GoogleLoginModalProps> = ({
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-start gap-3 p-3 rounded-2xl bg-purple-50 dark:bg-purple-950/30 border border-purple-100 dark:border-purple-900/40">
-                  <div className="p-2 rounded-xl bg-purple-200 dark:bg-purple-900 text-purple-800 dark:text-purple-200 shrink-0">
+                <div className="flex items-start gap-3 p-3 rounded-2xl bg-blue-50 dark:bg-purple-950/30 border border-blue-100 dark:border-blue-900/40">
+                  <div className="p-2 rounded-xl bg-blue-200 dark:bg-purple-900 text-blue-900 dark:text-blue-200 shrink-0">
                     <Laptop className="w-4 h-4" />
                   </div>
                   <div>
@@ -199,7 +199,7 @@ export const GoogleLoginModal: React.FC<GoogleLoginModalProps> = ({
                           onClose();
                           onOpenUnauthorizedDomainHelp();
                         }}
-                        className="text-[11px] underline font-extrabold text-purple-700 dark:text-purple-300 hover:text-purple-900 inline-flex items-center gap-1 cursor-pointer"
+                        className="text-[11px] underline font-extrabold text-[#0000B3] dark:text-blue-300 hover:text-blue-950 inline-flex items-center gap-1 cursor-pointer"
                       >
                         Panduan Solusi Domain / Modul HP
                         <ChevronRight className="w-3 h-3" />
@@ -228,7 +228,7 @@ export const GoogleLoginModal: React.FC<GoogleLoginModalProps> = ({
                 >
                   {isLoggingIn ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-[#0000B3] border-t-transparent rounded-full animate-spin" />
                       <span>Menghubungkan Akun Google...</span>
                     </>
                   ) : (
@@ -269,7 +269,7 @@ export const GoogleLoginModal: React.FC<GoogleLoginModalProps> = ({
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
             Mode Lokal: 100% Aman di HP Anda
           </span>
-          <span className="font-bold text-purple-600 dark:text-purple-400">
+          <span className="font-bold text-[#0000B3] dark:text-blue-400">
             SiDinas v2.0
           </span>
         </div>

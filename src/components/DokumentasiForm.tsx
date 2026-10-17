@@ -409,7 +409,7 @@ export const DokumentasiForm: React.FC<DokumentasiFormProps> = ({
             <button
               type="button"
               onClick={onNextStep}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#6547ED] hover:bg-[#5537E6] active:scale-95 text-white text-xs font-bold rounded-2xl shadow-sm shadow-purple-900/10 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0000B3] hover:bg-[#000090] active:scale-95 text-white text-xs font-bold rounded-2xl shadow-sm shadow-blue-950/15 transition-all cursor-pointer"
             >
               <span>Lanjut: Nota & Bukti Bayar (Tahap 3)</span>
               <ArrowRight className="w-4 h-4" />

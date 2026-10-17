@@ -239,7 +239,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 mb-0.5">
             <span>Pusat Berkas Terpadu</span>
             <span>·</span>
-            <span className="text-purple-700 font-bold">{activeProject.namaProject}</span>
+            <span className="text-[#0000B3] font-bold">{activeProject.namaProject}</span>
           </div>
           <h2 className="text-lg font-black text-slate-900 flex items-center gap-2">
             <span>Proses SPJ Perjalanan Dinas</span>
@@ -260,12 +260,12 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
             onClick={onOpenLogoDinas}
             className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1"
           >
-            <Building2 className="w-3.5 h-3.5 text-purple-600" />
+            <Building2 className="w-3.5 h-3.5 text-[#0000B3]" />
             <span>Logo Dinas</span>
           </button>
           <button
             onClick={onOpenPaketLengkap}
-            className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 hover:brightness-110 text-white text-xs font-black shadow-md transition-all cursor-pointer inline-flex items-center gap-1.5"
+            className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-[#0000B3] to-blue-700 hover:brightness-110 text-white text-xs font-black shadow-md transition-all cursor-pointer inline-flex items-center gap-1.5"
           >
             <Printer className="w-3.5 h-3.5 text-cyan-300" />
             <span>Cetak Paket Lengkap</span>
@@ -279,11 +279,11 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
           onClick={() => setActiveStep('kuitansi')}
           className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeStep === 'kuitansi'
-              ? 'bg-white text-purple-900 shadow-sm border border-slate-200/60'
+              ? 'bg-white text-blue-900 shadow-sm border border-slate-200/60'
               : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
           }`}
         >
-          <FileText className={`w-4 h-4 ${activeStep === 'kuitansi' ? 'text-purple-600' : 'text-slate-400'}`} />
+          <FileText className={`w-4 h-4 ${activeStep === 'kuitansi' ? 'text-[#0000B3]' : 'text-slate-400'}`} />
           <span>1. Kuitansi & Rincian</span>
         </button>
 
@@ -291,11 +291,11 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
           onClick={() => setActiveStep('dokumentasi')}
           className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeStep === 'dokumentasi'
-              ? 'bg-white text-purple-900 shadow-sm border border-slate-200/60'
+              ? 'bg-white text-blue-900 shadow-sm border border-slate-200/60'
               : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
           }`}
         >
-          <Camera className={`w-4 h-4 ${activeStep === 'dokumentasi' ? 'text-purple-600' : 'text-slate-400'}`} />
+          <Camera className={`w-4 h-4 ${activeStep === 'dokumentasi' ? 'text-[#0000B3]' : 'text-slate-400'}`} />
           <span>2. Foto GPS ({dokumentasiList.length})</span>
         </button>
 
@@ -303,11 +303,11 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
           onClick={() => setActiveStep('bukti_bayar')}
           className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeStep === 'bukti_bayar'
-              ? 'bg-white text-purple-900 shadow-sm border border-slate-200/60'
+              ? 'bg-white text-blue-900 shadow-sm border border-slate-200/60'
               : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
           }`}
         >
-          <Receipt className={`w-4 h-4 ${activeStep === 'bukti_bayar' ? 'text-purple-600' : 'text-slate-400'}`} />
+          <Receipt className={`w-4 h-4 ${activeStep === 'bukti_bayar' ? 'text-[#0000B3]' : 'text-slate-400'}`} />
           <span>3. Nota Bayar ({buktiBayarList.length})</span>
         </button>
 
@@ -315,7 +315,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
           onClick={() => setActiveStep('rekap')}
           className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             activeStep === 'rekap'
-              ? 'bg-white text-purple-900 shadow-sm border border-slate-200/60'
+              ? 'bg-white text-blue-900 shadow-sm border border-slate-200/60'
               : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
           }`}
         >
@@ -336,7 +336,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
               </div>
               <button
                 onClick={() => setActiveStep('dokumentasi')}
-                className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold inline-flex items-center gap-1 cursor-pointer transition-all"
+                className="px-3 py-1.5 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white text-xs font-bold inline-flex items-center gap-1 cursor-pointer transition-all"
               >
                 <span>Lanjut Foto GPS</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -350,7 +350,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                   type="text"
                   value={kuitansi.nomorSPPD}
                   onChange={(e) => handleKuitansiChange('nomorSPPD', e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0000B3]"
                 />
               </div>
               <div>
@@ -359,7 +359,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                   type="text"
                   value={kuitansi.namaPelaksana}
                   onChange={(e) => handleKuitansiChange('namaPelaksana', e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0000B3]"
                 />
               </div>
               <div className="sm:col-span-2">
@@ -368,7 +368,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                   rows={2}
                   value={kuitansi.maksudPerjalanan}
                   onChange={(e) => handleKuitansiChange('maksudPerjalanan', e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-600"
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500/20 focus:border-[#0000B3]"
                 />
               </div>
               <div>
@@ -417,7 +417,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                   )}
                   <button
                     onClick={handleAddRincian}
-                    className="px-2.5 py-1 rounded-lg bg-purple-50 text-purple-700 hover:bg-purple-100 font-bold text-[11px] inline-flex items-center gap-1 cursor-pointer"
+                    className="px-2.5 py-1 rounded-lg bg-blue-50 text-[#0000B3] hover:bg-blue-100 font-bold text-[11px] inline-flex items-center gap-1 cursor-pointer"
                   >
                     <Plus className="w-3 h-3" />
                     <span>Tambah Baris</span>
@@ -471,9 +471,9 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                 ))}
               </div>
 
-              <div className="mt-3 flex items-center justify-between bg-purple-50 p-3 rounded-xl border border-purple-200 text-xs">
-                <span className="font-bold text-purple-900">Total Keseluruhan Biaya:</span>
-                <span className="text-base font-black text-purple-900">Rp {(kuitansi.totalBiaya || 0).toLocaleString('id-ID')}</span>
+              <div className="mt-3 flex items-center justify-between bg-blue-50 p-3 rounded-xl border border-blue-200 text-xs">
+                <span className="font-bold text-blue-900">Total Keseluruhan Biaya:</span>
+                <span className="text-base font-black text-blue-900">Rp {(kuitansi.totalBiaya || 0).toLocaleString('id-ID')}</span>
               </div>
             </div>
           </div>
@@ -497,7 +497,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                 </button>
                 <button
                   onClick={() => setActiveStep('bukti_bayar')}
-                  className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
                 >
                   <span>Lanjut Nota</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -534,14 +534,14 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                   <input
                     type="file"
                     accept="image/*"
-                    className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 cursor-pointer"
+                    className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-[#0000B3] hover:file:bg-blue-100 cursor-pointer"
                   />
                 </div>
               </div>
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="px-4 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl inline-flex items-center gap-1 shadow-sm cursor-pointer"
+                  className="px-4 py-1.5 bg-[#0000B3] hover:bg-[#000090] text-white text-xs font-bold rounded-xl inline-flex items-center gap-1 shadow-sm cursor-pointer"
                 >
                   <Camera className="w-3.5 h-3.5" />
                   <span>Simpan Foto GPS</span>
@@ -598,7 +598,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                 </button>
                 <button
                   onClick={() => setActiveStep('rekap')}
-                  className="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
+                  className="px-3 py-1.5 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
                 >
                   <span>Lanjut Rekap</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -645,14 +645,14 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                   <input
                     type="file"
                     accept="image/*"
-                    className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 cursor-pointer"
+                    className="w-full text-xs text-slate-500 file:mr-2 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-[#0000B3] hover:file:bg-blue-100 cursor-pointer"
                   />
                 </div>
               </div>
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="px-4 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl inline-flex items-center gap-1 shadow-sm cursor-pointer"
+                  className="px-4 py-1.5 bg-[#0000B3] hover:bg-[#000090] text-white text-xs font-bold rounded-xl inline-flex items-center gap-1 shadow-sm cursor-pointer"
                 >
                   <Receipt className="w-3.5 h-3.5" />
                   <span>Simpan Nota Bayar</span>
@@ -673,7 +673,7 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                     <div className="flex-1 min-w-0 text-xs">
                       <h5 className="font-bold text-slate-900 truncate">{b.namaVendor}</h5>
                       <p className="text-[11px] text-slate-500">No: {b.nomorBukti} · {b.tanggalTransaksi}</p>
-                      <p className="text-xs font-black text-purple-900 mt-0.5">Rp {b.nominal.toLocaleString('id-ID')}</p>
+                      <p className="text-xs font-black text-blue-900 mt-0.5">Rp {b.nominal.toLocaleString('id-ID')}</p>
                     </div>
                     <button
                       onClick={() => handleDeleteBukti(b.id)}
@@ -704,12 +704,12 @@ export const UnifiedSPJWorkspace: React.FC<UnifiedSPJWorkspaceProps> = ({
                 onClick={handleSyncNotaToKuitansi}
                 className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
               >
-                <RefreshCw className="w-4 h-4 text-purple-600" />
+                <RefreshCw className="w-4 h-4 text-[#0000B3]" />
                 <span>Sinkronkan Nota ke Kuitansi</span>
               </button>
               <button
                 onClick={onOpenPaketLengkap}
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-700 hover:brightness-110 text-white text-xs font-black shadow-md inline-flex items-center gap-2 cursor-pointer"
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#0000B3] to-blue-700 hover:brightness-110 text-white text-xs font-black shadow-md inline-flex items-center gap-2 cursor-pointer"
               >
                 <Printer className="w-4 h-4 text-cyan-300" />
                 <span>Cetak Paket Lengkap SPJ (PDF)</span>

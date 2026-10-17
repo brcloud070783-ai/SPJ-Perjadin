@@ -31,12 +31,12 @@ export const DeviceAccessGuideModal: React.FC<DeviceAccessGuideModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl max-w-xl w-full my-auto shadow-2xl border border-purple-100 overflow-hidden animate-scale-up">
+      <div className="bg-white rounded-3xl max-w-xl w-full my-auto shadow-2xl border border-blue-100 overflow-hidden animate-scale-up">
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-[#180A30] via-[#2D0D5B] to-[#7D2AE8] text-white p-5 space-y-2 relative">
+        <div className="bg-gradient-to-r from-[#0A1128] via-[#00008F] to-[#0000B3] text-white p-5 space-y-2 relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-purple-200 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-colors cursor-pointer"
+            className="absolute top-4 right-4 text-blue-200 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-colors cursor-pointer"
             title="Tutup"
           >
             <X className="w-5 h-5" />
@@ -50,7 +50,7 @@ export const DeviceAccessGuideModal: React.FC<DeviceAccessGuideModalProps> = ({
           <h2 className="text-lg sm:text-xl font-black text-white leading-snug">
             Mengapa Link Pratinjau Tidak Bisa Dibuka di HP?
           </h2>
-          <p className="text-xs text-purple-200 font-normal">
+          <p className="text-xs text-blue-200 font-normal">
             Penjelasan jujur & langkah pasti agar aplikasi SiDinas bisa terbuka di HP Anda.
           </p>
         </div>
@@ -73,27 +73,27 @@ export const DeviceAccessGuideModal: React.FC<DeviceAccessGuideModalProps> = ({
 
           {/* Correct steps */}
           <div className="space-y-3 pt-1">
-            <h3 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider text-purple-900 flex items-center gap-1.5">
-              <UserCheck className="w-4 h-4 text-[#7D2AE8]" />
+            <h3 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider text-blue-950 flex items-center gap-1.5">
+              <UserCheck className="w-4 h-4 text-[#0000B3]" />
               Langkah Buka Tautan Pratinjau Saat Ini di HP:
             </h3>
 
             {/* Cara 1 */}
-            <div className="p-3.5 rounded-2xl bg-purple-50 border border-purple-200 space-y-2">
+            <div className="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="font-extrabold text-purple-950 text-xs flex items-center gap-1.5">
-                  <span className="w-5 h-5 rounded-full bg-[#7D2AE8] text-white flex items-center justify-center text-[10px] font-black">1</span>
+                <span className="font-extrabold text-blue-950 text-xs flex items-center gap-1.5">
+                  <span className="w-5 h-5 rounded-full bg-[#0000B3] text-white flex items-center justify-center text-[10px] font-black">1</span>
                   Login Akun Google di Chrome HP
                 </span>
-                <span className="text-[10px] font-bold text-purple-800 bg-purple-100 px-2 py-0.5 rounded-full">Solusi Link Pratinjau</span>
+                <span className="text-[10px] font-bold text-purple-800 bg-blue-100 px-2 py-0.5 rounded-full">Solusi Link Pratinjau</span>
               </div>
               <p className="text-[11px] text-slate-600 leading-relaxed">
-                Untuk membuka tautan pratinjau <code className="bg-purple-100 px-1 rounded text-purple-900 font-mono">ais-pre-*.run.app</code> di HP Anda secara langsung:
+                Untuk membuka tautan pratinjau <code className="bg-blue-100 px-1 rounded text-blue-950 font-mono">ais-pre-*.run.app</code> di HP Anda secara langsung:
               </p>
               <ol className="list-decimal list-inside text-[11px] text-slate-800 space-y-1.5 pl-1 font-semibold">
                 <li>Buka aplikasi <strong>Google Chrome</strong> di HP.</li>
                 <li>Klik foto/inisial profil Chrome di pojok kanan atas HP.</li>
-                <li>Ganti profil / Login dengan akun: <code className="bg-purple-200/80 px-1.5 py-0.5 rounded text-purple-950 font-mono">brcloud070783@gmail.com</code></li>
+                <li>Ganti profil / Login dengan akun: <code className="bg-blue-200/80 px-1.5 py-0.5 rounded text-blue-950 font-mono">brcloud070783@gmail.com</code></li>
                 <li>Buka kembali tautan pratinjau. Halaman dijamin terbuka 100%!</li>
               </ol>
             </div>
@@ -148,7 +148,7 @@ export const DeviceAccessGuideModal: React.FC<DeviceAccessGuideModalProps> = ({
           )}
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-[#7D2AE8] hover:bg-purple-800 text-white font-extrabold text-xs shadow-md cursor-pointer shrink-0"
+            className="px-5 py-2 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white font-extrabold text-xs shadow-md cursor-pointer shrink-0"
           >
             Saya Mengerti
           </button>

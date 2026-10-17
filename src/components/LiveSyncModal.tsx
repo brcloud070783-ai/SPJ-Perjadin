@@ -131,12 +131,12 @@ export const LiveSyncModal: React.FC<LiveSyncModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl max-w-lg w-full my-auto shadow-2xl border border-purple-100 overflow-hidden animate-scale-up">
+      <div className="bg-white rounded-3xl max-w-lg w-full my-auto shadow-2xl border border-blue-100 overflow-hidden animate-scale-up">
         {/* Header */}
-        <div className="bg-gradient-to-r from-[#180A30] via-[#2D0D5B] to-[#7D2AE8] text-white p-5 relative">
+        <div className="bg-gradient-to-r from-[#0A1128] via-[#00008F] to-[#0000B3] text-white p-5 relative">
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-purple-200 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-colors cursor-pointer"
+            className="absolute top-4 right-4 text-blue-200 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-full transition-colors cursor-pointer"
             title="Tutup"
           >
             <X className="w-5 h-5" />
@@ -150,7 +150,7 @@ export const LiveSyncModal: React.FC<LiveSyncModalProps> = ({
           <h2 className="text-xl font-black text-white leading-tight">
             Sinkronisasi Otomatis Realtime Cloud
           </h2>
-          <p className="text-xs text-purple-200 mt-1">
+          <p className="text-xs text-blue-200 mt-1">
             Setiap kali ada perubahan di Laptop (Kuitansi, Nota, Foto GPS), aplikasi di HP akan <strong>ter-update langsung secara otomatis</strong>!
           </p>
         </div>
@@ -198,21 +198,21 @@ export const LiveSyncModal: React.FC<LiveSyncModalProps> = ({
           </div>
 
           {/* Device Sync Diagram */}
-          <div className="p-3.5 rounded-2xl bg-purple-50 border border-purple-200 space-y-2">
+          <div className="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 space-y-2">
             <div className="flex items-center justify-around text-center py-2">
               <div className="flex flex-col items-center">
-                <Laptop className="w-7 h-7 text-[#7D2AE8] mb-1" />
+                <Laptop className="w-7 h-7 text-[#0000B3] mb-1" />
                 <span className="font-extrabold text-[11px]">Laptop / PC</span>
                 <span className="text-[9px] text-slate-500">Edit Kuitansi / Foto</span>
               </div>
 
               <div className="flex flex-col items-center text-cyan-600">
                 <RefreshCw className="w-5 h-5 animate-spin" />
-                <span className="text-[9px] font-bold text-purple-700 mt-1">Sync Instant</span>
+                <span className="text-[9px] font-bold text-[#0000B3] mt-1">Sync Instant</span>
               </div>
 
               <div className="flex flex-col items-center">
-                <Smartphone className="w-7 h-7 text-[#7D2AE8] mb-1" />
+                <Smartphone className="w-7 h-7 text-[#0000B3] mb-1" />
                 <span className="font-extrabold text-[11px]">HP Kamu</span>
                 <span className="text-[9px] text-slate-500">Auto Update!</span>
               </div>
@@ -221,7 +221,7 @@ export const LiveSyncModal: React.FC<LiveSyncModalProps> = ({
 
           {/* Share Code / Connection Section */}
           <div className="space-y-3">
-            <h4 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider text-purple-950">
+            <h4 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider text-blue-950">
               Kode Akses Hubungkan HP & PC:
             </h4>
 
@@ -229,12 +229,12 @@ export const LiveSyncModal: React.FC<LiveSyncModalProps> = ({
             <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5">
               <span className="text-[10px] font-bold text-slate-500 uppercase block">Kode SPJ Aktif Ini:</span>
               <div className="flex items-center gap-2">
-                <code className="bg-white px-3 py-1.5 rounded-lg border border-purple-200 font-mono font-black text-slate-900 text-sm flex-1 truncate">
+                <code className="bg-white px-3 py-1.5 rounded-lg border border-blue-200 font-mono font-black text-slate-900 text-sm flex-1 truncate">
                   {roomCode}
                 </code>
                 <button
                   onClick={handleCopyCode}
-                  className="px-3 py-1.5 bg-[#7D2AE8] text-white font-extrabold text-xs rounded-lg inline-flex items-center gap-1 cursor-pointer shrink-0"
+                  className="px-3 py-1.5 bg-[#0000B3] text-white font-extrabold text-xs rounded-lg inline-flex items-center gap-1 cursor-pointer shrink-0"
                 >
                   {copiedCode ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>{copiedCode ? 'Tercopy' : 'Copy'}</span>
@@ -246,7 +246,7 @@ export const LiveSyncModal: React.FC<LiveSyncModalProps> = ({
             <button
               onClick={handlePushCurrentToCloud}
               disabled={isSyncingNow}
-              className="w-full py-2.5 rounded-xl bg-purple-100 hover:bg-purple-200 text-[#7D2AE8] border border-purple-300 font-extrabold text-xs inline-flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
+              className="w-full py-2.5 rounded-xl bg-blue-100 hover:bg-blue-200 text-[#0000B3] border border-blue-300 font-extrabold text-xs inline-flex items-center justify-center gap-2 transition-all cursor-pointer disabled:opacity-50"
             >
               <CloudUpload className="w-4 h-4" />
               <span>Kirim Data Terbaru PC ke HP Sekarang</span>
@@ -263,7 +263,7 @@ export const LiveSyncModal: React.FC<LiveSyncModalProps> = ({
                   value={inputCode}
                   onChange={(e) => setInputCode(e.target.value)}
                   placeholder="Masukkan Kode SPJ..."
-                  className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs font-bold text-slate-900 flex-1 focus:outline-none focus:ring-2 focus:ring-[#7D2AE8]"
+                  className="px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs font-bold text-slate-900 flex-1 focus:outline-none focus:ring-2 focus:ring-[#0000B3]"
                 />
                 <button
                   onClick={handleConnectByCode}
@@ -281,7 +281,7 @@ export const LiveSyncModal: React.FC<LiveSyncModalProps> = ({
         <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl bg-[#7D2AE8] hover:bg-purple-800 text-white font-extrabold text-xs shadow-md cursor-pointer"
+            className="px-5 py-2 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white font-extrabold text-xs shadow-md cursor-pointer"
           >
             Selesai
           </button>

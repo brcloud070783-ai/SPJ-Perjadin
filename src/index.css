@@ -7,6 +7,15 @@
   }
 }
 
+:root {
+  --color-brand-primary: #0000B3;
+  --color-brand-hover: #000090;
+  --color-brand-secondary: #0052CC;
+  --color-brand-accent: #00B4D8;
+  --color-brand-surface: #F0F7FF;
+  --color-brand-navy: #0A1128;
+}
+
 /* Exact Tahoma 8.5pt styling container & accurate font rendering */
 .kuitansi-a4-document {
   font-family: 'Tahoma', 'Segoe UI', Arial, sans-serif !important;

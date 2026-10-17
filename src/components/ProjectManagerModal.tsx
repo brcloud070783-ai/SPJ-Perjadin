@@ -276,9 +276,9 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-      <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-purple-100 overflow-hidden flex flex-col max-h-[92vh] animate-scale-up">
+      <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-blue-100 overflow-hidden flex flex-col max-h-[92vh] animate-scale-up">
         {/* Modal Header */}
-        <div className="bg-gradient-to-r from-[#180A30] via-[#2D0D5B] to-[#7D2AE8] text-white p-4 sm:p-5 flex items-center justify-between shrink-0">
+        <div className="bg-gradient-to-r from-[#0A1128] via-[#00008F] to-[#0000B3] text-white p-4 sm:p-5 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-white/10 text-cyan-300 flex items-center justify-center border border-white/20 shrink-0">
               <Briefcase className="w-5 h-5" />
@@ -287,7 +287,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
               <h2 className="text-base sm:text-lg font-black tracking-tight">
                 Pengelola Berkas Project SPJ
               </h2>
-              <p className="text-xs text-purple-200/90 font-medium">
+              <p className="text-xs text-blue-200/90 font-medium">
                 Penyimpanan Offline HP & Synchronized Google Drive Cloud
               </p>
             </div>
@@ -302,12 +302,12 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
         </div>
 
         {/* Google Drive Status Bar */}
-        <div className="bg-purple-900/10 border-b border-purple-100 px-4 py-2.5 flex items-center justify-between gap-3 flex-wrap">
+        <div className="bg-purple-900/10 border-b border-blue-100 px-4 py-2.5 flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2 text-xs">
             <Cloud className={`w-4 h-4 ${user ? 'text-emerald-600' : 'text-slate-400'}`} />
             {user ? (
               <span className="text-slate-700 font-semibold">
-                Google Drive: <strong className="text-purple-950">{user.email}</strong>
+                Google Drive: <strong className="text-blue-950">{user.email}</strong>
               </span>
             ) : (
               <span className="text-slate-600">
@@ -322,7 +322,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                 <button
                   onClick={handleSyncAllProjects}
                   disabled={isSyncing === 'all'}
-                  className="px-3 py-1 rounded-xl bg-gradient-to-r from-[#7D2AE8] to-[#9E52FF] text-white text-[11px] font-bold inline-flex items-center gap-1.5 shadow-2xs hover:opacity-95 transition-all cursor-pointer disabled:opacity-50"
+                  className="px-3 py-1 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white text-[11px] font-bold inline-flex items-center gap-1.5 shadow-2xs hover:opacity-95 transition-all cursor-pointer disabled:opacity-50"
                 >
                   {isSyncing === 'all' ? (
                     <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -344,10 +344,10 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
               <button
                 onClick={handleGoogleSignIn}
                 disabled={isLoggingIn}
-                className="gsi-material-button text-[11px] font-bold px-3 py-1 rounded-xl bg-white border border-slate-300 hover:border-purple-400 text-slate-800 flex items-center gap-2 shadow-2xs cursor-pointer"
+                className="gsi-material-button text-[11px] font-bold px-3 py-1 rounded-xl bg-white border border-slate-300 hover:border-blue-400 text-slate-800 flex items-center gap-2 shadow-2xs cursor-pointer"
               >
                 {isLoggingIn ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-purple-600" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#0000B3]" />
                 ) : (
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-4 h-4 shrink-0">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -380,7 +380,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
               onClick={() => setActiveTab('local')}
               className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer ${
                 activeTab === 'local'
-                  ? 'bg-white text-[#7D2AE8] shadow-2xs'
+                  ? 'bg-white text-[#0000B3] shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -393,7 +393,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
               }}
               className={`px-3 py-1.5 rounded-lg text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1.5 ${
                 activeTab === 'drive'
-                  ? 'bg-white text-[#7D2AE8] shadow-2xs'
+                  ? 'bg-white text-[#0000B3] shadow-2xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
@@ -410,7 +410,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Cari SPJ..."
-                className="w-full pl-8 pr-2 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#7D2AE8]"
+                className="w-full pl-8 pr-2 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#0000B3]"
               />
             </div>
 
@@ -423,10 +423,10 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="px-2.5 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-purple-300 text-slate-700 hover:text-[#7D2AE8] text-xs font-bold inline-flex items-center gap-1 transition-colors shadow-2xs cursor-pointer"
+              className="px-2.5 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-blue-300 text-slate-700 hover:text-[#0000B3] text-xs font-bold inline-flex items-center gap-1 transition-colors shadow-2xs cursor-pointer"
               title="Import Berkas SPJ dari HP (.spj)"
             >
-              <Upload className="w-3.5 h-3.5 text-purple-600" />
+              <Upload className="w-3.5 h-3.5 text-[#0000B3]" />
               <span className="hidden sm:inline">Impor .SPJ</span>
             </button>
 
@@ -435,7 +435,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                 setActiveTab('local');
                 setIsCreating(true);
               }}
-              className="px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#7D2AE8] to-[#9E52FF] text-white text-xs font-extrabold inline-flex items-center gap-1 transition-all shadow-md active:scale-95 cursor-pointer"
+              className="px-3 py-1.5 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white text-xs font-extrabold inline-flex items-center gap-1 transition-all shadow-md active:scale-95 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5 stroke-[3]" />
               <span>Project Baru</span>
@@ -447,9 +447,9 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
         <div className="p-4 overflow-y-auto space-y-3 flex-1">
           {/* Create Form inline if active */}
           {isCreating && (
-            <form onSubmit={handleCreateSubmit} className="bg-purple-50/80 border-2 border-dashed border-[#7D2AE8] rounded-2xl p-4 space-y-3 animate-fade-in">
+            <form onSubmit={handleCreateSubmit} className="bg-blue-50/80 border-2 border-dashed border-[#0000B3] rounded-2xl p-4 space-y-3 animate-fade-in">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-black text-[#7D2AE8] uppercase tracking-wider flex items-center gap-1.5">
+                <h3 className="text-xs font-black text-[#0000B3] uppercase tracking-wider flex items-center gap-1.5">
                   <FolderPlus className="w-4 h-4" />
                   Buat Berkas SPJ Project Baru
                 </h3>
@@ -473,7 +473,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                     onChange={(e) => setNewNama(e.target.value)}
                     placeholder="Contoh: SPJ Konsultasi Nunukan - April 2026"
                     required
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-purple-200 text-xs font-medium focus:ring-2 focus:ring-[#7D2AE8] focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl bg-white border border-blue-200 text-xs font-medium focus:ring-2 focus:ring-[#0000B3] focus:outline-none"
                   />
                 </div>
 
@@ -486,7 +486,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                     value={newNomorSPD}
                     onChange={(e) => setNewNomorSPD(e.target.value)}
                     placeholder="Contoh: 090/123/SPD/2026"
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-purple-200 text-xs font-medium focus:ring-2 focus:ring-[#7D2AE8] focus:outline-none"
+                    className="w-full px-3 py-2 rounded-xl bg-white border border-blue-200 text-xs font-medium focus:ring-2 focus:ring-[#0000B3] focus:outline-none"
                   />
                 </div>
               </div>
@@ -501,7 +501,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded-xl bg-[#7D2AE8] text-white font-extrabold text-xs shadow-md cursor-pointer"
+                  className="px-4 py-1.5 rounded-xl bg-[#0000B3] text-white font-extrabold text-xs shadow-md cursor-pointer"
                 >
                   Simpan & Buka Project
                 </button>
@@ -532,15 +532,15 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                     key={project.id}
                     className={`rounded-2xl border p-3.5 transition-all space-y-3 ${
                       isActive
-                        ? 'bg-purple-50/60 border-2 border-[#7D2AE8] shadow-md'
-                        : 'bg-white border-slate-200/90 hover:border-purple-200 hover:shadow-xs'
+                        ? 'bg-blue-50/60 border-2 border-[#0000B3] shadow-md'
+                        : 'bg-white border-slate-200/90 hover:border-blue-200 hover:shadow-xs'
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="space-y-1 flex-1">
                         <div className="flex items-center gap-2 flex-wrap">
                           {isActive && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#7D2AE8] text-white text-[10px] font-extrabold">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#0000B3] text-white text-[10px] font-extrabold">
                               <Check className="w-3 h-3 stroke-[3]" /> SEDANG AKTIF
                             </span>
                           )}
@@ -561,14 +561,14 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
 
                         {/* Editable Name / SPD */}
                         {isEditingThis ? (
-                          <div className="space-y-2 pt-1 border-t border-purple-200 my-2">
+                          <div className="space-y-2 pt-1 border-t border-blue-200 my-2">
                             <div>
                               <label className="text-[10px] font-bold text-slate-500">Nama Project</label>
                               <input
                                 type="text"
                                 value={editNama}
                                 onChange={(e) => setEditNama(e.target.value)}
-                                className="w-full px-2.5 py-1 rounded-lg bg-white border border-purple-300 text-xs font-bold text-slate-900 focus:outline-none"
+                                className="w-full px-2.5 py-1 rounded-lg bg-white border border-blue-300 text-xs font-bold text-slate-900 focus:outline-none"
                               />
                             </div>
                             <div>
@@ -577,7 +577,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                                 type="text"
                                 value={editNomorSPD}
                                 onChange={(e) => setEditNomorSPD(e.target.value)}
-                                className="w-full px-2.5 py-1 rounded-lg bg-white border border-purple-300 text-xs font-medium text-slate-900 focus:outline-none"
+                                className="w-full px-2.5 py-1 rounded-lg bg-white border border-blue-300 text-xs font-medium text-slate-900 focus:outline-none"
                               />
                             </div>
                             <div className="flex justify-end gap-1.5 pt-1">
@@ -589,7 +589,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                               </button>
                               <button
                                 onClick={() => handleSaveEditing(project.id)}
-                                className="px-3 py-1 text-[11px] font-bold bg-[#7D2AE8] text-white rounded-lg"
+                                className="px-3 py-1 text-[11px] font-bold bg-[#0000B3] text-white rounded-lg"
                               >
                                 Simpan Perubahan
                               </button>
@@ -604,7 +604,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                               {onUpdateProjectMeta && (
                                 <button
                                   onClick={() => handleStartEditing(project)}
-                                  className="text-slate-400 hover:text-[#7D2AE8] transition-colors p-0.5"
+                                  className="text-slate-400 hover:text-[#0000B3] transition-colors p-0.5"
                                   title="Ubah Nama & SPD"
                                 >
                                   <Edit3 className="w-3.5 h-3.5" />
@@ -629,7 +629,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
 
                       <div className="text-right shrink-0">
                         <span className="text-[10px] text-slate-400 block font-medium">Nilai Kuitansi</span>
-                        <span className="text-sm font-black text-[#7D2AE8]">
+                        <span className="text-sm font-black text-[#0000B3]">
                           Rp {totalNilai.toLocaleString('id-ID')}
                         </span>
                       </div>
@@ -638,7 +638,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                     {/* Summary Indicators */}
                     <div className="flex items-center gap-3 bg-white/80 p-2 rounded-xl border border-slate-100 text-[11px] flex-wrap">
                       <div className="flex items-center gap-1.5 text-slate-600">
-                        <span className="w-2 h-2 rounded-full bg-purple-500" />
+                        <span className="w-2 h-2 rounded-full bg-blue-500" />
                         <span>Kuitansi A4: <strong className="text-slate-800">1 Lembar</strong></span>
                       </div>
 
@@ -669,7 +669,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
 
                         <button
                           onClick={() => onExportProject(project)}
-                          className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-purple-100 text-slate-700 hover:text-[#7D2AE8] text-[11px] font-bold inline-flex items-center gap-1 transition-colors cursor-pointer"
+                          className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-[#0000B3] text-[11px] font-bold inline-flex items-center gap-1 transition-colors cursor-pointer"
                           title="Unduh Berkas Project (.spj)"
                         >
                           <Download className="w-3 h-3" />
@@ -679,20 +679,20 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                         <button
                           onClick={() => handleUploadProjectToDrive(project)}
                           disabled={isSyncing === project.id}
-                          className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#7D2AE8] text-[11px] font-bold inline-flex items-center gap-1 transition-colors cursor-pointer disabled:opacity-50"
+                          className="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0000B3] text-[11px] font-bold inline-flex items-center gap-1 transition-colors cursor-pointer disabled:opacity-50"
                           title="Upload / Update Ke Google Drive"
                         >
                           {isSyncing === project.id ? (
-                            <Loader2 className="w-3 h-3 animate-spin text-purple-600" />
+                            <Loader2 className="w-3 h-3 animate-spin text-[#0000B3]" />
                           ) : (
-                            <CloudUpload className="w-3 h-3 text-purple-600" />
+                            <CloudUpload className="w-3 h-3 text-[#0000B3]" />
                           )}
                           <span>Sync Drive</span>
                         </button>
 
                         <button
                           onClick={() => onDuplicateProject(project.id)}
-                          className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-purple-100 text-slate-700 hover:text-[#7D2AE8] text-[11px] font-bold inline-flex items-center gap-1 transition-colors cursor-pointer"
+                          className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-100 text-slate-700 hover:text-[#0000B3] text-[11px] font-bold inline-flex items-center gap-1 transition-colors cursor-pointer"
                           title="Duplikasi Project Ini"
                         >
                           <Copy className="w-3 h-3" />
@@ -723,14 +723,14 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                             onSelectProject(project.id);
                             onClose();
                           }}
-                          className="px-4 py-1.5 rounded-xl bg-[#7D2AE8] hover:bg-purple-900 text-white font-extrabold text-xs shadow-sm transition-all cursor-pointer active:scale-95"
+                          className="px-4 py-1.5 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white font-extrabold text-xs shadow-sm transition-all cursor-pointer active:scale-95"
                         >
                           Buka & Kerjakan
                         </button>
                       ) : (
                         <button
                           onClick={onClose}
-                          className="px-4 py-1.5 rounded-xl bg-purple-100 text-[#7D2AE8] font-extrabold text-xs cursor-pointer hover:bg-purple-200"
+                          className="px-4 py-1.5 rounded-xl bg-blue-100 text-[#0000B3] font-extrabold text-xs cursor-pointer hover:bg-blue-200"
                         >
                           Lanjutkan Edit
                         </button>
@@ -747,7 +747,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
             <div className="space-y-3">
               {!user ? (
                 <div className="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200 p-6 space-y-3">
-                  <Cloud className="w-12 h-12 text-purple-300 mx-auto" />
+                  <Cloud className="w-12 h-12 text-blue-300 mx-auto" />
                   <div>
                     <h3 className="text-sm font-extrabold text-slate-800">Google Drive Belum Terhubung</h3>
                     <p className="text-xs text-slate-500 mt-0.5">
@@ -757,7 +757,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                   <button
                     onClick={handleGoogleSignIn}
                     disabled={isLoggingIn}
-                    className="px-4 py-2 rounded-xl bg-[#7D2AE8] text-white text-xs font-bold inline-flex items-center gap-2 cursor-pointer shadow-md"
+                    className="px-4 py-2 rounded-xl bg-[#0000B3] text-white text-xs font-bold inline-flex items-center gap-2 cursor-pointer shadow-md"
                   >
                     {isLoggingIn ? <Loader2 className="w-4 h-4 animate-spin" /> : <Cloud className="w-4 h-4" />}
                     <span>Masuk Dengan Google Drive</span>
@@ -765,7 +765,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                 </div>
               ) : isLoadingDriveFiles ? (
                 <div className="text-center py-12">
-                  <Loader2 className="w-8 h-8 text-[#7D2AE8] animate-spin mx-auto mb-2" />
+                  <Loader2 className="w-8 h-8 text-[#0000B3] animate-spin mx-auto mb-2" />
                   <p className="text-xs font-bold text-slate-600">Memuat berkas dari Google Drive...</p>
                 </div>
               ) : driveFiles.length === 0 ? (
@@ -780,7 +780,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                   <button
                     onClick={handleSyncAllProjects}
                     disabled={isSyncing === 'all'}
-                    className="px-3.5 py-1.5 rounded-xl bg-[#7D2AE8] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-xl bg-[#0000B3] text-white text-xs font-bold inline-flex items-center gap-1.5 shadow-xs cursor-pointer"
                   >
                     {isSyncing === 'all' ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CloudUpload className="w-3.5 h-3.5" />}
                     <span>Cadangkan Semua Project Sekarang</span>
@@ -792,7 +792,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                     <span>Folder: Google Drive / SiDinas SPJ Backup</span>
                     <button
                       onClick={() => fetchDriveList()}
-                      className="text-[#7D2AE8] hover:underline inline-flex items-center gap-1"
+                      className="text-[#0000B3] hover:underline inline-flex items-center gap-1"
                     >
                       <RefreshCw className="w-3 h-3" /> Refresh List
                     </button>
@@ -801,10 +801,10 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                   {driveFiles.map((file) => (
                     <div
                       key={file.id}
-                      className="bg-white border border-slate-200/90 rounded-2xl p-3.5 flex items-center justify-between gap-3 hover:border-purple-200 transition-all"
+                      className="bg-white border border-slate-200/90 rounded-2xl p-3.5 flex items-center justify-between gap-3 hover:border-blue-200 transition-all"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-9 h-9 rounded-xl bg-purple-100 text-[#7D2AE8] flex items-center justify-center shrink-0">
+                        <div className="w-9 h-9 rounded-xl bg-blue-100 text-[#0000B3] flex items-center justify-center shrink-0">
                           <Cloud className="w-5 h-5" />
                         </div>
                         <div className="min-w-0">
@@ -821,7 +821,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
                         <button
                           onClick={() => handleDownloadDriveFile(file)}
                           disabled={isSyncing === file.id}
-                          className="px-3 py-1.5 rounded-xl bg-[#7D2AE8] text-white text-xs font-bold inline-flex items-center gap-1 shadow-xs hover:bg-purple-900 transition-colors cursor-pointer disabled:opacity-50"
+                          className="px-3 py-1.5 rounded-xl bg-[#0000B3] text-white text-xs font-bold inline-flex items-center gap-1 shadow-xs hover:bg-[#000090] transition-colors cursor-pointer disabled:opacity-50"
                           title="Buka & Unduh ke HP"
                         >
                           {isSyncing === file.id ? (
@@ -859,7 +859,7 @@ export const ProjectManagerModal: React.FC<ProjectManagerModalProps> = ({
         {/* Modal Footer Info */}
         <div className="p-3.5 bg-slate-100 border-t border-slate-200 text-slate-500 text-[11px] flex items-center justify-between shrink-0">
           <div className="flex items-center gap-1.5">
-            <AlertCircle className="w-3.5 h-3.5 text-purple-600 shrink-0" />
+            <AlertCircle className="w-3.5 h-3.5 text-[#0000B3] shrink-0" />
             <span>Semua data tersimpan aman secara offline di HP & tersinkronisasi otomatis ke Google Drive.</span>
           </div>
 

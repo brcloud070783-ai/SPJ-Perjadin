@@ -172,7 +172,7 @@ export const BuktiBayarForm: React.FC<BuktiBayarFormProps> = ({
 
   const kategoriLabels: Record<BuktiBayar['kategori'], { label: string; color: string }> = {
     tiket: { label: 'Tiket & Transport', color: 'bg-blue-100 text-blue-700 border-blue-200' },
-    hotel: { label: 'Hotel & Penginapan', color: 'bg-purple-100 text-purple-700 border-purple-200' },
+    hotel: { label: 'Hotel & Penginapan', color: 'bg-blue-100 text-[#0000B3] border-blue-200' },
     bbm: { label: 'BBM & Bahan Bakar', color: 'bg-amber-100 text-amber-700 border-amber-200' },
     tol: { label: 'Tol & Parkir', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
     konsumsi: { label: 'Konsumsi / Makan', color: 'bg-orange-100 text-orange-700 border-orange-200' },
@@ -466,7 +466,7 @@ export const BuktiBayarForm: React.FC<BuktiBayarFormProps> = ({
             <button
               type="button"
               onClick={onCompleteWizard}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#6547ED] hover:bg-[#5537E6] active:scale-95 text-white text-xs font-bold rounded-2xl shadow-sm shadow-purple-900/10 transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0000B3] hover:bg-[#000090] active:scale-95 text-white text-xs font-bold rounded-2xl shadow-sm shadow-blue-950/15 transition-all cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4 text-white" />
               <span>Selesai & Buka Paket Cetak SPJ</span>

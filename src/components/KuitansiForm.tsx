@@ -38,6 +38,7 @@ interface KuitansiFormProps {
   onNextStep?: () => void;
   buktiBayarList?: BuktiBayar[];
   onOpenLogoDinas?: () => void;
+  onGoToLanding?: () => void;
 }
 
 type StepType = 'kop' | 'pegawai' | 'rincian' | 'ttd';
@@ -48,7 +49,8 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
   onPreview,
   onNextStep,
   buktiBayarList = [],
-  onOpenLogoDinas
+  onOpenLogoDinas,
+  onGoToLanding
 }) => {
   const [activeStep, setActiveStep] = useState<StepType>('rincian');
   const [showSbmModal, setShowSbmModal] = useState(false);
@@ -382,7 +384,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
                     <button
                       type="button"
                       onClick={onOpenLogoDinas}
-                      className="text-xs font-semibold text-purple-700 hover:text-purple-800 bg-purple-50 hover:bg-purple-100 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+                      className="text-xs font-semibold text-[#0000B3] hover:text-blue-900 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
                     >
                       Koleksi Logo
                     </button>
@@ -549,11 +551,21 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
             </div>
           </div>
 
-          <div className="pt-3 border-t border-slate-100 flex justify-end">
+          <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+            {onGoToLanding ? (
+              <button
+                type="button"
+                onClick={onGoToLanding}
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all cursor-pointer"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>Kembali ke Beranda</span>
+              </button>
+            ) : <div />}
             <button
               type="button"
               onClick={() => setActiveStep('pegawai')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer shadow-xs active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0000B3] hover:bg-[#000090] active:scale-95 text-white text-xs font-bold rounded-2xl transition-all cursor-pointer shadow-sm shadow-blue-950/15"
             >
               <span>Lanjut: Data Pegawai & SPT</span>
               <ArrowRight className="w-4 h-4" />
@@ -717,7 +729,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
             <button
               type="button"
               onClick={() => setActiveStep('kop')}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-xl transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Kembali</span>
@@ -725,7 +737,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
             <button
               type="button"
               onClick={() => setActiveStep('rincian')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer shadow-xs active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0000B3] hover:bg-[#000090] active:scale-95 text-white text-xs font-bold rounded-2xl transition-all cursor-pointer shadow-sm shadow-blue-950/15"
             >
               <span>Lanjut: Rincian Biaya</span>
               <ArrowRight className="w-4 h-4" />
@@ -740,7 +752,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-4">
             <div>
               <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
-                <Calculator className="w-4 h-4 text-blue-600" />
+                <Calculator className="w-4 h-4 text-[#0000B3]" />
                 <span>Rincian Komponen Biaya Perjalanan</span>
               </h3>
               <p className="text-xs text-slate-500 mt-0.5">
@@ -752,10 +764,10 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
               <button
                 type="button"
                 onClick={() => setShowSbmModal(true)}
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3.5 py-2 rounded-xl border border-blue-200/80 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0000B3] bg-blue-50 hover:bg-blue-100 px-3.5 py-2 rounded-xl border border-blue-200 transition-colors cursor-pointer"
                 title="Buka standar SBM PMK Kemenkeu resmi"
               >
-                <Zap className="w-3.5 h-3.5 text-blue-600" />
+                <Zap className="w-3.5 h-3.5 text-[#0000B3]" />
                 <span>Kalkulator SBM</span>
               </button>
 
@@ -763,7 +775,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
                 <button
                   type="button"
                   onClick={syncFromBuktiBayar}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl border border-emerald-200/80 transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl border border-emerald-200/80 transition-colors cursor-pointer"
                   title="Impor pengeluaran dari lampiran bukti bayar"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
@@ -780,7 +792,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
               <button
                 type="button"
                 onClick={() => addPresetItem('uang_harian', `Uang harian ${data.kotaTujuan || 'Luar Kota'}`, 'Hari', data.lamaHari || 3, 430000)}
-                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-blue-50 hover:text-[#0000B3] px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
               >
                 <Plus className="w-3.5 h-3.5 text-slate-500" />
                 <span>+ Uang Harian</span>
@@ -788,7 +800,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
               <button
                 type="button"
                 onClick={() => addPresetItem('transport', `Transportasi PP ${data.kotaAsal} - ${data.kotaTujuan}`, 'Kali', 1, 650000)}
-                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-blue-50 hover:text-[#0000B3] px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
               >
                 <Plus className="w-3.5 h-3.5 text-slate-500" />
                 <span>+ Transport / Tiket</span>
@@ -796,7 +808,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
               <button
                 type="button"
                 onClick={() => addPresetItem('penginapan', `Penginapan / Hotel standar ${data.kotaTujuan}`, 'Malam', Math.max(1, (data.lamaHari || 3) - 1), 600000)}
-                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-blue-50 hover:text-[#0000B3] px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
               >
                 <Plus className="w-3.5 h-3.5 text-slate-500" />
                 <span>+ Hotel / Penginapan</span>
@@ -804,7 +816,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
               <button
                 type="button"
                 onClick={() => addPresetItem('transport', 'Taksi Bandara / Transport Lokal PP', 'Kali', 2, 150000)}
-                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-blue-50 hover:text-[#0000B3] px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
               >
                 <Plus className="w-3.5 h-3.5 text-slate-500" />
                 <span>+ Taksi / Angkutan</span>
@@ -812,7 +824,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
               <button
                 type="button"
                 onClick={() => addPresetItem('lainnya', 'Komponen Pengeluaran Riil Tambahan', 'Kali', 1, 100000)}
-                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                className="text-xs font-medium text-slate-700 bg-slate-100 hover:bg-blue-50 hover:text-[#0000B3] px-3 py-1.5 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1.5"
               >
                 <Plus className="w-3.5 h-3.5 text-slate-500" />
                 <span>+ Riil Tambahan</span>
@@ -820,53 +832,135 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
             </div>
           </div>
 
-          {/* List items */}
-          <div className="space-y-3">
+          {/* TAMPILAN TABEL KEUANGAN PROFESIONAL (DESKTOP / TABLET) */}
+          <div className="hidden sm:block overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-2xs">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="bg-slate-50/80 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                  <th className="py-3 px-3 text-center w-10">No</th>
+                  <th className="py-3 px-3 min-w-[240px]">Kategori & Uraian Biaya Riil</th>
+                  <th className="py-3 px-2 text-center w-16">Vol</th>
+                  <th className="py-3 px-2 text-center w-24">Satuan</th>
+                  <th className="py-3 px-3 text-right w-36">Harga Satuan (Rp)</th>
+                  <th className="py-3 px-3 text-right w-36">Jumlah (Rp)</th>
+                  <th className="py-3 px-2 text-center w-16">Aksi</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {data.rincianBiaya.map((item, idx) => (
+                  <tr key={item.id} className="hover:bg-blue-50/30 transition-colors group">
+                    {/* Nomor */}
+                    <td className="py-3 px-3 text-center font-bold text-slate-400 font-mono">
+                      {idx + 1}
+                    </td>
+
+                    {/* Kategori & Uraian */}
+                    <td className="py-2.5 px-3 space-y-1.5">
+                      <div className="flex items-center gap-2">
+                        <select
+                          value={item.kategori}
+                          onChange={(e) => handleRincianChange(idx, 'kategori', e.target.value)}
+                          className="text-[11px] px-2 py-1 bg-slate-100 hover:bg-slate-200/80 border border-slate-200 rounded-md text-slate-700 font-medium focus:outline-none focus:border-[#0000B3]"
+                        >
+                          <option value="uang_harian">Uang Harian</option>
+                          <option value="transport">Transportasi</option>
+                          <option value="penginapan">Penginapan/Hotel</option>
+                          <option value="representasi">Uang Representasi</option>
+                          <option value="lainnya">Lainnya / Riil</option>
+                        </select>
+                      </div>
+                      <input
+                        type="text"
+                        value={item.uraian}
+                        onChange={(e) => handleRincianChange(idx, 'uraian', e.target.value)}
+                        placeholder="Uraian pengeluaran riil..."
+                        className="w-full text-xs font-semibold px-2.5 py-1.5 bg-slate-50 focus:bg-white border border-slate-200 focus:border-[#0000B3] rounded-lg text-slate-900 focus:outline-none transition-colors"
+                      />
+                    </td>
+
+                    {/* Volume */}
+                    <td className="py-2.5 px-2">
+                      <input
+                        type="number"
+                        min={1}
+                        value={item.volume}
+                        onChange={(e) => handleRincianChange(idx, 'volume', e.target.value)}
+                        className="w-full text-center text-xs font-bold font-mono px-1.5 py-1.5 bg-slate-50 focus:bg-white border border-slate-200 focus:border-[#0000B3] rounded-lg text-slate-900 focus:outline-none"
+                      />
+                    </td>
+
+                    {/* Satuan */}
+                    <td className="py-2.5 px-2">
+                      <input
+                        type="text"
+                        value={item.satuan}
+                        onChange={(e) => handleRincianChange(idx, 'satuan', e.target.value)}
+                        placeholder="Hari/Tiket"
+                        className="w-full text-center text-xs font-medium px-2 py-1.5 bg-slate-50 focus:bg-white border border-slate-200 focus:border-[#0000B3] rounded-lg text-slate-800 focus:outline-none"
+                      />
+                    </td>
+
+                    {/* Harga Satuan */}
+                    <td className="py-2.5 px-3">
+                      <input
+                        type="number"
+                        value={item.hargaSatuan}
+                        onChange={(e) => handleRincianChange(idx, 'hargaSatuan', e.target.value)}
+                        className="w-full text-right text-xs font-mono font-bold px-2 py-1.5 bg-slate-50 focus:bg-white border border-slate-200 focus:border-[#0000B3] rounded-lg text-slate-900 focus:outline-none"
+                      />
+                    </td>
+
+                    {/* Subtotal */}
+                    <td className="py-2.5 px-3 text-right font-mono font-extrabold text-[#0000B3] text-xs sm:text-sm tabular-nums">
+                      {formatRupiah(item.total)}
+                    </td>
+
+                    {/* Aksi */}
+                    <td className="py-2.5 px-2 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => duplicateRincianItem(idx)}
+                          className="text-slate-400 hover:text-slate-700 p-1 rounded-md hover:bg-slate-100 transition-colors"
+                          title="Duplikasi baris"
+                        >
+                          <Copy className="w-3.5 h-3.5" />
+                        </button>
+                        {data.rincianBiaya.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={() => removeRincianItem(idx)}
+                            className="text-rose-400 hover:text-rose-600 p-1 rounded-md hover:bg-rose-50 transition-colors"
+                            title="Hapus baris"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* TAMPILAN KARTU KOMPAK UNTUK LAYAR MOBILE (< sm) */}
+          <div className="sm:hidden space-y-2.5">
             {data.rincianBiaya.map((item, idx) => (
               <div
                 key={item.id}
-                className="p-4 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-white hover:border-slate-300 transition-all space-y-3"
+                className="p-3 rounded-xl border border-slate-200 bg-white shadow-2xs space-y-2"
               >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="w-6 h-6 rounded-md bg-slate-200/90 text-slate-700 text-xs font-bold flex items-center justify-center shrink-0">
-                    {idx + 1}
-                  </div>
-                  <input
-                    type="text"
-                    value={item.uraian}
-                    onChange={(e) => handleRincianChange(idx, 'uraian', e.target.value)}
-                    className="flex-1 text-xs font-semibold bg-white px-3.5 py-2 rounded-lg border border-slate-200 focus:outline-none focus:border-blue-500 text-slate-900"
-                    placeholder="Uraian rincian pengeluaran"
-                  />
-                  <div className="flex items-center gap-1 shrink-0">
-                    <button
-                      type="button"
-                      onClick={() => duplicateRincianItem(idx)}
-                      className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
-                      title="Salin baris ini"
-                    >
-                      <Copy className="w-4 h-4" />
-                    </button>
-                    {data.rincianBiaya.length > 1 && (
-                      <button
-                        type="button"
-                        onClick={() => removeRincianItem(idx)}
-                        className="text-rose-400 hover:text-rose-600 p-1.5 rounded-lg hover:bg-rose-50 transition-colors"
-                        title="Hapus baris"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-xs">
-                  <div>
-                    <label className="text-[11px] text-slate-500 block mb-1">Kategori</label>
+                {/* Header: No + Kategori + Subtotal + Aksi */}
+                <div className="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-5 h-5 rounded-md bg-blue-50 text-[#0000B3] text-[10px] font-black flex items-center justify-center">
+                      {idx + 1}
+                    </span>
                     <select
                       value={item.kategori}
                       onChange={(e) => handleRincianChange(idx, 'kategori', e.target.value)}
-                      className="w-full text-xs px-2.5 py-2 bg-white border border-slate-200 rounded-lg text-slate-800"
+                      className="text-[11px] px-2 py-1 bg-slate-100 border border-slate-200 rounded-md text-slate-800 font-medium focus:outline-none"
                     >
                       <option value="uang_harian">Uang Harian</option>
                       <option value="transport">Transportasi</option>
@@ -876,48 +970,68 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
                     </select>
                   </div>
 
+                  <div className="flex items-center gap-2">
+                    <span className="font-extrabold text-[#0000B3] font-mono text-xs tabular-nums">
+                      {formatRupiah(item.total)}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => duplicateRincianItem(idx)}
+                      className="text-slate-400 hover:text-slate-700 p-1"
+                    >
+                      <Copy className="w-3 h-3" />
+                    </button>
+                    {data.rincianBiaya.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeRincianItem(idx)}
+                        className="text-rose-400 hover:text-rose-600 p-1"
+                      >
+                        <Trash2 className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Uraian */}
+                <input
+                  type="text"
+                  value={item.uraian}
+                  onChange={(e) => handleRincianChange(idx, 'uraian', e.target.value)}
+                  placeholder="Uraian biaya..."
+                  className="w-full text-xs font-semibold px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900 focus:outline-none focus:border-[#0000B3]"
+                />
+
+                {/* 3 Parameter Input Kompak */}
+                <div className="grid grid-cols-3 gap-2 text-xs">
                   <div>
-                    <label className="text-[11px] text-slate-500 block mb-1">Volume</label>
+                    <span className="text-[10px] text-slate-400 block mb-0.5">Vol</span>
                     <input
                       type="number"
                       min={1}
                       value={item.volume}
                       onChange={(e) => handleRincianChange(idx, 'volume', e.target.value)}
-                      className="w-full text-center text-xs px-2.5 py-2 bg-white border border-slate-200 rounded-lg font-bold text-slate-800 font-mono"
+                      className="w-full text-center text-xs font-bold font-mono px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900"
                     />
                   </div>
-
                   <div>
-                    <label className="text-[11px] text-slate-500 block mb-1">Satuan</label>
+                    <span className="text-[10px] text-slate-400 block mb-0.5">Satuan</span>
                     <input
                       type="text"
                       value={item.satuan}
                       onChange={(e) => handleRincianChange(idx, 'satuan', e.target.value)}
-                      className="w-full text-xs px-2.5 py-2 bg-white border border-slate-200 rounded-lg text-center text-slate-800"
-                      placeholder="Hari / Malam / Tiket"
+                      placeholder="Hari"
+                      className="w-full text-center text-xs px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800"
                     />
                   </div>
-
                   <div>
-                    <label className="text-[11px] text-slate-500 block mb-1">Harga Satuan (Rp)</label>
+                    <span className="text-[10px] text-slate-400 block mb-0.5">Harga (Rp)</span>
                     <input
                       type="number"
                       value={item.hargaSatuan}
                       onChange={(e) => handleRincianChange(idx, 'hargaSatuan', e.target.value)}
-                      className="w-full text-xs px-2.5 py-2 bg-white border border-slate-200 rounded-lg font-mono text-right font-medium text-slate-900"
+                      className="w-full text-right text-xs font-mono font-bold px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-900"
                     />
-                  </div>
-                </div>
-
-                <div className="flex justify-between items-center text-xs pt-2 border-t border-slate-200/60">
-                  <span className="text-[11px] text-slate-500 font-mono">
-                    {item.volume} {item.satuan} × {formatRupiah(item.hargaSatuan)}
-                  </span>
-                  <div className="text-right">
-                    <span className="text-[10px] text-slate-400 uppercase tracking-wider mr-2">Subtotal:</span>
-                    <span className="font-bold text-slate-900 font-mono text-xs tabular-nums">
-                      {formatRupiah(item.total)}
-                    </span>
                   </div>
                 </div>
               </div>
@@ -968,7 +1082,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
             <button
               type="button"
               onClick={() => setActiveStep('pegawai')}
-              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-xl transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all cursor-pointer"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Kembali</span>
@@ -976,7 +1090,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
             <button
               type="button"
               onClick={() => setActiveStep('ttd')}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-xl transition-all cursor-pointer shadow-xs active:scale-95"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0000B3] hover:bg-[#000090] active:scale-95 text-white text-xs font-bold rounded-2xl transition-all cursor-pointer shadow-sm shadow-blue-950/15"
             >
               <span>Lanjut: Pejabat & Tanda Tangan</span>
               <ArrowRight className="w-4 h-4" />
@@ -1145,7 +1259,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
                 <button
                   type="button"
                   onClick={onNextStep}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#6547ED] hover:bg-[#5537E6] active:scale-95 text-white text-xs font-bold rounded-2xl shadow-sm shadow-purple-900/10 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#0000B3] hover:bg-[#000090] active:scale-95 text-white text-xs font-bold rounded-2xl shadow-sm shadow-blue-950/15 transition-all cursor-pointer"
                 >
                   <span>Lanjut: Foto GPS Kegiatan (Tahap 2)</span>
                   <ArrowRight className="w-4 h-4" />
@@ -1232,7 +1346,7 @@ export const KuitansiForm: React.FC<KuitansiFormProps> = ({
                 </div>
                 <div className="flex justify-between items-center text-slate-700">
                   <span>Plafon Standar Penginapan/Hotel:</span>
-                  <span className="font-bold font-mono text-purple-900 tabular-nums">
+                  <span className="font-bold font-mono text-blue-900 tabular-nums">
                     {formatRupiah(selectedSbm.penginapanStandar)} / malam
                   </span>
                 </div>

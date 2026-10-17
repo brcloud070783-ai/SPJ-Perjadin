@@ -55,7 +55,7 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({ variant = 'p
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5">
-                <span className="rounded-md bg-purple-500/20 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-purple-300 border border-purple-400/30">
+                <span className="rounded-md bg-[#0052CC]/20 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-blue-300 border border-blue-400/30">
                   PWA Mobile
                 </span>
                 <span className="text-xs text-slate-300">Resmi SiDinas</span>
@@ -100,7 +100,7 @@ const IOSGuideModal: React.FC<{ onClose: () => void }> = ({ onClose }) => (
     <div className="w-full max-w-sm rounded-2xl bg-slate-900 p-6 border border-slate-700 shadow-2xl text-slate-100">
       <div className="flex items-center justify-between pb-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
-          <Smartphone className="h-5 w-5 text-purple-400" />
+          <Smartphone className="h-5 w-5 text-blue-400" />
           <h3 className="font-bold text-base text-white">Instal di iPhone / iPad</h3>
         </div>
         <button onClick={onClose} className="rounded-lg p-1 text-slate-400 hover:text-white hover:bg-slate-800">
@@ -110,7 +110,7 @@ const IOSGuideModal: React.FC<{ onClose: () => void }> = ({ onClose }) => (
 
       <div className="mt-4 space-y-3 text-xs text-slate-300">
         <div className="flex items-start gap-3 rounded-xl bg-slate-800/60 p-3 border border-slate-700/50">
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-600 text-white font-bold text-xs">
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#0000B3] text-white font-bold text-xs">
             1
           </div>
           <div>
@@ -120,7 +120,7 @@ const IOSGuideModal: React.FC<{ onClose: () => void }> = ({ onClose }) => (
         </div>
 
         <div className="flex items-start gap-3 rounded-xl bg-slate-800/60 p-3 border border-slate-700/50">
-          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-purple-600 text-white font-bold text-xs">
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#0000B3] text-white font-bold text-xs">
             2
           </div>
           <div>
@@ -132,7 +132,7 @@ const IOSGuideModal: React.FC<{ onClose: () => void }> = ({ onClose }) => (
 
       <button
         onClick={onClose}
-        className="mt-5 w-full rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-500 transition"
+        className="mt-5 w-full rounded-xl bg-[#0000B3] py-2.5 text-xs font-bold text-white hover:bg-[#0052CC] transition"
       >
         Mengerti
       </button>
@@ -145,7 +145,7 @@ const FallbackGuideModal: React.FC<{ onClose: () => void }> = ({ onClose }) => (
     <div className="w-full max-w-sm rounded-2xl bg-slate-900 p-6 border border-slate-700 shadow-2xl text-slate-100">
       <div className="flex items-center justify-between pb-3 border-b border-slate-800">
         <div className="flex items-center gap-2">
-          <Smartphone className="h-5 w-5 text-purple-400" />
+          <Smartphone className="h-5 w-5 text-blue-400" />
           <h3 className="font-bold text-base text-white">Cara Instal SiDinas PWA</h3>
         </div>
         <button onClick={onClose} className="rounded-lg p-1 text-slate-400 hover:text-white hover:bg-slate-800">
@@ -171,7 +171,7 @@ const FallbackGuideModal: React.FC<{ onClose: () => void }> = ({ onClose }) => (
 
       <button
         onClick={onClose}
-        className="mt-5 w-full rounded-xl bg-purple-600 py-2.5 text-xs font-bold text-white hover:bg-purple-500 transition"
+        className="mt-5 w-full rounded-xl bg-[#0000B3] py-2.5 text-xs font-bold text-white hover:bg-[#0052CC] transition"
       >
         Tutup
       </button>

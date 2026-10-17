@@ -292,7 +292,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
   return (
     <div className="space-y-4 pb-24 max-w-4xl mx-auto">
       {/* Top Banner Header */}
-      <div className="bg-gradient-to-r from-[#180A30] via-[#2D0D5B] to-[#7D2AE8] text-white p-5 rounded-3xl shadow-xl border border-purple-900/50 space-y-3">
+      <div className="bg-gradient-to-r from-[#0A1128] via-[#00008F] to-[#0000B3] text-white p-5 rounded-3xl shadow-xl border border-blue-900/50 space-y-3">
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl bg-white/10 text-cyan-300 flex items-center justify-center border border-white/20 shrink-0 shadow-md">
@@ -302,7 +302,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
               <h2 className="text-lg sm:text-xl font-black text-white">
                 Pengelola Berkas SPJ Dinas
               </h2>
-              <p className="text-xs text-purple-200/90 font-medium">
+              <p className="text-xs text-blue-200/90 font-medium">
                 Satu kesatuan Kuitansi A4, Foto GPS, & Nota — Tersimpan di HP & Google Drive Cloud
               </p>
             </div>
@@ -313,10 +313,10 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
               <button
                 onClick={handleGoogleSignIn}
                 disabled={isLoggingIn}
-                className="px-3.5 py-2 rounded-2xl bg-white text-slate-900 hover:bg-purple-50 font-extrabold text-xs inline-flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer disabled:opacity-60"
+                className="px-3.5 py-2 rounded-2xl bg-white text-slate-900 hover:bg-blue-50 font-extrabold text-xs inline-flex items-center gap-1.5 shadow-md active:scale-95 cursor-pointer disabled:opacity-60"
               >
                 {isLoggingIn ? (
-                  <Loader2 className="w-4 h-4 animate-spin text-purple-600" />
+                  <Loader2 className="w-4 h-4 animate-spin text-[#0000B3]" />
                 ) : (
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-4 h-4 shrink-0">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -342,13 +342,13 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
         {/* Cloud Connection Badge inside Banner */}
         <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-2 text-xs">
-            <Cloud className={`w-4.5 h-4.5 ${user ? 'text-emerald-400' : 'text-purple-300'}`} />
+            <Cloud className={`w-4.5 h-4.5 ${user ? 'text-emerald-400' : 'text-blue-300'}`} />
             {user ? (
-              <span className="text-purple-100 font-semibold">
+              <span className="text-blue-100 font-semibold">
                 Google Drive Status: <strong className="text-cyan-300">{user.email}</strong>
               </span>
             ) : (
-              <span className="text-purple-200">
+              <span className="text-blue-200">
                 Google Drive Cloud: <strong className="text-amber-300">Belum terhubung</strong>
               </span>
             )}
@@ -372,7 +372,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
 
                 <button
                   onClick={handleGoogleLogout}
-                  className="p-1.5 rounded-xl bg-white/10 hover:bg-rose-500/20 text-purple-200 hover:text-rose-200 transition-colors cursor-pointer"
+                  className="p-1.5 rounded-xl bg-white/10 hover:bg-rose-500/20 text-blue-200 hover:text-rose-200 transition-colors cursor-pointer"
                   title="Keluar Google Drive"
                 >
                   <LogOut className="w-4 h-4" />
@@ -382,10 +382,10 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
               <button
                 onClick={handleGoogleSignIn}
                 disabled={isLoggingIn}
-                className="px-3.5 py-1.5 rounded-xl bg-white text-slate-900 hover:bg-purple-50 text-xs font-extrabold inline-flex items-center gap-2 shadow-md cursor-pointer"
+                className="px-3.5 py-1.5 rounded-xl bg-white text-slate-900 hover:bg-blue-50 text-xs font-extrabold inline-flex items-center gap-2 shadow-md cursor-pointer"
               >
                 {isLoggingIn ? (
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-purple-600" />
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-[#0000B3]" />
                 ) : (
                   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-4 h-4 shrink-0">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -413,13 +413,13 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
       )}
 
       {/* Action Controls & Tab Switcher */}
-      <div className="bg-white p-3.5 rounded-2xl border border-purple-100 shadow-sm flex flex-col sm:flex-row gap-3 justify-between items-stretch sm:items-center">
+      <div className="bg-white p-3.5 rounded-2xl border border-blue-100 shadow-sm flex flex-col sm:flex-row gap-3 justify-between items-stretch sm:items-center">
         <div className="flex bg-slate-100 p-1 rounded-xl gap-1">
           <button
             onClick={() => setActiveTab('local')}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'local'
-                ? 'bg-[#7D2AE8] text-white shadow-xs'
+                ? 'bg-[#0000B3] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 font-bold'
             }`}
           >
@@ -433,7 +433,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
             }}
             className={`px-3.5 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer flex items-center gap-1.5 ${
               activeTab === 'drive'
-                ? 'bg-[#7D2AE8] text-white shadow-xs'
+                ? 'bg-[#0000B3] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 font-bold'
             }`}
           >
@@ -450,7 +450,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Cari SPJ atau NIP..."
-              className="w-full pl-8 pr-2 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#7D2AE8]"
+              className="w-full pl-8 pr-2 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-[#0000B3]"
             />
           </div>
 
@@ -463,7 +463,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
           />
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-[#7D2AE8] border border-purple-200 text-xs font-extrabold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3 py-1.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0000B3] border border-blue-200 text-xs font-extrabold inline-flex items-center gap-1.5 transition-colors cursor-pointer"
             title="Import Berkas SPJ dari Perangkat (.spj)"
           >
             <Upload className="w-3.5 h-3.5" />
@@ -474,9 +474,9 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
 
       {/* Create Form inline if active */}
       {isCreating && (
-        <form onSubmit={handleCreateSubmit} className="bg-purple-50/90 border-2 border-dashed border-[#7D2AE8] rounded-2xl p-4 sm:p-5 space-y-3 animate-fade-in shadow-md">
+        <form onSubmit={handleCreateSubmit} className="bg-blue-50/90 border-2 border-dashed border-[#0000B3] rounded-2xl p-4 sm:p-5 space-y-3 animate-fade-in shadow-md">
           <div className="flex items-center justify-between">
-            <h3 className="text-xs font-black text-[#7D2AE8] uppercase tracking-wider flex items-center gap-1.5">
+            <h3 className="text-xs font-black text-[#0000B3] uppercase tracking-wider flex items-center gap-1.5">
               <FolderPlus className="w-4 h-4" />
               Buat Berkas SPJ Project Baru
             </h3>
@@ -500,7 +500,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                 onChange={(e) => setNewNama(e.target.value)}
                 placeholder="Contoh: SPJ Perjalanan Dinas Nunukan - April 2026"
                 required
-                className="w-full px-3 py-2 rounded-xl bg-white border border-purple-200 text-xs font-medium focus:ring-2 focus:ring-[#7D2AE8] focus:outline-none"
+                className="w-full px-3 py-2 rounded-xl bg-white border border-blue-200 text-xs font-medium focus:ring-2 focus:ring-[#0000B3] focus:outline-none"
               />
             </div>
 
@@ -513,7 +513,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                 value={newNomorSPD}
                 onChange={(e) => setNewNomorSPD(e.target.value)}
                 placeholder="Contoh: 090/123/SPD/2026"
-                className="w-full px-3 py-2 rounded-xl bg-white border border-purple-200 text-xs font-medium focus:ring-2 focus:ring-[#7D2AE8] focus:outline-none"
+                className="w-full px-3 py-2 rounded-xl bg-white border border-blue-200 text-xs font-medium focus:ring-2 focus:ring-[#0000B3] focus:outline-none"
               />
             </div>
           </div>
@@ -528,7 +528,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
             </button>
             <button
               type="submit"
-              className="px-4 py-1.5 rounded-xl bg-[#7D2AE8] text-white font-extrabold text-xs shadow-md cursor-pointer"
+              className="px-4 py-1.5 rounded-xl bg-[#0000B3] text-white font-extrabold text-xs shadow-md cursor-pointer"
             >
               Simpan & Langsung Buka
             </button>
@@ -541,7 +541,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
         <div className="space-y-3">
           {filteredProjects.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-3xl border border-dashed border-slate-200 p-6 shadow-xs">
-              <Briefcase className="w-12 h-12 text-purple-300 mx-auto mb-2" />
+              <Briefcase className="w-12 h-12 text-blue-300 mx-auto mb-2" />
               <p className="text-sm font-extrabold text-slate-700">Tidak ada project SPJ ditemukan</p>
               <p className="text-xs text-slate-500 mt-1">
                 Klik "Buat SPJ Baru" untuk memulai berkas perjalanan dinas Anda.
@@ -560,15 +560,15 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                   key={project.id}
                   className={`rounded-2xl border p-4 transition-all space-y-3 ${
                     isActive
-                      ? 'bg-purple-50/80 border-2 border-[#7D2AE8] shadow-md'
-                      : 'bg-white border-slate-200 hover:border-purple-200 hover:shadow-xs'
+                      ? 'bg-blue-50/80 border-2 border-[#0000B3] shadow-md'
+                      : 'bg-white border-slate-200 hover:border-blue-200 hover:shadow-xs'
                   }`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-1 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         {isActive && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#7D2AE8] text-white text-[10px] font-black">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#0000B3] text-white text-[10px] font-black">
                             <Check className="w-3 h-3 stroke-[3]" /> SEDANG AKTIF
                           </span>
                         )}
@@ -589,14 +589,14 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
 
                       {/* Editable Name / SPD */}
                       {isEditingThis ? (
-                        <div className="space-y-2 pt-2 border-t border-purple-200 my-2">
+                        <div className="space-y-2 pt-2 border-t border-blue-200 my-2">
                           <div>
                             <label className="text-[10px] font-bold text-slate-500">Nama Project</label>
                             <input
                               type="text"
                               value={editNama}
                               onChange={(e) => setEditNama(e.target.value)}
-                              className="w-full px-2.5 py-1.5 rounded-lg bg-white border border-purple-300 text-xs font-bold text-slate-900 focus:outline-none"
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-white border border-blue-300 text-xs font-bold text-slate-900 focus:outline-none"
                             />
                           </div>
                           <div>
@@ -605,7 +605,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                               type="text"
                               value={editNomorSPD}
                               onChange={(e) => setEditNomorSPD(e.target.value)}
-                              className="w-full px-2.5 py-1.5 rounded-lg bg-white border border-purple-300 text-xs font-medium text-slate-900 focus:outline-none"
+                              className="w-full px-2.5 py-1.5 rounded-lg bg-white border border-blue-300 text-xs font-medium text-slate-900 focus:outline-none"
                             />
                           </div>
                           <div className="flex justify-end gap-1.5 pt-1">
@@ -617,7 +617,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                             </button>
                             <button
                               onClick={() => handleSaveEditing(project.id)}
-                              className="px-3 py-1 text-[11px] font-bold bg-[#7D2AE8] text-white rounded-lg"
+                              className="px-3 py-1 text-[11px] font-bold bg-[#0000B3] text-white rounded-lg"
                             >
                               Simpan Perubahan
                             </button>
@@ -631,7 +631,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                             </h3>
                             <button
                               onClick={() => handleStartEditing(project)}
-                              className="text-slate-400 hover:text-purple-600 p-0.5 cursor-pointer"
+                              className="text-slate-400 hover:text-[#0000B3] p-0.5 cursor-pointer"
                               title="Edit nama project & SPD"
                             >
                               <Edit3 className="w-3.5 h-3.5" />
@@ -650,7 +650,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                           onSelectProject(project.id);
                           if (onGoToKuitansi) onGoToKuitansi();
                         }}
-                        className="px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-[#7D2AE8] text-white font-extrabold text-xs shadow-xs cursor-pointer shrink-0"
+                        className="px-3.5 py-1.5 rounded-xl bg-[#0000B3] hover:bg-[#0000B3] text-white font-extrabold text-xs shadow-xs cursor-pointer shrink-0"
                       >
                         Buka Project
                       </button>
@@ -658,9 +658,9 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                   </div>
 
                   {/* Summary Badges */}
-                  <div className="grid grid-cols-3 gap-2 p-2 rounded-xl bg-white border border-purple-100 text-xs">
+                  <div className="grid grid-cols-3 gap-2 p-2 rounded-xl bg-white border border-blue-100 text-xs">
                     <div className="flex items-center gap-1.5">
-                      <Receipt className="w-4 h-4 text-purple-600 shrink-0" />
+                      <Receipt className="w-4 h-4 text-[#0000B3] shrink-0" />
                       <div>
                         <span className="text-[10px] text-slate-400 block leading-none">Total Kuitansi</span>
                         <span className="font-extrabold text-slate-900 text-xs">Rp {totalNilai.toLocaleString('id-ID')}</span>
@@ -725,10 +725,10 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
 
                       <button
                         onClick={() => onExportProject(project)}
-                        className="px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#7D2AE8] text-[11px] font-extrabold inline-flex items-center gap-1 cursor-pointer"
+                        className="px-2.5 py-1 rounded-lg bg-blue-50 hover:bg-blue-100 text-[#0000B3] text-[11px] font-extrabold inline-flex items-center gap-1 cursor-pointer"
                         title="Ekspor bundel file .SPJ"
                       >
-                        <Download className="w-3 h-3 text-purple-600" />
+                        <Download className="w-3 h-3 text-[#0000B3]" />
                         <span>Ekspor .SPJ</span>
                       </button>
 
@@ -757,8 +757,8 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
       {activeTab === 'drive' && (
         <div className="space-y-3">
           {!user ? (
-            <div className="text-center py-10 bg-white rounded-3xl border border-purple-200 p-6 space-y-3 shadow-xs">
-              <Cloud className="w-12 h-12 text-purple-400 mx-auto" />
+            <div className="text-center py-10 bg-white rounded-3xl border border-blue-200 p-6 space-y-3 shadow-xs">
+              <Cloud className="w-12 h-12 text-blue-400 mx-auto" />
               <div>
                 <h3 className="text-sm font-extrabold text-slate-900">Google Drive Belum Terhubung</h3>
                 <p className="text-xs text-slate-500 max-w-md mx-auto mt-1">
@@ -768,7 +768,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
               <button
                 onClick={handleGoogleSignIn}
                 disabled={isLoggingIn}
-                className="px-5 py-2 rounded-xl bg-[#7D2AE8] hover:bg-purple-800 text-white font-extrabold text-xs inline-flex items-center gap-2 shadow-md cursor-pointer"
+                className="px-5 py-2 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white font-extrabold text-xs inline-flex items-center gap-2 shadow-md cursor-pointer"
               >
                 {isLoggingIn && <Loader2 className="w-4 h-4 animate-spin" />}
                 <span>Hubungkan Google Drive Sekarang</span>
@@ -776,7 +776,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
             </div>
           ) : isLoadingDriveFiles ? (
             <div className="text-center py-12 bg-white rounded-3xl border border-slate-200 p-6 space-y-2">
-              <Loader2 className="w-8 h-8 text-[#7D2AE8] animate-spin mx-auto" />
+              <Loader2 className="w-8 h-8 text-[#0000B3] animate-spin mx-auto" />
               <p className="text-xs font-extrabold text-slate-700">Memuat berkas dari Google Drive...</p>
             </div>
           ) : driveFiles.length === 0 ? (
@@ -791,10 +791,10 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
             driveFiles.map((file) => (
               <div
                 key={file.id}
-                className="bg-white rounded-2xl border border-purple-100 p-4 flex items-center justify-between gap-3 hover:shadow-xs transition-all"
+                className="bg-white rounded-2xl border border-blue-100 p-4 flex items-center justify-between gap-3 hover:shadow-xs transition-all"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="w-10 h-10 rounded-xl bg-purple-50 text-[#7D2AE8] flex items-center justify-center shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#0000B3] flex items-center justify-center shrink-0">
                     <Cloud className="w-5 h-5" />
                   </div>
                   <div className="min-w-0">
@@ -811,7 +811,7 @@ export const ProjectManagerView: React.FC<ProjectManagerViewProps> = ({
                   <button
                     onClick={() => handleDownloadDriveFile(file)}
                     disabled={isSyncing === file.id}
-                    className="px-3 py-1.5 rounded-xl bg-[#7D2AE8] hover:bg-purple-800 text-white font-extrabold text-xs inline-flex items-center gap-1.5 shadow-xs cursor-pointer disabled:opacity-50"
+                    className="px-3 py-1.5 rounded-xl bg-[#0000B3] hover:bg-[#000090] text-white font-extrabold text-xs inline-flex items-center gap-1.5 shadow-xs cursor-pointer disabled:opacity-50"
                   >
                     {isSyncing === file.id ? (
                       <Loader2 className="w-3.5 h-3.5 animate-spin" />

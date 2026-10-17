@@ -1,6 +1,6 @@
 {
-  "summary": "Rencana perbaikan tata letak Halaman Beranda: Menghapus 3 kartu menu tengah yang menduplikasi bilah navigasi bawah, dan menggantikannya dengan 1 tombol menu tunggal yang fokus di tengah ('Buat SPJ').",
-  "updatedAt": "2026-10-16T12:37:45.286432566Z",
+  "summary": "Rencana implementasi transformasi antarmuka SPJ Kaltara ke dalam format arsitektur LinkedIn 3-kolom, mencakup topbar navigasi khas LinkedIn dengan pencarian berkas, kartu profil ASN dan shortcut SBM di kolom kiri, ruang kerja editor SPJ dan komposer dokumen di kolom tengah, serta widget panduan kepatuhan dan checklist kelengkapan di kolom kanan dengan palet biru kobalt #0000B3 dan latar netral LinkedIn #F3F2EF.",
+  "updatedAt": "2026-10-17T00:48:39.234688474Z",
   "requestFeedback": true,
   "userFacing": true
 }

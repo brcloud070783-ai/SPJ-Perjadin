@@ -153,7 +153,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
   return (
     <div className="space-y-4 pb-24">
       {/* Toolbar Header (Hidden in print) */}
-      <div className="print:hidden bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-purple-200 shadow-md flex flex-wrap items-center justify-between gap-3 sticky top-14 z-30">
+      <div className="print:hidden bg-white/95 backdrop-blur-md p-3.5 rounded-2xl border border-blue-200 shadow-md flex flex-wrap items-center justify-between gap-3 sticky top-14 z-30">
         <button
           onClick={onBack}
           className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200/80 active:scale-95 px-3 py-2 rounded-xl transition-all cursor-pointer"
@@ -166,7 +166,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
         <div className="flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-[11px] font-semibold text-slate-700">
           <button
             onClick={handleZoomOut}
-            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-purple-700 transition-all cursor-pointer"
+            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-[#0000B3] transition-all cursor-pointer"
             title="Perkecil Zoom"
           >
             <Minus className="w-3.5 h-3.5" />
@@ -178,7 +178,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
 
           <button
             onClick={handleZoomIn}
-            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-purple-700 transition-all cursor-pointer"
+            className="p-1.5 rounded-lg hover:bg-white text-slate-700 hover:text-[#0000B3] transition-all cursor-pointer"
             title="Perbesar Zoom"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -189,7 +189,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
           <button
             onClick={handleFitScreen}
             className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
-              zoomPercent === defaultFitPercent ? 'bg-white text-purple-700 shadow-xs font-bold' : 'hover:text-slate-900'
+              zoomPercent === defaultFitPercent ? 'bg-white text-[#0000B3] shadow-xs font-bold' : 'hover:text-slate-900'
             }`}
           >
             Pas Layar
@@ -198,7 +198,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
           <button
             onClick={handleZoom100}
             className={`px-2 py-1 rounded-lg transition-all cursor-pointer ${
-              zoomPercent === 100 ? 'bg-white text-purple-700 shadow-xs font-bold' : 'hover:text-slate-900'
+              zoomPercent === 100 ? 'bg-white text-[#0000B3] shadow-xs font-bold' : 'hover:text-slate-900'
             }`}
           >
             100%
@@ -211,11 +211,11 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
             onClick={() => setShowSignatureBlock(!showSignatureBlock)}
             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
               showSignatureBlock
-                ? 'bg-purple-100 text-purple-900 border-purple-300'
+                ? 'bg-blue-100 text-blue-950 border-blue-300'
                 : 'bg-slate-100 text-slate-600 border-slate-200'
             }`}
           >
-            <CheckCircle2 className={`w-3.5 h-3.5 ${showSignatureBlock ? 'text-purple-700' : 'text-slate-400'}`} />
+            <CheckCircle2 className={`w-3.5 h-3.5 ${showSignatureBlock ? 'text-[#0000B3]' : 'text-slate-400'}`} />
             <span className="hidden sm:inline">Kolom TTD: {showSignatureBlock ? 'Tampil' : 'Sembunyi'}</span>
           </button>
 
@@ -259,7 +259,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
 
           <button
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 text-xs font-extrabold text-white bg-[#7D2AE8] hover:bg-purple-900 active:scale-95 px-4 py-2 rounded-xl shadow-md transition-all cursor-pointer"
+            className="inline-flex items-center gap-1.5 text-xs font-extrabold text-white bg-[#0000B3] hover:bg-[#000090] active:scale-95 px-4 py-2 rounded-xl shadow-md transition-all cursor-pointer"
           >
             <Printer className="w-4 h-4" />
             <span>Cetak Seluruh Paket A4</span>
@@ -268,7 +268,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
       </div>
 
       {/* Info Header Banner */}
-      <div className="print:hidden bg-gradient-to-r from-purple-950 via-purple-900 to-[#7D2AE8] text-white p-4 rounded-2xl shadow-md flex items-center justify-between gap-3">
+      <div className="print:hidden bg-gradient-to-r from-[#0A1128] via-[#00008F] to-[#0000B3] text-white p-4 rounded-2xl shadow-md flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-cyan-300 shrink-0">
             <Folder className="w-5 h-5" />
@@ -277,7 +277,7 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
             <h2 className="text-sm font-black text-white">
               Pratinjau Paket Lengkap Berkas SPJ (1 Kesatuan)
             </h2>
-            <p className="text-xs text-purple-200">
+            <p className="text-xs text-blue-200">
               Project: <strong>{project.namaProject}</strong> • Total Nilai: <strong>Rp {totalNominal.toLocaleString('id-ID')}</strong>
             </p>
           </div>
@@ -290,12 +290,12 @@ export const PaketLengkapPrintPreview: React.FC<PaketLengkapPrintPreviewProps> =
       </div>
 
       {/* Touch Pinch & Pan Floating Helper Badge */}
-      <div className="print:hidden flex items-center justify-between px-3.5 py-1.5 bg-purple-50/80 border border-purple-200/60 rounded-xl text-[11px] text-purple-800">
+      <div className="print:hidden flex items-center justify-between px-3.5 py-1.5 bg-blue-50/80 border border-blue-200/60 rounded-xl text-[11px] text-blue-900">
         <div className="flex items-center gap-1.5">
           <span className="text-sm">👌</span>
           <span><strong>Tips Layar Sentuh:</strong> Gunakan 2 jari (cubit / renggangkan) untuk Zoom In & Out • Ketuk 2x untuk reset</span>
         </div>
-        <div className="font-mono font-bold text-purple-900 bg-white px-2 py-0.5 rounded-md border border-purple-200 shrink-0 ml-2">
+        <div className="font-mono font-bold text-blue-950 bg-white px-2 py-0.5 rounded-md border border-blue-200 shrink-0 ml-2">
           {zoomPercent}%
         </div>
       </div>

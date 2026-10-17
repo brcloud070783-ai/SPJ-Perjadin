@@ -126,7 +126,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
         )}
 
         {/* Top Header Card */}
-        <div className="bg-gradient-to-r from-[#180A30] via-[#2A1052] to-[#7D2AE8] text-white p-5 sm:p-7 rounded-3xl shadow-xl relative overflow-hidden">
+        <div className="bg-gradient-to-r from-[#180A30] via-[#2A1052] to-[#0000B3] text-white p-5 sm:p-7 rounded-3xl shadow-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-cyan-400/10 blur-3xl pointer-events-none" />
           
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
@@ -138,7 +138,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
                 Upload & Kelola Logo Dinas
               </h1>
-              <p className="text-xs sm:text-sm text-purple-100/90 max-w-xl">
+              <p className="text-xs sm:text-sm text-blue-100/90 max-w-xl">
                 Unggah logo resmi instansi Anda untuk ditampilkan secara otomatis di seluruh Kop Surat Kuitansi, SPT, SPD, dan Berkas SPJ A4.
               </p>
             </div>
@@ -163,7 +163,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
             <div className="bg-white p-5 sm:p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-4">
               <div className="flex items-center justify-between border-b border-slate-100 pb-3">
                 <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-purple-100 text-[#7D2AE8] flex items-center justify-center font-bold">
+                  <div className="w-8 h-8 rounded-xl bg-blue-100 text-[#0000B3] flex items-center justify-center font-bold">
                     <Upload className="w-4 h-4" />
                   </div>
                   <div>
@@ -181,11 +181,11 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                 onClick={() => fileInputRef.current?.click()}
                 className={`border-2 border-dashed rounded-2xl p-6 text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-3 ${
                   isDragging
-                    ? 'border-[#7D2AE8] bg-purple-50/80 scale-[0.99]'
-                    : 'border-slate-300 hover:border-purple-400 bg-slate-50/60 hover:bg-purple-50/30'
+                    ? 'border-[#0000B3] bg-blue-50/80 scale-[0.99]'
+                    : 'border-slate-300 hover:border-purple-400 bg-slate-50/60 hover:bg-blue-50/30'
                 }`}
               >
-                <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-[#7D2AE8]">
+                <div className="w-14 h-14 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center text-[#0000B3]">
                   <ImageIcon className="w-7 h-7" />
                 </div>
 
@@ -200,7 +200,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
 
                 <button
                   type="button"
-                  className="px-4 py-2 rounded-xl bg-[#7D2AE8] hover:bg-[#6820C9] text-white text-xs font-bold transition-all shadow-md active:scale-95"
+                  className="px-4 py-2 rounded-xl bg-[#0000B3] hover:bg-[#6820C9] text-white text-xs font-bold transition-all shadow-md active:scale-95"
                 >
                   Pilih File Gambar
                 </button>
@@ -215,16 +215,16 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
               </div>
 
               {/* Batch apply option */}
-              <div className="flex items-center gap-2 bg-purple-50/60 p-3 rounded-2xl border border-purple-100 text-xs">
+              <div className="flex items-center gap-2 bg-blue-50/60 p-3 rounded-2xl border border-blue-100 text-xs">
                 <input
                   type="checkbox"
                   id="applyToAllCheck"
                   checked={applyToAll}
                   onChange={(e) => setApplyToAll(e.target.checked)}
-                  className="w-4 h-4 rounded text-[#7D2AE8] focus:ring-purple-500 cursor-pointer"
+                  className="w-4 h-4 rounded text-[#0000B3] focus:ring-[#0000B3] cursor-pointer"
                 />
                 <label htmlFor="applyToAllCheck" className="text-slate-700 font-medium cursor-pointer">
-                  Terapkan logo ini ke <strong className="text-purple-900">semua berkas SPJ project</strong> di aplikasi
+                  Terapkan logo ini ke <strong className="text-blue-950">semua berkas SPJ project</strong> di aplikasi
                 </label>
               </div>
             </div>
@@ -252,8 +252,8 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                       onClick={() => updateLogo(preset.url, `Menggunakan ${preset.nama}`)}
                       className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center gap-3 ${
                         isSelected
-                          ? 'border-[#7D2AE8] bg-purple-50/70 shadow-sm ring-2 ring-purple-500/20'
-                          : 'border-slate-200 hover:border-purple-300 hover:bg-slate-50'
+                          ? 'border-[#0000B3] bg-blue-50/70 shadow-sm ring-2 ring-purple-500/20'
+                          : 'border-slate-200 hover:border-blue-300 hover:bg-slate-50'
                       }`}
                     >
                       <div className="w-12 h-14 bg-white border border-slate-200 rounded-xl p-1.5 flex items-center justify-center shrink-0 shadow-2xs">
@@ -265,7 +265,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <span className="inline-block text-[9px] font-bold uppercase tracking-wider text-purple-700 bg-purple-100/80 px-1.5 py-0.2 rounded mb-0.5">
+                        <span className="inline-block text-[9px] font-bold uppercase tracking-wider text-[#0000B3] bg-blue-100/80 px-1.5 py-0.2 rounded mb-0.5">
                           {preset.kategori}
                         </span>
                         <h3 className="text-xs font-bold text-slate-800 truncate">
@@ -277,13 +277,13 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                       </div>
 
                       {isSelected ? (
-                        <div className="w-6 h-6 rounded-full bg-[#7D2AE8] text-white flex items-center justify-center shrink-0">
+                        <div className="w-6 h-6 rounded-full bg-[#0000B3] text-white flex items-center justify-center shrink-0">
                           <Check className="w-3.5 h-3.5" />
                         </div>
                       ) : (
                         <button
                           type="button"
-                          className="text-[10px] font-semibold text-[#7D2AE8] hover:underline shrink-0"
+                          className="text-[10px] font-semibold text-[#0000B3] hover:underline shrink-0"
                         >
                           Pilih
                         </button>
@@ -298,7 +298,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                 <button
                   type="button"
                   onClick={() => updateLogo(LOGO_KALTARA_SVG, 'Logo telah dikembalikan ke Kalimantan Utara resmi')}
-                  className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-purple-700 bg-slate-100 hover:bg-purple-100 px-3 py-2 rounded-xl transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-[#0000B3] bg-slate-100 hover:bg-blue-100 px-3 py-2 rounded-xl transition-colors cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Reset ke Logo Kaltara Resmi</span>
@@ -377,7 +377,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
               {/* INSTANSI HEADER TEXT QUICK EDITORS */}
               <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200/80 space-y-3">
                 <h3 className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-purple-600" />
+                  <FileText className="w-3.5 h-3.5 text-[#0000B3]" />
                   <span>Ubah Teks Kop Surat Langsung</span>
                 </h3>
 
@@ -390,7 +390,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                       type="text"
                       value={kuitansi.instansiInduk || ''}
                       onChange={(e) => handleFieldChange('instansiInduk', e.target.value)}
-                      className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold uppercase bg-white"
+                      className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0000B3] font-bold uppercase bg-white"
                       placeholder="PEMERINTAH PROVINSI KALIMANTAN UTARA"
                     />
                   </div>
@@ -403,7 +403,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                       type="text"
                       value={kuitansi.namaDinas || ''}
                       onChange={(e) => handleFieldChange('namaDinas', e.target.value)}
-                      className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 font-bold uppercase bg-white"
+                      className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0000B3] font-bold uppercase bg-white"
                       placeholder="DINAS KOMUNIKASI DAN INFORMATIKA"
                     />
                   </div>
@@ -416,7 +416,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                       type="text"
                       value={kuitansi.alamatKop || ''}
                       onChange={(e) => handleFieldChange('alamatKop', e.target.value)}
-                      className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+                      className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0000B3] bg-white"
                       placeholder="Jl. Rambutan No. 12, Tanjung Selor"
                     />
                   </div>
@@ -429,7 +429,7 @@ export const LogoDinasPage: React.FC<LogoDinasPageProps> = ({
                       type="text"
                       value={kuitansi.kontakKop || ''}
                       onChange={(e) => handleFieldChange('kontakKop', e.target.value)}
-                      className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white"
+                      className="w-full text-xs px-2.5 py-1.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#0000B3] bg-white"
                       placeholder="Email: dinas@kaltaraprov.go.id"
                     />
                   </div>

@@ -21,6 +21,9 @@ import { DeviceAccessGuideModal } from './components/DeviceAccessGuideModal';
 import { DeploymentGuideModal } from './components/DeploymentGuideModal';
 import { UnauthorizedDomainModal } from './components/UnauthorizedDomainModal';
 import { GoogleLoginModal } from './components/GoogleLoginModal';
+import { LinkedInLeftColumn } from './components/LinkedInLeftColumn';
+import { LinkedInRightColumn } from './components/LinkedInRightColumn';
+import { LinkedInComposer } from './components/LinkedInComposer';
 import { initAuth } from './utils/auth';
 import { User } from 'firebase/auth';
 import { konversiTerbilang } from './utils/terbilang';
@@ -193,7 +196,7 @@ export default function App() {
   };
 
   // Project Management Actions
-  const handleCreateProject = (nama: string, nomorSPD: string) => {
+  const handleCreateProject = (nama: string = 'SPJ Perjalanan Dinas Baru', nomorSPD: string = '090/SPD/2026') => {
     const newProject: ProjectSPJ = {
       id: `spj-${Date.now()}`,
       namaProject: nama,
@@ -397,29 +400,41 @@ export default function App() {
     );
   };
 
+  const isPreviewMode = isKuitansiPreview || isDokumentasiPreview || isBuktiBayarPreview || activeTab === 'paket_lengkap';
+
+  const handleNavigateToTab = (tab: TabType) => {
+    setActiveTab(tab);
+    setIsKuitansiPreview(false);
+    setIsDokumentasiPreview(false);
+    setIsBuktiBayarPreview(false);
+  };
+
   return (
-    <div className="min-h-screen bg-[#FAF9FF] text-slate-800 font-sans selection:bg-[#6547ED] selection:text-white">
-      {/* Top Header with Project Badge */}
+    <div className="min-h-screen bg-[#F3F2EF] text-slate-800 font-sans selection:bg-[#0000B3] selection:text-white">
+      {/* LinkedIn-style Topbar */}
       <Header
         activeTab={activeTab}
         kuitansi={kuitansi}
         activeProject={activeProject}
+        projects={projects}
         totalDokumentasi={dokumentasiList.length}
         totalBuktiBayar={buktiBayarList.length}
         onResetData={handleResetData}
-        onGoToLanding={() => setActiveTab('landing')}
+        onGoToLanding={() => handleNavigateToTab('landing')}
         onQuickPreview={() => {
           setActiveTab('kuitansi');
           setIsKuitansiPreview(true);
         }}
         onOpenProjectManager={() => setIsProjectManagerOpen(true)}
-        onOpenPaketLengkap={() => setActiveTab('paket_lengkap')}
-        onOpenLogoDinas={() => setActiveTab('logo_dinas')}
+        onOpenPaketLengkap={() => handleNavigateToTab('paket_lengkap')}
+        onOpenLogoDinas={() => handleNavigateToTab('logo_dinas')}
         onOpenDeviceHelp={() => setIsDeviceHelpOpen(true)}
         onOpenDeployGuide={() => setIsDeployGuideOpen(true)}
         user={user}
         onOpenGoogleLogin={() => setIsGoogleLoginOpen(true)}
         onOpenSidebar={() => setIsSidebarOpen(true)}
+        onSelectProject={(id) => setActiveProjectId(id)}
+        onNavigateTab={handleNavigateToTab}
       />
 
       <SidebarMenu
@@ -430,173 +445,185 @@ export default function App() {
         onResetData={handleResetData}
         onOpenGoogleLogin={() => setIsGoogleLoginOpen(true)}
         onOpenProjectManager={() => setIsProjectManagerOpen(true)}
-        onOpenLogoDinas={() => setActiveTab('logo_dinas')}
+        onOpenLogoDinas={() => handleNavigateToTab('logo_dinas')}
         onOpenDeviceHelp={() => setIsDeviceHelpOpen(true)}
         onOpenDeployGuide={() => setIsDeployGuideOpen(true)}
         onExportProject={() => handleExportProject(activeProject)}
         onImportProject={handleImportProject}
-        onNavigateToTab={(tab) => {
-          setActiveTab(tab);
-          setIsKuitansiPreview(false);
-          setIsDokumentasiPreview(false);
-          setIsBuktiBayarPreview(false);
-        }}
+        onNavigateToTab={handleNavigateToTab}
       />
 
-      {/* Main App Container */}
-      <main className="max-w-4xl mx-auto px-3 sm:px-4 pt-3 pb-8">
-        {activeTab === 'landing' && (
-          <LandingPage
-            onStartApp={(t) => {
-              setActiveTab(t || 'kuitansi');
-              setIsKuitansiPreview(false);
-              setIsDokumentasiPreview(false);
-              setIsBuktiBayarPreview(false);
-            }}
-            kuitansi={kuitansi}
-            dokumentasiList={dokumentasiList}
-            buktiBayarList={buktiBayarList}
-            activeProject={activeProject}
-            projects={projects}
-            onOpenProjectManager={() => setIsProjectManagerOpen(true)}
-          />
-        )}
+      {/* Main Container: Full Preview Mode vs LinkedIn 3-Column Layout */}
+      {isPreviewMode ? (
+        <main className="max-w-4xl mx-auto px-3 sm:px-4 pt-4 pb-28">
+          {activeTab === 'kuitansi' && isKuitansiPreview && (
+            <KuitansiPreview
+              data={kuitansi}
+              onBack={() => setIsKuitansiPreview(false)}
+            />
+          )}
 
-        {activeTab === 'berkas' && (
-          <ProjectManagerView
-            projects={projects}
-            activeProjectId={activeProjectId}
-            onSelectProject={(id) => setActiveProjectId(id)}
-            onCreateProject={handleCreateProject}
-            onDuplicateProject={handleDuplicateProject}
-            onDeleteProject={handleDeleteProject}
-            onExportProject={handleExportProject}
-            onImportProject={handleImportProject}
-            onUpdateStatus={handleUpdateStatus}
-            onUpdateProjectMeta={handleUpdateProjectMeta}
-            onLoadProjectFromCloud={handleLoadProjectFromCloud}
-            onGoToKuitansi={() => {
-              setActiveTab('kuitansi');
-              setIsKuitansiPreview(false);
-            }}
-            onOpenUnauthorizedDomainHelp={() => setIsUnauthorizedDomainOpen(true)}
-          />
-        )}
+          {activeTab === 'dokumentasi' && isDokumentasiPreview && (
+            <DokumentasiPrintPreview
+              kuitansi={kuitansi}
+              list={dokumentasiList}
+              onBack={() => setIsDokumentasiPreview(false)}
+            />
+          )}
 
-        {activeTab === 'kuitansi' && (
-          <div>
-            {isKuitansiPreview ? (
-              <KuitansiPreview
-                data={kuitansi}
-                onBack={() => setIsKuitansiPreview(false)}
+          {activeTab === 'bukti_bayar' && isBuktiBayarPreview && (
+            <BuktiBayarPrintPreview
+              kuitansi={kuitansi}
+              list={buktiBayarList}
+              onBack={() => setIsBuktiBayarPreview(false)}
+            />
+          )}
+
+          {activeTab === 'paket_lengkap' && (
+            <PaketLengkapPrintPreview
+              project={activeProject}
+              onBack={() => handleNavigateToTab('kuitansi')}
+            />
+          )}
+        </main>
+      ) : (
+        <main className="max-w-7xl mx-auto px-3 sm:px-6 pt-4 pb-28">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+            
+            {/* 1. LEFT COLUMN (25% on desktop): Profil ASN, SBM 2025, Berkas Cepat */}
+            <div className="hidden lg:block lg:col-span-3 sticky top-18">
+              <LinkedInLeftColumn
+                kuitansi={kuitansi}
+                activeProject={activeProject}
+                projects={projects}
+                activeTab={activeTab}
+                onNavigateTab={handleNavigateToTab}
+                onSelectProject={(id) => setActiveProjectId(id)}
+                onCreateProject={handleCreateProject}
+                onOpenProjectManager={() => setIsProjectManagerOpen(true)}
+                onOpenLogoDinas={() => handleNavigateToTab('logo_dinas')}
               />
-            ) : (
-              <KuitansiForm
-                data={kuitansi}
-                onChange={setKuitansi}
-                onPreview={() => setIsKuitansiPreview(true)}
-                onNextStep={() => {
-                  setActiveTab('dokumentasi');
-                  setIsDokumentasiPreview(false);
-                }}
+            </div>
+
+            {/* 2. CENTER COLUMN (50% on desktop, full on mobile): Composer & Main Form View */}
+            <div className="lg:col-span-6 w-full min-w-0 space-y-4">
+              {/* Quick Composer ala LinkedIn "Start a post" */}
+              <LinkedInComposer
+                kuitansi={kuitansi}
+                activeProject={activeProject}
+                activeTab={activeTab}
+                onNavigateTab={handleNavigateToTab}
+                onCreateNewProject={handleCreateProject}
+                totalDokumentasi={dokumentasiList.length}
+                totalBuktiBayar={buktiBayarList.length}
+              />
+
+              {/* View Content Card */}
+              {activeTab === 'landing' && (
+                <LandingPage
+                  onStartApp={(t) => handleNavigateToTab(t || 'kuitansi')}
+                  kuitansi={kuitansi}
+                  dokumentasiList={dokumentasiList}
+                  buktiBayarList={buktiBayarList}
+                  activeProject={activeProject}
+                  projects={projects}
+                  onOpenProjectManager={() => setIsProjectManagerOpen(true)}
+                />
+              )}
+
+              {activeTab === 'berkas' && (
+                <ProjectManagerView
+                  projects={projects}
+                  activeProjectId={activeProjectId}
+                  onSelectProject={(id) => setActiveProjectId(id)}
+                  onCreateProject={handleCreateProject}
+                  onDuplicateProject={handleDuplicateProject}
+                  onDeleteProject={handleDeleteProject}
+                  onExportProject={handleExportProject}
+                  onImportProject={handleImportProject}
+                  onUpdateStatus={handleUpdateStatus}
+                  onUpdateProjectMeta={handleUpdateProjectMeta}
+                  onLoadProjectFromCloud={handleLoadProjectFromCloud}
+                  onGoToKuitansi={() => handleNavigateToTab('kuitansi')}
+                  onOpenUnauthorizedDomainHelp={() => setIsUnauthorizedDomainOpen(true)}
+                />
+              )}
+
+              {activeTab === 'kuitansi' && (
+                <KuitansiForm
+                  data={kuitansi}
+                  onChange={setKuitansi}
+                  onPreview={() => setIsKuitansiPreview(true)}
+                  onNextStep={() => handleNavigateToTab('dokumentasi')}
+                  buktiBayarList={buktiBayarList}
+                  onOpenLogoDinas={() => handleNavigateToTab('logo_dinas')}
+                  onGoToLanding={() => handleNavigateToTab('landing')}
+                />
+              )}
+
+              {activeTab === 'dokumentasi' && (
+                <DokumentasiForm
+                  list={dokumentasiList}
+                  onAdd={handleAddDokumentasi}
+                  onDelete={handleDeleteDokumentasi}
+                  onOpenPrintPreview={() => setIsDokumentasiPreview(true)}
+                  onPrevStep={() => handleNavigateToTab('kuitansi')}
+                  onNextStep={() => handleNavigateToTab('bukti_bayar')}
+                />
+              )}
+
+              {activeTab === 'bukti_bayar' && (
+                <BuktiBayarForm
+                  list={buktiBayarList}
+                  onAdd={handleAddBuktiBayar}
+                  onDelete={handleDeleteBuktiBayar}
+                  onSyncToKuitansi={handleSyncBuktiToKuitansi}
+                  onOpenPrintPreview={() => setIsBuktiBayarPreview(true)}
+                  onPrevStep={() => handleNavigateToTab('dokumentasi')}
+                  onCompleteWizard={() => handleNavigateToTab('paket_lengkap')}
+                />
+              )}
+
+              {activeTab === 'logo_dinas' && (
+                <LogoDinasPage
+                  kuitansi={kuitansi}
+                  activeProject={activeProject}
+                  onUpdateKuitansi={setKuitansi}
+                  onUpdateAllProjectsLogo={handleUpdateAllProjectsLogo}
+                  onNavigateToTab={handleNavigateToTab}
+                />
+              )}
+
+              {activeTab === 'diskusi' && (
+                <DiscussionGuide
+                  onGoToKuitansi={() => handleNavigateToTab('kuitansi')}
+                  onGoToDokumentasi={() => handleNavigateToTab('dokumentasi')}
+                  onGoToBuktiBayar={() => handleNavigateToTab('bukti_bayar')}
+                />
+              )}
+            </div>
+
+            {/* 3. RIGHT COLUMN (25% on desktop): Audit Kepatuhan, Cetak Utama, Dasar Hukum */}
+            <div className="hidden lg:block lg:col-span-3 sticky top-18">
+              <LinkedInRightColumn
+                kuitansi={kuitansi}
+                dokumentasiList={dokumentasiList}
                 buktiBayarList={buktiBayarList}
-                onOpenLogoDinas={() => setActiveTab('logo_dinas')}
-              />
-            )}
-          </div>
-        )}
-
-        {activeTab === 'dokumentasi' && (
-          <div>
-            {isDokumentasiPreview ? (
-              <DokumentasiPrintPreview
-                kuitansi={kuitansi}
-                list={dokumentasiList}
-                onBack={() => setIsDokumentasiPreview(false)}
-              />
-            ) : (
-              <DokumentasiForm
-                list={dokumentasiList}
-                onAdd={handleAddDokumentasi}
-                onDelete={handleDeleteDokumentasi}
-                onOpenPrintPreview={() => setIsDokumentasiPreview(true)}
-                onPrevStep={() => {
+                activeProject={activeProject}
+                onNavigateTab={handleNavigateToTab}
+                onOpenPaketLengkap={() => handleNavigateToTab('paket_lengkap')}
+                onQuickPreviewKuitansi={() => {
                   setActiveTab('kuitansi');
-                  setIsKuitansiPreview(false);
+                  setIsKuitansiPreview(true);
                 }}
-                onNextStep={() => {
-                  setActiveTab('bukti_bayar');
-                  setIsBuktiBayarPreview(false);
-                }}
+                onOpenDeviceHelp={() => setIsDeviceHelpOpen(true)}
+                onOpenDeployGuide={() => setIsDeployGuideOpen(true)}
               />
-            )}
+            </div>
+
           </div>
-        )}
-
-        {activeTab === 'bukti_bayar' && (
-          <div>
-            {isBuktiBayarPreview ? (
-              <BuktiBayarPrintPreview
-                kuitansi={kuitansi}
-                list={buktiBayarList}
-                onBack={() => setIsBuktiBayarPreview(false)}
-              />
-            ) : (
-              <BuktiBayarForm
-                list={buktiBayarList}
-                onAdd={handleAddBuktiBayar}
-                onDelete={handleDeleteBuktiBayar}
-                onSyncToKuitansi={handleSyncBuktiToKuitansi}
-                onOpenPrintPreview={() => setIsBuktiBayarPreview(true)}
-                onPrevStep={() => {
-                  setActiveTab('dokumentasi');
-                  setIsDokumentasiPreview(false);
-                }}
-                onCompleteWizard={() => {
-                  setActiveTab('paket_lengkap');
-                }}
-              />
-            )}
-          </div>
-        )}
-
-        {activeTab === 'paket_lengkap' && (
-          <PaketLengkapPrintPreview
-            project={activeProject}
-            onBack={() => setActiveTab('kuitansi')}
-          />
-        )}
-
-        {activeTab === 'logo_dinas' && (
-          <LogoDinasPage
-            kuitansi={kuitansi}
-            activeProject={activeProject}
-            onUpdateKuitansi={setKuitansi}
-            onUpdateAllProjectsLogo={handleUpdateAllProjectsLogo}
-            onNavigateToTab={(tab) => {
-              setActiveTab(tab);
-              setIsKuitansiPreview(false);
-            }}
-          />
-        )}
-
-        {activeTab === 'diskusi' && (
-          <DiscussionGuide
-            onGoToKuitansi={() => {
-              setActiveTab('kuitansi');
-              setIsKuitansiPreview(false);
-            }}
-            onGoToDokumentasi={() => {
-              setActiveTab('dokumentasi');
-              setIsDokumentasiPreview(false);
-            }}
-            onGoToBuktiBayar={() => {
-              setActiveTab('bukti_bayar');
-              setIsBuktiBayarPreview(false);
-            }}
-          />
-        )}
-      </main>
+        </main>
+      )}
 
       {/* Project Manager Modal */}
       <ProjectManagerModal
